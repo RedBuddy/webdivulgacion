@@ -1,0 +1,152 @@
+$btn: #003b5c;
+$btn-hover: #004974;
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  // z-index: 1000;
+  // left: 0;
+  // top: 0;
+  // width: 100%;
+  // height: 100%;
+  // overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  .modal-content {
+    display: flex;
+    position: absolute;
+    top: 4rem;
+    right: 1rem;
+    background-color: #fefefe;
+    max-width: 30rem;
+    padding: 1rem;
+    box-shadow: 0px 0.5rem 1rem 0px rgba(0, 0, 0, 0.2); // 0px 8px 16px 0px
+    border-radius: 0.2rem;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 1rem;
+
+    &:hover,
+    &:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  // .titulo {
+  //   font-size: 1.5rem;
+  //   font-weight: bold;
+  //   text-align: center;
+  // }
+
+  .formulario {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      padding: 0.2rem;
+      border: 1px solid #ccc;
+      border-radius: 0.2rem;
+    }
+  }
+
+  .btn-login {
+    padding: 0.35rem;
+    background-color: $btn;
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+
+    &:hover {
+      background-color: $btn-hover;
+    }
+  }
+
+  .password-container {
+    display: flex;
+    align-items: center;
+
+    input {
+      flex: 1;
+    }
+
+    .btn-eye {
+      position: absolute;
+      right: 0.8rem;
+      margin-left: 0.5rem;
+      padding: 0.75rem;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      i {
+        font-size: 1.25rem;
+        color: $btn;
+      }
+
+      &:hover i {
+        color: #0056b3;
+      }
+    }
+  }
+
+  // .password-container {
+  //   display: flex;
+  //   align-items: center;
+
+  //   input {
+  //     flex: 1;
+  //   }
+
+  //   button {
+  //     margin-left: 10px;
+  //     padding: 10px;
+  //     background-color: #007bff;
+  //     color: white;
+  //     border: none;
+  //     border-radius: 0.2rem;
+  //     cursor: pointer;
+
+  //     &:hover {
+  //       background-color: #0056b3;
+  //     }
+  //   }
+  // }
+
+  // button[type="submit"] {
+  //   padding: 10px;
+  //   background-color: #007bff;
+  //   color: white;
+  //   border: none;
+  //   border-radius: 0.2rem;
+  //   cursor: pointer;
+
+  //   &:hover {
+  //     background-color: #0056b3;
+  //   }
+  // }
+}

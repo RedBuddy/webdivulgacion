@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "webdivulgacion": {
+    "IngeCiencia": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/webdivulgacion",
+            "outputPath": "dist/inge-ciencia",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "webdivulgacion:build:production"
+              "buildTarget": "IngeCiencia:build:production"
             },
             "development": {
-              "buildTarget": "webdivulgacion:build:development"
+              "buildTarget": "IngeCiencia:build:development"
             }
           },
           "defaultConfiguration": "development"

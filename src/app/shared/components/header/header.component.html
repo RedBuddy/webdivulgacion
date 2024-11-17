@@ -1,0 +1,47 @@
+<header class="navbar">
+  <div class="izquierda">
+    <div class="logo">
+      <img src="logo.png" alt="Logo">
+      <span class="logo-nombre">IngeCiencia</span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#">Inicio</a>
+      <a *ngIf="isAuthenticated" href="#">Preguntas</a>
+      <a href="#">Recursos</a>
+      <a href="#">Investigadores</a>
+      <a *ngIf="isAuthenticated" href="#">Contacto</a>
+    </nav>
+  </div>
+
+  <div class="derecha">
+    <div class="search-container">
+      <input *ngIf="isSearchVisible" type="text" placeholder="Buscar articulo o investigador...">
+      <button class="btn-search" (click)="toggleSearch($event)">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+
+    <button *ngIf="userRole === 'editor' || userRole === 'admin'" class="btn-publicaciones">Mis Publicaciones</button>
+
+    <div *ngIf="isAuthenticated" class="user-dropdown">
+      <div class="user-image-container">
+        <img src="assets/icons/usuario.png" alt="User">
+      </div>
+      <div class="user-dropdown-content">
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <hr>
+        <a (click)="logout()">Logout</a>
+      </div>
+    </div>
+
+    <div *ngIf="!isAuthenticated" class="login-register">
+      <button class="btn-login" (click)="openLoginModal()">Iniciar Sesión</button>
+      <button class="btn-register">Registrarse</button>
+    </div>
+  </div>
+
+  <!-- Include the login modal component -->
+  <app-login #loginModal (closeModal)="closeLoginModal()" class="modal-container"></app-login>
+</header>
