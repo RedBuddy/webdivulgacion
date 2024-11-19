@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileComponent } from './profile.component';
+import { RecursosHeaderComponent } from './recursos-header.component';
 
-describe('ProfileComponent', () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+describe('RecursosHeaderComponent', () => {
+  let component: RecursosHeaderComponent;
+  let fixture: ComponentFixture<RecursosHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfileComponent]
+      imports: [RecursosHeaderComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProfileComponent);
+    fixture = TestBed.createComponent(RecursosHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

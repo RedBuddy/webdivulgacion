@@ -8,25 +8,25 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/components/layout/layout.component'),
     children: [
       {
-        path: 'dashboard',
-        loadComponent: () => import('./business/dashboard/dashboard.component'),
+        path: 'preguntas',
+        loadComponent: () => import('./business/preguntas/components/pregunta-header/pregunta-header.component'),
         //canActivate: [authGuard]
       },
       {
-        path: 'profile',
-        loadComponent: () => import('./business/profile/profile.component'),
+        path: 'recursos',
+        loadComponent: () => import('./business/recursos/components/recursos-header/recursos-header.component'),
         //canActivate: [authGuard]
       },
-      // {
-      //   path: 'tables',
-      //   loadComponent: () => import('./business/tables/tables.component'),
-      //   canActivate: [authGuard]
-      // },
-      // {
-      //   path: 'forms',
-      //   loadComponent: () => import('./business/forms/forms.component'),
-      //   // canActivate: [authGuard]
-      // },
+      {
+        path: 'investigadores',
+        loadComponent: () => import('./business/investigadores/components/investigadores-list/investigadores-list.component'),
+        canActivate: [authGuard]
+      },
+      {
+        path: 'contacto',
+        loadComponent: () => import('./business/contacto/components/contacto-list/contacto-list.component'),
+        // canActivate: [authGuard]
+      },
       // {
       //   path: '',
       //   redirectTo: 'dashboard',
@@ -41,6 +41,6 @@ export const routes: Routes = [
   // },
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: 'home'
   }
 ];
