@@ -1,18 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { tap, catchError, switchMap } from 'rxjs/operators';
+import { IUser } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private login_url: string = 'http://localhost:3000/login';
+  private register_url: string = 'http://localhost:3000/users';
   private tokenKey = 'auth_token';
-
   private refresh_url: string = 'http://localhost:3000/refresh-token';
   private RefreshTokenKey = 'refresh_token';
+
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+  private userRoleSubject = new BehaviorSubject<string | null>(this.getUserRole());
+  userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private HttpClient: HttpClient, private router: Router) { }
 
@@ -23,10 +30,31 @@ export class AuthService {
           this.setToken(res.token);
           this.setRefreshToken(res.refreshToken);
           this.autoRefreshToken();
+          this.isAuthenticatedSubject.next(true);
+          this.userRoleSubject.next(this.getUserRole());
+          this.router.navigate(['']);
         }
       }),
       catchError(error => {
         console.error('Error during login:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  register(formData: FormData): Observable<any> {
+    return this.HttpClient.post<any>(this.register_url, formData).pipe(
+      switchMap(() => this.login(formData.get('email') as string, formData.get('password') as string)),
+      tap(res => {
+        if (res.token) {
+          this.setToken(res.token);
+          this.isAuthenticatedSubject.next(true);
+          this.userRoleSubject.next(this.getUserRole());
+          this.router.navigate(['']);
+        }
+      }),
+      catchError(error => {
+        console.error('Error during registration:', error);
         return throwError(error);
       })
     );
@@ -37,23 +65,15 @@ export class AuthService {
   }
 
   private getToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(this.tokenKey);
-    } else {
-      return null;
-    }
+    return localStorage.getItem(this.tokenKey);
   }
 
-  private setRefreshToken(token: string): void {
-    localStorage.setItem(this.RefreshTokenKey, token);
+  private setRefreshToken(refreshToken: string): void {
+    localStorage.setItem(this.RefreshTokenKey, refreshToken);
   }
 
   private getRefreshToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(this.RefreshTokenKey);
-    } else {
-      return null;
-    }
+    return localStorage.getItem(this.RefreshTokenKey);
   }
 
   refreshToken(): Observable<any> {
@@ -129,6 +149,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.RefreshTokenKey);
+    this.isAuthenticatedSubject.next(false);
+    this.userRoleSubject.next(null);
     this.router.navigate(['/login']);
   }
 

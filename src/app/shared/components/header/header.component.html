@@ -38,10 +38,11 @@
 
     <div *ngIf="!isAuthenticated" class="login-register">
       <button class="btn-login" (click)="openLoginModal()">Iniciar Sesión</button>
-      <button class="btn-register">Registrarse</button>
+      <button class="btn-register" (click)="openRegisterModal()">Registrarse</button>
     </div>
   </div>
 
   <!-- Include the login modal component -->
   <app-login #loginModal (closeModal)="closeLoginModal()" class="modal-container"></app-login>
+  <app-register #registerModal (closeModal)="closeRegisterModal()" class="modal-container"></app-register>
 </header>
