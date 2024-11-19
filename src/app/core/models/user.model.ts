@@ -1,4 +1,3 @@
-
 export interface IUser {
   id?: number;
   username: string;
@@ -8,7 +7,7 @@ export interface IUser {
   last_name: string;
   orcid?: string;
   registration_date?: Date;
-  profile_img_path?: string;
+  profile_img?: Blob; // Actualizado a Blob
   verified?: boolean;
   role_id?: number;
   status?: 'active' | 'inactive';
@@ -24,22 +23,21 @@ const user2: IUser = {
   last_name: 'Doe',
   orcid: '0000-0001-2345-6789',
   registration_date: new Date(),
-  profile_img_path: '/images/jane.jpg',
+  profile_img: new Blob(), // Ejemplo de Blob
   verified: true,
   role_id: 1,
   status: 'active'
 };
 
 //Ejemplo de cuerpo de solicitud
-const user1: IUser =
-{
-  "username": "john_doe",
-  "email": "john.doe@example.com",
-  "password": "securepassword123",
-  "first_name": "John",
-  "last_name": "Doe",
-  "orcid": "0000-0002-1825-0097",
-  "profile_img_path": "http://example.com/profile/john_doe.jpg",
-  "role_id": 2,
-  "status": "active"
+const user1: IUser = {
+  username: 'john_doe',
+  email: 'john.doe@example.com',
+  password: 'securepassword123',
+  first_name: 'John',
+  last_name: 'Doe',
+  orcid: '0000-0002-1825-0097',
+  profile_img: new Blob(), // Ejemplo de Blob
+  role_id: 2,
+  status: 'active'
 };
