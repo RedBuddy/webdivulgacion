@@ -1,61 +1,107 @@
 <div class="modal" *ngIf="isVisible()">
   <div class="modal-content">
     <span class="close" (click)="close()">&times;</span>
-    <h2 class="titulo">Registrarse</h2>
-    <form (ngSubmit)="register()">
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="campo subir-imagen">
+        <i class="bi bi-upload"></i>
+        <div class="btn-subir-imagen">
+          <input type="file" id="profile_img" accept="image/*" (change)="onFileSelected($event)">
+          <label for="profile_img">{{profileImgLabel}}</label>
+        </div>
+      </div>
+
       <div class="campo">
-        <label for="username">Nombre de Usuario</label>
-        <input type="text" id="username" [(ngModel)]="username" name="username" required>
+        <label for="username">Usuario</label>
+        <input type="text" id="username" formControlName="username">
+        <div
+          *ngIf="registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)"
+          class="error-message">
+          <div *ngIf="registerForm.get('username')?.errors?.['required']">El nombre de usuario es requerido.</div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="first_name">Nombre(s)</label>
+        <input type="text" id="first_name" formControlName="first_name">
+        <div
+          *ngIf="registerForm.get('first_name')?.invalid && (registerForm.get('first_name')?.dirty || registerForm.get('first_name')?.touched)"
+          class="error-message">
+          <div *ngIf="registerForm.get('first_name')?.errors?.['required']">El nombre es requerido.</div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="last_name">Apellidos</label>
+        <input type="text" id="last_name" formControlName="last_name">
+        <div
+          *ngIf="registerForm.get('last_name')?.invalid && (registerForm.get('last_name')?.dirty || registerForm.get('last_name')?.touched)"
+          class="error-message">
+          <div *ngIf="registerForm.get('last_name')?.errors?.['required']">Los apellidos son requeridos.</div>
+        </div>
       </div>
 
       <div class="campo">
         <label for="email">Correo Electrónico</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" required>
-      </div>
-
-      <div class="campo">
-        <label for="first_name">Nombre</label>
-        <input type="text" id="first_name" [(ngModel)]="first_name" name="first_name" required>
-      </div>
-
-      <div class="campo">
-        <label for="last_name">Apellido</label>
-        <input type="text" id="last_name" [(ngModel)]="last_name" name="last_name" required>
+        <input type="email" id="email" formControlName="email">
+        <div
+          *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+          class="error-message">
+          <div *ngIf="registerForm.get('email')?.errors?.['required']">El correo electrónico es requerido.</div>
+          <div *ngIf="registerForm.get('email')?.errors?.['email']">El correo electrónico no es válido.</div>
+        </div>
       </div>
 
       <div class="campo">
         <label for="password">Contraseña</label>
         <div class="password-container">
-          <input [type]="showPassword() ? 'text' : 'password'" id="password" [(ngModel)]="password" name="password"
-            required>
+          <input [type]="showPassword() ? 'text' : 'password'" id="password" formControlName="password">
           <button type="button" class="btn-eye" (click)="togglePasswordVisibility()">
             <i class="bi" [ngClass]="showPassword() ? 'bi-eye-slash' : 'bi-eye'"></i>
           </button>
+        </div>
+        <div
+          *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+          class="error-message">
+          <div *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida.</div>
+          <div *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 8
+            caracteres.
+          </div>
         </div>
       </div>
 
       <div class="campo">
         <label for="confirm_password">Confirmar Contraseña</label>
         <div class="password-container">
-          <input [type]="showPassword() ? 'text' : 'password'" id="confirm_password" [(ngModel)]="confirm_password"
-            name="confirm_password" required>
+          <input [type]="showPassword() ? 'text' : 'password'" id="confirm_password" formControlName="confirm_password">
           <button type="button" class="btn-eye" (click)="togglePasswordVisibility()">
             <i class="bi" [ngClass]="showPassword() ? 'bi-eye-slash' : 'bi-eye'"></i>
           </button>
         </div>
+        <div
+          *ngIf="registerForm.errors?.['mismatch'] && (registerForm.get('confirm_password')?.dirty || registerForm.get('confirm_password')?.touched)"
+          class="error-message">
+          <div>Las contraseñas no coinciden.</div>
+        </div>
       </div>
 
       <div class="campo">
-        <label for="profile_img">Subir Imagen de Perfil</label>
-        <input type="file" id="profile_img" accept="image/*" (change)="onFileSelected($event)">
+        <div class="terminos">
+          <input type="checkbox" id="terms" formControlName="terms">
+          <p>Acepto los términos y condiciones</p>
+        </div>
+
+        <div
+          *ngIf="registerForm.get('terms')?.invalid && (registerForm.get('terms')?.dirty || registerForm.get('terms')?.touched)"
+          class="error-message">
+          <div *ngIf="registerForm.get('terms')?.errors?.['required']">Debes aceptar los términos y condiciones.</div>
+        </div>
       </div>
 
-      <div class="campo">
-        <input type="checkbox" id="terms" [(ngModel)]="termsAccepted" name="terms" required>
-        <label for="terms">Acepto los términos y condiciones</label>
+      <div *ngIf="errorMessage" class="error-backend"><i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
       </div>
 
-      <button type="submit" [disabled]="!termsAccepted || password !== confirm_password">Registrarse</button>
+      <button type="submit" [disabled]="registerForm.invalid">Registrarse</button>
     </form>
   </div>
 </div>

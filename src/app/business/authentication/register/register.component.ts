@@ -1,34 +1,39 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Output, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
-
-// Import the interfaz user
-import { IUser } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   isVisible = signal(false);
   @Output() closeModal = new EventEmitter<void>();
 
   showPassword = signal(false);
-  username = '';
-  email = '';
-  password = '';
-  confirm_password = '';
-  first_name = '';
-  last_name = '';
+  registerForm: FormGroup;
+  profileImgLabel = 'Seleccionar Imagen'; // Texto del label
   profile_img: File | null = null;
-  termsAccepted = false;
+  errorMessage: string | null = null; // Propiedad para el mensaje de error
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required],
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirm_password: ['', Validators.required],
+      terms: [false, Validators.requiredTrue]
+    }, { validators: this.passwordMatchValidator });
+  }
+
+  ngOnInit(): void { }
 
   togglePasswordVisibility(): void {
     this.showPassword.update(value => !value);
@@ -38,32 +43,32 @@ export class RegisterComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.profile_img = input.files[0];
+      this.profileImgLabel = this.profile_img.name; // Actualizar el texto del label
     }
   }
 
+  passwordMatchValidator(form: FormGroup): { [key: string]: boolean } | null {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirm_password');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { mismatch: true };
+    }
+    return null;
+  }
+
   register(): void {
-    if (this.password !== this.confirm_password) {
-      console.error('Passwords do not match');
+    if (this.registerForm.invalid) {
       return;
     }
 
-    const user: IUser = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      first_name: this.first_name,
-      last_name: this.last_name,
-      profile_img: this.profile_img ? new Blob([this.profile_img], { type: this.profile_img.type }) : undefined
-    };
-
     const formData = new FormData();
-    formData.append('username', user.username);
-    formData.append('email', user.email);
-    formData.append('password', user.password);
-    formData.append('first_name', user.first_name);
-    formData.append('last_name', user.last_name);
+    formData.append('username', this.registerForm.get('username')?.value);
+    formData.append('email', this.registerForm.get('email')?.value);
+    formData.append('password', this.registerForm.get('password')?.value);
+    formData.append('first_name', this.registerForm.get('first_name')?.value);
+    formData.append('last_name', this.registerForm.get('last_name')?.value);
     if (this.profile_img) {
-      formData.append('profile_img', this.profile_img, `${this.username}_profile${this.profile_img.name.substring(this.profile_img.name.lastIndexOf('.'))}`);
+      formData.append('profile_img', this.profile_img, `${this.registerForm.get('username')?.value}_profile${this.profile_img.name.substring(this.profile_img.name.lastIndexOf('.'))}`);
     }
 
     this.authService.register(formData).subscribe({
@@ -73,7 +78,11 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error('Registration failed', err);
-        // Handle registration error
+        if (err.error && err.error.message) {
+          this.errorMessage = err.error.message; // Capturar el mensaje de error del backend
+        } else {
+          this.errorMessage = 'Error en el registro. Por favor, inténtelo de nuevo.';
+        }
       }
     });
   }

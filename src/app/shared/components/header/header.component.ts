@@ -4,11 +4,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { LoginComponent } from '../../../business/authentication/login/login.component';
 import { RegisterComponent } from '../../../business/authentication/register/register.component';
 import { Subscription } from 'rxjs';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, LoginComponent, RegisterComponent],
+  imports: [RouterLink, RouterLinkActive, CommonModule, LoginComponent, RegisterComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isSearchVisible = false;
   isAuthenticated = false;
   userRole: string | null = null;
+  userImage: string | null = null;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -33,6 +35,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.authService.userRole$.subscribe(userRole => {
         this.userRole = userRole;
+      })
+    );
+
+    this.subscriptions.add(
+      this.authService.userImage$.subscribe(userImage => {
+        this.userImage = userImage;
       })
     );
   }

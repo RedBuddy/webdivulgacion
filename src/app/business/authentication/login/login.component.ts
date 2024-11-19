@@ -18,6 +18,7 @@ export class LoginComponent {
   showPassword = signal(false);
   identifier = '';
   password = '';
+  errorMessage = ''; // Propiedad para el mensaje de error
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -33,11 +34,11 @@ export class LoginComponent {
         const role = payload.role;
 
         this.closeModal.emit();
-        this.router.navigate(['']);
       },
       error: (err) => {
         console.error('Login failed', err);
         // Handle login error
+        this.errorMessage = 'Usuario o contraseña incorrectos'; // Establecer el mensaje de error
       }
     });
   }
