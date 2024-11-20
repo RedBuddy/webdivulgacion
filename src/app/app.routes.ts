@@ -8,6 +8,11 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/components/layout/layout.component'),
     children: [
       {
+        path: 'home',
+        loadComponent: () => import('./business/landing-page/components/article-list/article-list.component'),
+        //canActivate: [authGuard]
+      },
+      {
         path: 'preguntas',
         loadComponent: () => import('./business/preguntas/components/pregunta-header/pregunta-header.component'),
         //canActivate: [authGuard]
@@ -27,6 +32,28 @@ export const routes: Routes = [
         loadComponent: () => import('./business/contacto/components/contacto-list/contacto-list.component'),
         // canActivate: [authGuard]
       },
+      {
+        path: 'config',
+        loadChildren: () => import('./business/config/config.module').then(m => m.ConfigModule)
+      },
+      // {
+      //   path: 'config',
+      //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),
+      //   children: [
+      //     {
+      //       path: 'cuenta',
+      //       loadComponent: () => import('./business/config/components/config-cuenta/config-cuenta.component')
+      //     },
+      //     {
+      //       path: 'perfil',
+      //       loadComponent: () => import('./business/config/components/config-perfil/config-perfil.component')
+      //     },
+      //     {
+      //       path: 'tema',
+      //       loadComponent: () => import('./business/config/components/config-tema/config-tema.component')
+      //     }
+      //   ]
+      // },
       // {
       //   path: '',
       //   redirectTo: 'dashboard',
