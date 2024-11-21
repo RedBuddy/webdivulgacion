@@ -1,1 +1,66 @@
-<p>config-cuenta works!</p>
+<div class="container">
+  <h2>Actualizar Datos de la Cuenta</h2>
+  <form [formGroup]="accountForm" (ngSubmit)="updateAccount()">
+    <div class="campo subir-imagen">
+      <i class="bi bi-upload"></i>
+      <div class="btn-subir-imagen">
+        <input type="file" id="profile_img" accept="image/*" (change)="onFileSelected($event)">
+        <label for="profile_img">{{profileImgLabel}}</label>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="first_name">Nombre(s)</label>
+      <input type="text" id="first_name" formControlName="first_name">
+      <div
+        *ngIf="accountForm.get('first_name')?.invalid && (accountForm.get('first_name')?.dirty || accountForm.get('first_name')?.touched)"
+        class="error-message">
+        <div *ngIf="accountForm.get('first_name')?.errors?.['required']">El nombre es requerido.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="last_name">Apellidos</label>
+      <input type="text" id="last_name" formControlName="last_name">
+      <div
+        *ngIf="accountForm.get('last_name')?.invalid && (accountForm.get('last_name')?.dirty || accountForm.get('last_name')?.touched)"
+        class="error-message">
+        <div *ngIf="accountForm.get('last_name')?.errors?.['required']">Los apellidos son requeridos.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="current_password">Contraseña Actual</label>
+      <input type="password" id="current_password" formControlName="current_password">
+      <div
+        *ngIf="accountForm.get('current_password')?.invalid && (accountForm.get('current_password')?.dirty || accountForm.get('current_password')?.touched)"
+        class="error-message">
+        <div *ngIf="accountForm.get('current_password')?.errors?.['required']">La contraseña actual es requerida.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="new_password">Nueva Contraseña</label>
+      <input type="password" id="new_password" formControlName="new_password">
+      <div
+        *ngIf="accountForm.get('new_password')?.invalid && (accountForm.get('new_password')?.dirty || accountForm.get('new_password')?.touched)"
+        class="error-message">
+        <div *ngIf="accountForm.get('new_password')?.errors?.['required']">La nueva contraseña es requerida.</div>
+        <div *ngIf="accountForm.get('new_password')?.errors?.['minlength']">La nueva contraseña debe tener al menos 6
+          caracteres.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="confirm_password">Confirmar Nueva Contraseña</label>
+      <input type="password" id="confirm_password" formControlName="confirm_password">
+      <div
+        *ngIf="accountForm.errors?.['mismatch'] && (accountForm.get('confirm_password')?.dirty || accountForm.get('confirm_password')?.touched)"
+        class="error-message">
+        <div>Las contraseñas no coinciden.</div>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="accountForm.invalid">Actualizar Cuenta</button>
+  </form>
+</div>
