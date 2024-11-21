@@ -1,9 +1,22 @@
-<div>
-  <h1>Configuración</h1>
-  <nav>
-    <a routerLink="cuenta" routerLinkActive="active-link">Cuenta</a>
-    <a routerLink="perfil" routerLinkActive="active-link">Perfil</a>
-    <a routerLink="tema" routerLinkActive="active-link">Tema</a>
-  </nav>
-  <router-outlet></router-outlet>
+<div class="container">
+
+  <div class="vertical">
+    <div class="titulo">
+      <div class="contenido">
+        <h1>Configuración</h1>
+        <hr>
+      </div>
+    </div>
+    <div class="sidebar">
+      <nav>
+        <a routerLink="cuenta" routerLinkActive="active-link">Cuenta</a>
+        <a routerLink="perfil" routerLinkActive="active-link">Perfil</a>
+        <a routerLink="tema" routerLinkActive="active-link">Tema</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
 </div>
