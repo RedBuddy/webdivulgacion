@@ -1,31 +1,54 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ConfigService } from '../../services/config.service'; // Asegúrate de que la ruta sea correcta
+import { IUser } from '../../../../core/models/user.model'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-config-cuenta',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './config-cuenta.component.html',
-  styleUrl: './config-cuenta.component.scss'
+  styleUrls: ['./config-cuenta.component.scss']
 })
 export class ConfigCuentaComponent implements OnInit {
   accountForm: FormGroup;
   profileImgLabel = 'Seleccionar Imagen'; // Texto del label
   profile_img: File | null = null;
+  errorMessage: string | null = null; // Propiedad para el mensaje de error
+  successMessage: string | null = null; // Propiedad para el mensaje de éxito
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private configService: ConfigService) {
     this.accountForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       current_password: ['', Validators.required],
-      new_password: ['', [Validators.required, Validators.minLength(6)]],
+      new_password: ['', [Validators.required, Validators.minLength(8)]],
       confirm_password: ['', Validators.required],
       profile_img: [null]
     }, { validators: this.passwordMatchValidator });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.loadUserData();
+  }
+
+  loadUserData(): void {
+    this.configService.getUser().subscribe({
+      next: (user: IUser) => {
+        this.accountForm.patchValue({
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email
+        });
+      },
+      error: (err) => {
+        console.error('Error loading user data', err);
+        this.errorMessage = 'Error al cargar los datos del usuario.';
+      }
+    });
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -49,16 +72,26 @@ export class ConfigCuentaComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('first_name', this.accountForm.get('first_name')?.value);
-    formData.append('last_name', this.accountForm.get('last_name')?.value);
-    formData.append('current_password', this.accountForm.get('current_password')?.value);
-    formData.append('new_password', this.accountForm.get('new_password')?.value);
-    if (this.profile_img) {
-      formData.append('profile_img', this.profile_img, this.profile_img.name);
-    }
+    const user: IUser = {
+      first_name: this.accountForm.get('first_name')?.value,
+      last_name: this.accountForm.get('last_name')?.value,
+      email: this.accountForm.get('email')?.value,
+      password: this.accountForm.get('current_password')?.value,
+    };
 
-    // Aquí puedes llamar a tu servicio para actualizar los datos de la cuenta
-    // this.authService.updateAccount(formData).subscribe(...);
+    const currentPassword = this.accountForm.get('current_password')?.value;
+    const newPassword = this.accountForm.get('new_password')?.value;
+
+    this.configService.updateAccount(user, currentPassword, newPassword, this.profile_img || undefined).subscribe({
+      next: (response) => {
+        console.log('Account updated successfully', response);
+        this.successMessage = response.message || 'Account updated successfully'; // Mostrar mensaje de éxito del backend o mensaje por defecto
+        this.errorMessage = null; // Limpiar mensaje de error
+      },
+      error: (err) => {
+        console.error('Error updating account', err);
+        this.errorMessage = err; // Capturar el mensaje de error del backend
+      }
+    });
   }
 }

@@ -11,6 +11,7 @@ const routes: Routes = [
     path: '',
     component: ConfigSidebarComponent,
     children: [
+      { path: '', redirectTo: 'cuenta', pathMatch: 'full' },
       { path: 'cuenta', component: ConfigCuentaComponent },
       { path: 'perfil', component: ConfigPerfilComponent },
       { path: 'tema', component: ConfigTemaComponent }

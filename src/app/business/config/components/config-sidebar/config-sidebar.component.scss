@@ -1,3 +1,15 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link-activo: #5c5b6e;
+
+.container {
+  display: flex;
+  // justify-content: center;
+  margin: 2rem;
+}
+
 .titulo {
   height: 2rem;
   text-align: left;
@@ -23,11 +35,12 @@
 .vertical {
   display: flex;
   flex-direction: column;
+  margin-left: 10%;
 }
 
 .sidebar {
   // margin-left: 2rem;
-  width: 13rem;
+  width: 15rem;
   height: 40vh;
   background-color: #f8f9fa;
   padding: 2rem;
@@ -45,27 +58,25 @@
     a {
       text-decoration: none;
       color: #333;
-      padding: 10px 0;
+      // padding: 10px 0;
+      margin: 0.5rem 0;
       transition: color 0.3s;
 
       &:hover {
-        color: #007bff;
+        color: $hover;
       }
 
       &.active-link {
+        border-left: 0.2rem solid $link-activo;
+        padding-left: 0.5rem;
         font-weight: bold;
-        color: #007bff;
+        color: $link-activo;
       }
     }
   }
 }
 
-.container {
-  display: flex;
-  margin: 2rem;
-}
-
 .content {
-  flex-grow: 1;
+  // flex-grow: 1;
   margin: 2rem;
 }

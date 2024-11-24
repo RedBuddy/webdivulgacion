@@ -8,6 +8,7 @@ import { IUser } from '../models/user.model';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   private login_url: string = 'http://localhost:3000/login';
   private register_url: string = 'http://localhost:3000/users';
@@ -37,7 +38,7 @@ export class AuthService {
           this.autoRefreshToken();
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
-          this.fetchUserProfileImage(this.getUserIdFromToken(res.token)); // Obtener la imagen del usuario
+          this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
           this.router.navigate(['/inicio']);
         }
       }),
@@ -58,7 +59,7 @@ export class AuthService {
           this.autoRefreshToken();
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
-          this.fetchUserProfileImage(this.getUserIdFromToken(res.token)); // Obtener la imagen del usuario
+          this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
           this.router.navigate(['/inicio']);
         }
       }),
@@ -177,7 +178,8 @@ export class AuthService {
     return payload.role || null; // Asume que el rol está en el campo 'role' del payload
   }
 
-  getUserIdFromToken(token: string): number | null {
+  getUserIdFromToken(): number | null {
+    const token = this.getToken();
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.user_id;
