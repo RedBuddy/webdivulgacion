@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, catchError, switchMap } from 'rxjs/operators';
-import { IUser } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'

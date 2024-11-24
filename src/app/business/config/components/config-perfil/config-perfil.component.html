@@ -1,26 +1,30 @@
 <div class="container">
-  <h2>Actualizar Perfil</h2>
-  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
-    <div class="campo">
-      <label for="biography">Biografía</label>
-      <textarea id="biography" formControlName="biography"></textarea>
-      <div
-        *ngIf="profileForm.get('biography')?.invalid && (profileForm.get('biography')?.dirty || profileForm.get('biography')?.touched)"
-        class="error-message">
-        <div *ngIf="profileForm.get('biography')?.errors?.['required']">La biografía es requerida.</div>
+  <div class="form-wrapper">
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="campo">
+        <label for="biography">Biografía:</label>
+        <textarea id="biography" formControlName="biography"></textarea>
+        <div
+          *ngIf="profileForm.get('biography')?.invalid && (profileForm.get('biography')?.dirty || profileForm.get('biography')?.touched)"
+          class="error-message">
+          <div *ngIf="profileForm.get('biography')?.errors?.['required']">La biografía es requerida.</div>
+        </div>
       </div>
-    </div>
 
-    <div class="campo">
-      <label for="experience">Experiencia</label>
-      <textarea id="experience" formControlName="experience"></textarea>
-      <div
-        *ngIf="profileForm.get('experience')?.invalid && (profileForm.get('experience')?.dirty || profileForm.get('experience')?.touched)"
-        class="error-message">
-        <div *ngIf="profileForm.get('experience')?.errors?.['required']">La experiencia es requerida.</div>
+      <div class="campo">
+        <label for="experience">Experiencia:</label>
+        <textarea id="experience" formControlName="experience"></textarea>
+        <div
+          *ngIf="profileForm.get('experience')?.invalid && (profileForm.get('experience')?.dirty || profileForm.get('experience')?.touched)"
+          class="error-message">
+          <div *ngIf="profileForm.get('experience')?.errors?.['required']">La experiencia es requerida.</div>
+        </div>
       </div>
-    </div>
 
-    <button type="submit" [disabled]="profileForm.invalid">Actualizar Perfil</button>
-  </form>
+      <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+      <button type="submit" [disabled]="profileForm.invalid">Guardar Perfil</button>
+    </form>
+  </div>
 </div>
