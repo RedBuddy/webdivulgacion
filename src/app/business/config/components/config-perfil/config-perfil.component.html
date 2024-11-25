@@ -21,6 +21,18 @@
         </div>
       </div>
 
+      <div class="campo">
+        <label for="disciplines">Disciplinas:</label>
+        <select id="disciplines" formControlName="disciplines" multiple>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.category_name }}</option>
+        </select>
+        <div
+          *ngIf="profileForm.get('disciplines')?.invalid && (profileForm.get('disciplines')?.dirty || profileForm.get('disciplines')?.touched)"
+          class="error-message">
+          <div *ngIf="profileForm.get('disciplines')?.errors?.['required']">Seleccione al menos una disciplina.</div>
+        </div>
+      </div>
+
       <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
       <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
 
