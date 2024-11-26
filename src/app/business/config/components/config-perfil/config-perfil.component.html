@@ -21,16 +21,22 @@
         </div>
       </div>
 
-      <div class="campo">
-        <label for="disciplines">Disciplinas:</label>
-        <select id="disciplines" formControlName="disciplines" multiple>
-          <option *ngFor="let category of categories" [value]="category.id">{{ category.category_name }}</option>
-        </select>
-        <div
-          *ngIf="profileForm.get('disciplines')?.invalid && (profileForm.get('disciplines')?.dirty || profileForm.get('disciplines')?.touched)"
-          class="error-message">
-          <div *ngIf="profileForm.get('disciplines')?.errors?.['required']">Seleccione al menos una disciplina.</div>
-        </div>
+      <div class="campo select-categoria">
+        <label for="categorySearch">Disciplinas:</label>
+        <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()">
+        <ul *ngIf="isSearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+          <li *ngFor="let category of filteredCategories" (click)="addCategory(category)">
+            {{ category.category_name }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="campo categorias-agregadas">
+        <!-- <h3>Categorías Agregadas:</h3> -->
+        <ul class="added-categories-list">
+          <li *ngFor="let category of addedCategories">{{ category.category_name }}</li>
+        </ul>
       </div>
 
       <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
@@ -39,4 +45,5 @@
       <button type="submit" [disabled]="profileForm.invalid">Guardar Perfil</button>
     </form>
   </div>
+
 </div>

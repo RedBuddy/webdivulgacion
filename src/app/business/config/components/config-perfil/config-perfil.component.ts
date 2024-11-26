@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProfileService } from '../../services/profile.service'; // Asegúrate de que la ruta sea correcta
-import { CategoryService } from '../../../../core/services/category.service'; // Asegúrate de que la ruta sea correcta
-import { UserDisciplineService } from '../../services/user-discipline.service'; // Asegúrate de que la ruta sea correcta
-import { Profile } from '../../../../core/models/profile.model';// Asegúrate de que la ruta sea correcta
-import { ICategory } from '../../../../core/models/category.model'; // Asegúrate de que la ruta sea correcta
-import { IUserDiscipline } from '../../../../core/models/user_discipline.model'; // Asegúrate de que la ruta sea correcta
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileService } from '../../services/profile.service';
+import { CategoryService } from '../../../../core/services/category.service';
+import { UserDisciplineService } from '../../services/user-discipline.service';
+import { Profile } from '../../../../core/models/profile.model';
+import { ICategory } from '../../../../core/models/category.model';
+import { IUserDiscipline } from '../../../../core/models/user_discipline.model';
 
 
 @Component({
@@ -20,10 +20,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class ConfigPerfilComponent implements OnInit {
   profileForm: FormGroup;
   categories: ICategory[] = [];
+  filteredCategories: ICategory[] = [];
+  searchControl: FormControl = new FormControl(''); // FormControl para el texto de búsqueda
+  addedCategories: ICategory[] = [];
   userDisciplines: number[] = [];
-  errorMessage: string | null = null; // Propiedad para el mensaje de error
-  successMessage: string | null = null; // Propiedad para el mensaje de éxito
-  initialProfile: Profile | null = null; // Propiedad para almacenar el perfil inicial
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  initialProfile: Profile | null = null;
+  isSearchFocused: boolean = false; // Variable para rastrear el enfoque del cuadro de búsqueda
 
   constructor(
     private fb: FormBuilder,
@@ -34,19 +38,24 @@ export class ConfigPerfilComponent implements OnInit {
     this.profileForm = this.fb.group({
       biography: ['', Validators.required],
       experience: ['', Validators.required],
-      disciplines: [[], Validators.required] // Campo para las disciplinas
+      disciplines: [[], Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.loadUserProfile();
     this.loadCategories();
+
+    // Filtrar categorías cuando cambia el texto de búsqueda
+    this.searchControl.valueChanges.subscribe(value => {
+      this.filterCategories(value);
+    });
   }
 
   loadUserProfile(): void {
     this.profileService.getProfile().subscribe({
       next: (profile: Profile) => {
-        this.initialProfile = profile; // Almacenar el perfil inicial
+        this.initialProfile = profile;
         this.profileForm.patchValue(profile);
         this.loadUserDisciplines(profile.id_user);
       },
@@ -61,6 +70,7 @@ export class ConfigPerfilComponent implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (categories: ICategory[]) => {
         this.categories = categories;
+        this.filteredCategories = categories; // Inicialmente, todas las categorías están filtradas
       },
       error: (err) => {
         console.error('Error loading categories', err);
@@ -82,6 +92,36 @@ export class ConfigPerfilComponent implements OnInit {
     });
   }
 
+  addCategory(category: ICategory): void {
+    if (category && !this.addedCategories.includes(category)) {
+      this.addedCategories.push(category);
+      this.profileForm.patchValue({ disciplines: this.addedCategories.map(c => c.id) });
+      this.searchControl.setValue(''); // Limpiar el campo de búsqueda después de agregar
+      this.filteredCategories = this.categories; // Resetear la lista filtrada
+      this.isSearchFocused = false; // Ocultar la lista después de agregar
+    }
+  }
+
+  filterCategories(searchText: string): void {
+    if (!searchText) {
+      this.filteredCategories = this.categories;
+    } else {
+      this.filteredCategories = this.categories.filter(category =>
+        category.category_name.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+  }
+
+  onSearchFocus(): void {
+    this.isSearchFocused = true;
+  }
+
+  onSearchBlur(): void {
+    setTimeout(() => {
+      this.isSearchFocused = false;
+    }, 200); // Retraso para permitir el clic en la lista
+  }
+
   saveProfile(): void {
     if (this.profileForm.invalid) {
       return;
@@ -89,7 +129,6 @@ export class ConfigPerfilComponent implements OnInit {
 
     const profile: Profile = this.profileForm.value;
 
-    // Verificar si hay cambios en el formulario
     if (this.initialProfile && this.isProfileUnchanged(profile)) {
       this.errorMessage = 'No hay cambios para guardar.';
       return;

@@ -81,3 +81,50 @@ form {
   text-align: center;
   // font-size: 0.875rem;
 }
+
+.select-categoria {
+  input {
+    padding: 0.5rem;
+    width: 25rem;
+  }
+
+  .filtered-categories-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 10rem;
+    max-width: 25rem;
+    overflow-y: auto;
+    // position: absolute;
+    background-color: white;
+    // z-index: 1000;
+  }
+
+  .filtered-categories-list li {
+    padding: 0.3rem;
+    cursor: pointer;
+  }
+
+  .filtered-categories-list li:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.categorias-agregadas {
+  .added-categories-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .added-categories-list li {
+    padding: 0.2rem 0.5rem;
+    // margin: 4px;
+    background-color: #e0e0e0;
+    border-radius: 0.2rem;
+  }
+}

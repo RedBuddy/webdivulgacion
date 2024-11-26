@@ -33,6 +33,7 @@ export class ProfileService {
       return throwError('User ID not found in token');
     }
     profile.id_user = userId;
+    // console.log('ID USER:', profile.id_user);
     return this.http.put<any>(`${this.profileUrl}/${profile.id_user}`, profile).pipe(
       tap(response => {
         console.log('Profile updated successfully', response);
