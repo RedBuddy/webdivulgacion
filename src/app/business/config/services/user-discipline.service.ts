@@ -7,24 +7,43 @@ import { IUserDiscipline } from '../../../core/models/user_discipline.model'; //
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserDisciplineService {
   private userDisciplineUrl = 'http://localhost:3000/user_disciplines'; // Base URL del endpoint para las disciplinas del usuario
 
   constructor(private http: HttpClient) { }
 
-  getUserDisciplines(userId: number): Observable<IUserDiscipline[]> {
-    return this.http.get<IUserDiscipline[]>(`${this.userDisciplineUrl}/${userId}`).pipe(
-      tap(disciplines => {
-        console.log('User disciplines fetched successfully', disciplines);
+  getUserDisciplines(userId: number): Observable<{ id_user: number, id_categories: number[] }> {
+    return this.http.get<{ id_user: number, id_categories: number[] }>(`${this.userDisciplineUrl}/${userId}`).pipe(
+      tap(response => {
+        console.log('User disciplines fetched successfully', response);
       }),
       catchError(this.handleError)
     );
   }
 
   updateUserDisciplines(userId: number, disciplines: number[]): Observable<any> {
-    return this.http.put<any>(`${this.userDisciplineUrl}/${userId}`, { disciplines }).pipe(
+    return this.http.put<any>(`${this.userDisciplineUrl}/${userId}`, { id_user: userId, id_categories: disciplines }).pipe(
       tap(response => {
         console.log('User disciplines updated successfully', response);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  addUserDiscipline(userId: number, categoryId: number): Observable<any> {
+    return this.http.post<any>(this.userDisciplineUrl, { id_user: userId, id_category: categoryId }).pipe(
+      tap(response => {
+        console.log('User discipline added successfully', response);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  deleteUserDiscipline(userId: number, categoryId: number): Observable<any> {
+    return this.http.delete<any>(`${this.userDisciplineUrl}/${userId}`, { body: { id_category: categoryId } }).pipe(
+      tap(response => {
+        console.log('User discipline deleted successfully', response);
       }),
       catchError(this.handleError)
     );

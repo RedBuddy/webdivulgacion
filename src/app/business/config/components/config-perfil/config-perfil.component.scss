@@ -125,6 +125,22 @@ form {
     padding: 0.2rem 0.5rem;
     // margin: 4px;
     background-color: #e0e0e0;
-    border-radius: 0.2rem;
+    border-radius: 0.25rem;
+  }
+
+  .added-categories-list span {
+    display: inline-block;
+    padding: 0 0.5rem;
+    margin: 0;
+    background: none;
+    color: $btn;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .added-categories-list span:hover {
+    color: red;
+    background-color: $gris;
   }
 }

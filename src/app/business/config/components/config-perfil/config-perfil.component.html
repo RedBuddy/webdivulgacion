@@ -33,9 +33,11 @@
       </div>
 
       <div class="campo categorias-agregadas">
-        <!-- <h3>Categorías Agregadas:</h3> -->
         <ul class="added-categories-list">
-          <li *ngFor="let category of addedCategories">{{ category.category_name }}</li>
+          <li *ngFor="let category of addedCategories">
+            {{ category.category_name }}
+            <span (click)="removeCategory(category)">×</span>
+          </li>
         </ul>
       </div>
 

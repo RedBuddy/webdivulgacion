@@ -34,11 +34,12 @@ export class ConfigPerfilComponent implements OnInit {
     private profileService: ProfileService,
     private categoryService: CategoryService,
     private userDisciplineService: UserDisciplineService
+
   ) {
     this.profileForm = this.fb.group({
       biography: ['', Validators.required],
       experience: ['', Validators.required],
-      disciplines: [[], Validators.required]
+      disciplines: [[]]
     });
   }
 
@@ -71,6 +72,7 @@ export class ConfigPerfilComponent implements OnInit {
       next: (categories: ICategory[]) => {
         this.categories = categories;
         this.filteredCategories = categories; // Inicialmente, todas las categorías están filtradas
+        this.updateAddedCategories(); // Actualizar addedCategories después de cargar las categorías
       },
       error: (err) => {
         console.error('Error loading categories', err);
@@ -81,25 +83,41 @@ export class ConfigPerfilComponent implements OnInit {
 
   loadUserDisciplines(userId: number): void {
     this.userDisciplineService.getUserDisciplines(userId).subscribe({
-      next: (disciplines: IUserDiscipline[]) => {
-        this.userDisciplines = disciplines.map(d => d.id_category);
+      next: (response: { id_user: number, id_categories: number[] }) => {
+        this.userDisciplines = response.id_categories;
         this.profileForm.patchValue({ disciplines: this.userDisciplines });
+        this.updateAddedCategories(); // Actualizar addedCategories después de cargar las disciplinas del usuario
       },
       error: (err) => {
         console.error('Error loading user disciplines', err);
-        this.errorMessage = 'Error al cargar las disciplinas del usuario.';
+        if (err.status !== 404) {
+          this.errorMessage = 'Error al cargar las disciplinas del usuario.';
+        }
       }
     });
   }
 
+  updateAddedCategories(): void {
+    if (this.categories.length > 0 && this.userDisciplines.length > 0) {
+      this.addedCategories = this.categories.filter(category => category.id !== undefined && this.userDisciplines.includes(category.id));
+    } else {
+      this.addedCategories = [];
+    }
+  }
+
   addCategory(category: ICategory): void {
-    if (category && !this.addedCategories.includes(category)) {
+    if (category && category.id !== undefined && !this.addedCategories.some(c => c.id === category.id)) {
       this.addedCategories.push(category);
       this.profileForm.patchValue({ disciplines: this.addedCategories.map(c => c.id) });
       this.searchControl.setValue(''); // Limpiar el campo de búsqueda después de agregar
       this.filteredCategories = this.categories; // Resetear la lista filtrada
       this.isSearchFocused = false; // Ocultar la lista después de agregar
     }
+  }
+
+  removeCategory(category: ICategory): void {
+    this.addedCategories = this.addedCategories.filter(c => c.id !== category.id);
+    this.profileForm.patchValue({ disciplines: this.addedCategories.map(c => c.id) });
   }
 
   filterCategories(searchText: string): void {
@@ -139,12 +157,12 @@ export class ConfigPerfilComponent implements OnInit {
         console.log('Profile updated successfully', response);
         this.updateUserDisciplines(profile.id_user, this.profileForm.get('disciplines')?.value);
         this.successMessage = 'Perfil actualizado exitosamente';
-        this.errorMessage = null; // Limpiar mensaje de error
+        this.errorMessage = null;
       },
       error: (err) => {
         console.error('Error updating profile', err);
-        this.errorMessage = err; // Capturar el mensaje de error del backend
-        this.successMessage = null; // Limpiar mensaje de éxito
+        this.errorMessage = err;
+        this.successMessage = null;
       }
     });
   }
