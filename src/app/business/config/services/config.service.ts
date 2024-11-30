@@ -9,8 +9,7 @@ import { IUser } from '../../../core/models/user.model';
   providedIn: 'root'
 })
 export class ConfigService {
-  private updateAccountUrl = 'http://localhost:3000/users'; // Base URL del endpoint para actualizar la cuenta
-  private getUserUrl = 'http://localhost:3000/users'; // Base URL del endpoint para obtener los datos del usuario
+  private userUrl = 'http://localhost:3000/users';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -35,7 +34,7 @@ export class ConfigService {
       console.log(`${key}: ${value}`);
     }
 
-    return this.http.put<any>(`${this.updateAccountUrl}/${userId}`, formData).pipe(
+    return this.http.put<any>(`${this.userUrl}/${userId}`, formData).pipe(
       switchMap(() => this.authService.login(user.email, currentPassword)), // Re-login después de la actualización
       catchError(this.handleError)
     );
@@ -46,7 +45,7 @@ export class ConfigService {
     if (userId === null) {
       return throwError('User ID not found in token');
     }
-    return this.http.get<IUser>(`${this.getUserUrl}/${userId}`).pipe(
+    return this.http.get<IUser>(`${this.userUrl}/${userId}`).pipe(
       catchError(this.handleError)
     );
   }

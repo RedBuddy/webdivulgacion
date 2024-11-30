@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ArticleService } from '../../../../../core/services/article.service';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-publi-subir-articulo',
   standalone: true,
@@ -11,12 +10,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './publi-subir-articulo.component.html',
   styleUrls: ['./publi-subir-articulo.component.scss']
 })
-export class PubliSubirArticuloComponent {
+export class PubliSubirArticuloComponent implements OnInit {
 
   articleForm: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-
+  selectedPdf: File | null = null;
+  selectedPreviewImg: File | null = null;
 
   constructor(private fb: FormBuilder, private articleService: ArticleService) {
     this.articleForm = this.fb.group({
@@ -24,19 +24,21 @@ export class PubliSubirArticuloComponent {
       doi: ['', Validators.required],
       abstract: [''],
       publication_date: ['', Validators.required],
-      link: [''],
-      pdf: [null],
-      preview_img: [null]
+      link: ['']
     });
   }
 
+  ngOnInit(): void { }
 
-
-  onFileChange(event: Event, controlName: string): void {
+  onFileSelected(event: Event, fileType: string): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      this.articleForm.patchValue({ [controlName]: file });
+      if (fileType === 'pdf') {
+        this.selectedPdf = file;
+      } else if (fileType === 'preview_img') {
+        this.selectedPreviewImg = file;
+      }
     }
   }
 
@@ -47,14 +49,25 @@ export class PubliSubirArticuloComponent {
 
     const formData = new FormData();
     Object.keys(this.articleForm.controls).forEach(key => {
-      formData.append(key, this.articleForm.get(key)?.value);
+      const controlValue = this.articleForm.get(key)?.value;
+      formData.append(key, controlValue);
     });
+
+    if (this.selectedPdf) {
+      formData.append('pdf', this.selectedPdf, this.selectedPdf.name);
+    }
+
+    if (this.selectedPreviewImg) {
+      formData.append('preview_img', this.selectedPreviewImg, this.selectedPreviewImg.name);
+    }
 
     this.articleService.uploadArticle(formData).subscribe({
       next: () => {
         this.successMessage = 'Artículo subido exitosamente';
         this.errorMessage = null;
         this.articleForm.reset();
+        this.selectedPdf = null;
+        this.selectedPreviewImg = null;
       },
       error: (err) => {
         console.error('Error uploading article', err);
@@ -63,5 +76,4 @@ export class PubliSubirArticuloComponent {
       }
     });
   }
-
 }
