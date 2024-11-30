@@ -2,6 +2,7 @@ $color-logo: #02182b;
 $hover: #635252;
 $btn: #003b5c;
 $btn-hover: #004974;
+$link: #333;
 $link-activo: #5c5b6e;
 
 .container {
@@ -57,7 +58,7 @@ $link-activo: #5c5b6e;
 
     a {
       text-decoration: none;
-      color: #333;
+      color: $link;
       // padding: 10px 0;
       margin: 0.5rem 0;
       transition: color 0.3s;

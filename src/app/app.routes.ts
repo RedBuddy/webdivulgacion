@@ -36,6 +36,10 @@ export const routes: Routes = [
         path: 'config',
         loadChildren: () => import('./business/config/config.module').then(m => m.ConfigModule)
       },
+      {
+        path: 'mis-publicaciones',
+        loadChildren: () => import('./business/publicaciones/publi.module').then(m => m.PubliModule)
+      },
       // {
       //   path: 'config',
       //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),

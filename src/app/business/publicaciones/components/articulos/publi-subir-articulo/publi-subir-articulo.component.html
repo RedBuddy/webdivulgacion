@@ -1,1 +1,86 @@
-<p>publi-subir-articulo works!</p>
+<header>
+  <i class="bi bi-arrow-left"></i>
+  <nav>
+    <a>Subir Artículo</a>
+  </nav>
+</header>
+
+<div class="container">
+  <form [formGroup]="articleForm" (ngSubmit)="submitArticle()">
+    <div class="campo">
+      <label for="title">Título:</label>
+      <textarea id="title" formControlName="title" type="text"></textarea>
+      <div
+        *ngIf="articleForm.get('title')?.invalid && (articleForm.get('title')?.dirty || articleForm.get('title')?.touched)"
+        class="error-message">
+        <div *ngIf="articleForm.get('title')?.errors?.['required']">El título es requerido.</div>
+      </div>
+    </div>
+
+
+    <div class="campo">
+      <label for="abstract">Resumen:</label>
+      <textarea id="abstract" formControlName="abstract"></textarea>
+    </div>
+
+    <div class="grupo-campos">
+      <div class="campo">
+        <label for="doi">DOI:</label>
+        <input id="doi" formControlName="doi" type="text">
+        <div
+          *ngIf="articleForm.get('doi')?.invalid && (articleForm.get('doi')?.dirty || articleForm.get('doi')?.touched)"
+          class="error-message">
+          <div *ngIf="articleForm.get('doi')?.errors?.['required']">El DOI es requerido.</div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="link">Enlace:</label>
+        <input id="link" formControlName="link" type="text">
+      </div>
+
+      <div class="campo">
+        <label for="publication_date">Fecha de Publicación:</label>
+        <input id="publication_date" formControlName="publication_date" type="date">
+      </div>
+    </div>
+
+    <div class="documentos-header">
+      <label for="grupo-campos">Documentos:</label>
+    </div>
+
+    <div class="grupo-campos">
+      <div class="campo subir">
+        <i class="bi bi-upload"></i>
+        <div class="btn-subir">
+          <label for="pdf">Archivo PDF</label>
+          <input id="pdf" formControlName="pdf" type="file" (change)="onFileChange($event, 'pdf')">
+        </div>
+      </div>
+
+      <div class="campo subir">
+        <i class="bi bi-upload"></i>
+        <div class="btn-subir">
+          <label for="preview_img">Imagen de Vista Previa</label>
+          <input id="preview_img" formControlName="preview_img" type="file"
+            (change)="onFileChange($event, 'preview_img')">
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="campo">
+      <label for="pdf">PDF:</label>
+      <input id="pdf" formControlName="pdf" type="file" (change)="onFileChange($event, 'pdf')">
+    </div>
+
+    <div class="campo">
+      <label for="preview_img">Imagen de Vista Previa:</label>
+      <input id="preview_img" formControlName="preview_img" type="file" (change)="onFileChange($event, 'preview_img')">
+    </div> -->
+
+    <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+    <button type="submit" [disabled]="articleForm.invalid">Subir Artículo</button>
+  </form>
+</div>

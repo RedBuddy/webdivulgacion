@@ -1,1 +1,17 @@
-<p>publi-articulos works!</p>
+<div class="cards-container">
+  <div class="article-card" *ngFor="let article of articles">
+    <h2>{{ article.title }}</h2>
+    <p><strong>Autor:</strong> {{ article.id_author }}</p>
+    <p><strong>Fecha de Publicación:</strong> {{ article.publication_date | date }}</p>
+    <p><strong>DOI:</strong> {{ article.doi }}</p>
+    <div class="article-content">
+      <ng-container *ngIf="article.pdf; else preview">
+        <a [href]="article.link" target="_blank">Ver versión completa</a>
+      </ng-container>
+      <ng-template #preview>
+        <img *ngIf="article.preview_img" [src]="article.preview_img" alt="Preview">
+      </ng-template>
+    </div>
+    <button (click)="editArticle(article)">Editar</button>
+  </div>
+</div>

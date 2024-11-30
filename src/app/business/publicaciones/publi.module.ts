@@ -1,20 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfigSidebarComponent } from './components/articulos/publi-articulos';
-import { ConfigCuentaComponent } from './components/config-cuenta/config-cuenta.component';
-import { ConfigPerfilComponent } from './components/config-perfil/config-perfil.component';
-import { ConfigTemaComponent } from './components/config-tema/config-tema.component';
+import { PubliHeaderComponent } from './components/publi-header/publi-header.component';
+import { PubliArticulosComponent } from './components/articulos/publi-articulos/publi-articulos.component';
+import { PubliSubirArticuloComponent } from './components/articulos/publi-subir-articulo/publi-subir-articulo.component';
+import { PubliEditArticuloComponent } from './components/articulos/publi-edit-articulo/publi-edit-articulo.component';
+import { PubliProyectosComponent } from './components/proyectos/publi-proyectos/publi-proyectos.component';
+import { PubliSubirProyectoComponent } from './components/proyectos/publi-subir-proyecto/publi-subir-proyecto.component';
+import { PubliEditProyectoComponent } from './components/proyectos/publi-edit-proyecto/publi-edit-proyecto.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component: ConfigSidebarComponent,
+    component: PubliHeaderComponent,
     children: [
-      { path: '', redirectTo: 'cuenta', pathMatch: 'full' },
-      { path: 'cuenta', component: ConfigCuentaComponent },
-      { path: 'perfil', component: ConfigPerfilComponent },
-      { path: 'tema', component: ConfigTemaComponent }
+      { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
+      { path: 'mis-articulos', component: PubliSubirArticuloComponent },
+      { path: 'mis-proyectos', component: PubliProyectosComponent }
+      // { path: 'tema', component: ConfigTemaComponent }
     ]
   }
 ];
@@ -24,12 +28,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    ConfigSidebarComponent,
-    ConfigCuentaComponent,
-    ConfigPerfilComponent,
-    ConfigTemaComponent
+    PubliHeaderComponent,
+    PubliArticulosComponent,
+    PubliProyectosComponent
   ]
 })
 
-export class ConfigModule { }
+export class PubliModule { }
 
