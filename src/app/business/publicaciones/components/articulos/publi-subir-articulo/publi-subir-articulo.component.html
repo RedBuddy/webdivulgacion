@@ -44,6 +44,27 @@
       </div>
     </div>
 
+    <!-- Gestion de categorias -->
+    <div class="campo select-categoria">
+      <label for="categorySearch">Categorías:</label>
+      <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onSearchFocus()"
+        (blur)="onSearchBlur()">
+      <ul *ngIf="isSearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+        <li *ngFor="let category of filteredCategories" (click)="addCategory(category)">
+          {{ category.category_name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="campo categorias-agregadas">
+      <ul class="added-categories-list">
+        <li *ngFor="let category of addedCategories">
+          {{ category.category_name }}
+          <span (click)="removeCategory(category)">×</span>
+        </li>
+      </ul>
+    </div>
+
     <div class="documentos-header">
       <label for="grupo-campos">Documentos:</label>
     </div>

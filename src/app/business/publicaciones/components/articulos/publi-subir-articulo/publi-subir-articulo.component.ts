@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { ArticleService } from '../../../../../core/services/article.service';
 import { CommonModule } from '@angular/common';
+
+import { CategoryService } from '../../../../../core/services/category.service';
+import { ArticleCategoryService } from '../../../../../core/services/article-categorie.service';
+import { Article } from '../../../../../core/models/article.model';
+import { ICategory } from '../../../../../core/models/category.model';
+
 
 @Component({
   selector: 'app-publi-subir-articulo',
@@ -13,14 +19,25 @@ import { CommonModule } from '@angular/common';
 export class PubliSubirArticuloComponent implements OnInit {
 
   articleForm: FormGroup;
+  categories: ICategory[] = [];
+  filteredCategories: ICategory[] = [];
+  searchControl: FormControl = new FormControl(''); // FormControl para el texto de búsqueda
+  addedCategories: ICategory[] = [];
+  articleCategories: number[] = [];
   errorMessage: string | null = null;
   successMessage: string | null = null;
   selectedPdf: File | null = null;
   selectedPreviewImg: File | null = null;
   selectedPdfName: string | null = null;
   selectedPreviewImgName: string | null = null;
+  isSearchFocused: boolean = false; // Variable para rastrear el enfoque del cuadro de búsqueda
 
-  constructor(private fb: FormBuilder, private articleService: ArticleService) {
+  constructor(
+    private fb: FormBuilder,
+    private articleService: ArticleService,
+    private categoryService: CategoryService,
+    private articleCategoryService: ArticleCategoryService
+  ) {
     this.articleForm = this.fb.group({
       title: ['', Validators.required],
       doi: ['', Validators.required],
@@ -30,7 +47,27 @@ export class PubliSubirArticuloComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.loadCategories();
+
+    // Filtrar categorías cuando cambia el texto de búsqueda
+    this.searchControl.valueChanges.subscribe(value => {
+      this.filterCategories(value);
+    });
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories: ICategory[]) => {
+        this.categories = categories;
+        this.filteredCategories = categories; // Inicialmente, todas las categorías están filtradas
+      },
+      error: (err) => {
+        console.error('Error loading categories', err);
+        this.errorMessage = 'Error al cargar las categorías.';
+      }
+    });
+  }
 
   onFileSelected(event: Event, fileType: string): void {
     const input = event.target as HTMLInputElement;
@@ -55,6 +92,41 @@ export class PubliSubirArticuloComponent implements OnInit {
     }
   }
 
+  addCategory(category: ICategory): void {
+    if (category && category.id !== undefined && !this.addedCategories.some(c => c.id === category.id)) {
+      this.addedCategories.push(category);
+      this.articleCategories.push(category.id);
+      this.searchControl.setValue(''); // Limpiar el campo de búsqueda después de agregar
+      this.filteredCategories = this.categories; // Resetear la lista filtrada
+      this.isSearchFocused = false; // Ocultar la lista después de agregar
+    }
+  }
+
+  removeCategory(category: ICategory): void {
+    this.addedCategories = this.addedCategories.filter(c => c.id !== category.id);
+    this.articleCategories = this.articleCategories.filter(id => id !== category.id);
+  }
+
+  filterCategories(searchText: string): void {
+    if (!searchText) {
+      this.filteredCategories = this.categories;
+    } else {
+      this.filteredCategories = this.categories.filter(category =>
+        category.category_name.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+  }
+
+  onSearchFocus(): void {
+    this.isSearchFocused = true;
+  }
+
+  onSearchBlur(): void {
+    setTimeout(() => {
+      this.isSearchFocused = false;
+    }, 200); // Retraso para permitir el clic en la lista
+  }
+
   submitArticle(): void {
     if (this.articleForm.invalid) {
       return;
@@ -75,14 +147,26 @@ export class PubliSubirArticuloComponent implements OnInit {
     }
 
     this.articleService.uploadArticle(formData).subscribe({
-      next: () => {
-        this.successMessage = 'Artículo subido exitosamente';
-        this.errorMessage = null;
-        this.articleForm.reset();
-        this.selectedPdf = null;
-        this.selectedPreviewImg = null;
-        this.selectedPdfName = null;
-        this.selectedPreviewImgName = null;
+      next: (response) => {
+        const articleId = response.id;
+        this.articleCategoryService.updateArticleCategories(articleId, this.articleCategories).subscribe({
+          next: () => {
+            this.successMessage = 'Artículo subido exitosamente';
+            this.errorMessage = null;
+            this.articleForm.reset();
+            this.selectedPdf = null;
+            this.selectedPreviewImg = null;
+            this.selectedPdfName = null;
+            this.selectedPreviewImgName = null;
+            this.addedCategories = [];
+            this.articleCategories = [];
+          },
+          error: (err) => {
+            console.error('Error updating article categories', err);
+            this.errorMessage = 'Error al actualizar las categorías del artículo.';
+            this.successMessage = null;
+          }
+        });
       },
       error: (err) => {
         console.error('Error uploading article', err);

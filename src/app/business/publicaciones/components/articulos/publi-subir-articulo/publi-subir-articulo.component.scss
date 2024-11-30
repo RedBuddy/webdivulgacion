@@ -6,6 +6,7 @@ $link: #333;
 $link-activo: #5c5b6e;
 $border: #d1d1ccd1;
 $focus: #007bff;
+$gris: #808080;
 
 header {
   margin: 3rem 8rem 1rem 8rem;
@@ -195,5 +196,68 @@ header {
         background-color: #e2e6ea;
       }
     }
+  }
+}
+
+.select-categoria {
+  input {
+    padding: 0.5rem;
+    width: 25rem;
+  }
+
+  .filtered-categories-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 10rem;
+    max-width: 25rem;
+    overflow-y: auto;
+    // position: absolute;
+    background-color: white;
+    // z-index: 1000;
+  }
+
+  .filtered-categories-list li {
+    padding: 0.3rem;
+    cursor: pointer;
+  }
+
+  .filtered-categories-list li:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+.categorias-agregadas {
+  .added-categories-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .added-categories-list li {
+    padding: 0.2rem 0.5rem;
+    // margin: 4px;
+    background-color: #e0e0e0;
+    border-radius: 0.25rem;
+  }
+
+  .added-categories-list span {
+    display: inline-block;
+    padding: 0 0.5rem;
+    margin: 0;
+    background: none;
+    color: $btn;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .added-categories-list span:hover {
+    color: red;
+    background-color: $gris;
   }
 }
