@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './publi-subir-articulo.component.html',
   styleUrls: ['./publi-subir-articulo.component.scss']
 })
-export class PubliSubirArticuloComponent implements OnInit {
+export class PubliSubirArticuloComponent {
 
   articleForm: FormGroup;
   errorMessage: string | null = null;
@@ -30,7 +30,7 @@ export class PubliSubirArticuloComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+
 
   onFileChange(event: Event, controlName: string): void {
     const input = event.target as HTMLInputElement;
