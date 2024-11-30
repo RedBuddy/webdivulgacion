@@ -5,14 +5,21 @@
     <p><strong>Autor:</strong> {{ article.id_author }}</p>
     <p><strong>Fecha de Publicación:</strong> {{ article.publication_date | date }}</p>
     <p><strong>DOI:</strong> {{ article.doi }}</p>
-    <div class="article-content">
+    <div class="article-version">
       <ng-container *ngIf="article.pdf; else preview">
-        <a [href]="article.link" target="_blank">Texto disponible</a>
+        <!-- <a [href]="article.link" target="_blank"></a> -->
+        <p>Texto completo</p>
       </ng-container>
       <ng-template #preview>
-        <img *ngIf="article.preview_img" [src]="article.preview_img" alt="Preview">
+        <!-- <img *ngIf="article.preview_img" [src]="article.preview_img" alt="Preview"> -->
+        <p>Preview</p>
       </ng-template>
     </div>
-    <button (click)="editArticle(article)">Editar</button>
+
+    <div class="botones">
+      <button>Estadisticas</button>
+      <button (click)="editArticle(article)">Editar</button>
+    </div>
+
   </div>
 </div>
