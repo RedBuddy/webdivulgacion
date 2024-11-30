@@ -54,7 +54,12 @@ export class ConfigCuentaComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.profile_img = input.files[0];
+      if (!this.profile_img.type.startsWith('image/')) {
+        this.errorMessage = 'El archivo debe ser una imagen.';
+        return;
+      }
       this.profileImgLabel = this.profile_img.name; // Actualizar el texto del label
+      this.errorMessage = null;
     }
   }
 

@@ -17,6 +17,8 @@ export class PubliSubirArticuloComponent implements OnInit {
   successMessage: string | null = null;
   selectedPdf: File | null = null;
   selectedPreviewImg: File | null = null;
+  selectedPdfName: string | null = null;
+  selectedPreviewImgName: string | null = null;
 
   constructor(private fb: FormBuilder, private articleService: ArticleService) {
     this.articleForm = this.fb.group({
@@ -35,10 +37,21 @@ export class PubliSubirArticuloComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       if (fileType === 'pdf') {
+        if (file.type !== 'application/pdf') {
+          this.errorMessage = 'El archivo debe ser un PDF.';
+          return;
+        }
         this.selectedPdf = file;
+        this.selectedPdfName = file.name;
       } else if (fileType === 'preview_img') {
+        if (!file.type.startsWith('image/')) {
+          this.errorMessage = 'El archivo debe ser una imagen.';
+          return;
+        }
         this.selectedPreviewImg = file;
+        this.selectedPreviewImgName = file.name;
       }
+      this.errorMessage = null; // Clear any previous error messages
     }
   }
 
@@ -68,6 +81,8 @@ export class PubliSubirArticuloComponent implements OnInit {
         this.articleForm.reset();
         this.selectedPdf = null;
         this.selectedPreviewImg = null;
+        this.selectedPdfName = null;
+        this.selectedPreviewImgName = null;
       },
       error: (err) => {
         console.error('Error uploading article', err);
