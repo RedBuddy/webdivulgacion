@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { ArticleService } from '../../../../../core/services/article.service';
-import { CommonModule } from '@angular/common';
-
+import { ArticleCategoryService } from '../../../../../core/services/article-category.service';
+import { ArticleCoauthorService } from '../../../../../core/services/article-coauthor.service';
 import { CategoryService } from '../../../../../core/services/category.service';
-import { ArticleCategoryService } from '../../../../../core/services/article-categorie.service';
+import { CommonModule } from '@angular/common';
 import { Article } from '../../../../../core/models/article.model';
 import { ICategory } from '../../../../../core/models/category.model';
-
+import { ICoauthor } from '../../../../../core/models/coauthor.model';
 
 @Component({
   selector: 'app-publi-subir-articulo',
@@ -24,19 +24,26 @@ export class PubliSubirArticuloComponent implements OnInit {
   searchControl: FormControl = new FormControl(''); // FormControl para el texto de búsqueda
   addedCategories: ICategory[] = [];
   articleCategories: number[] = [];
+  coauthors: ICoauthor[] = [];
+  filteredCoauthors: ICoauthor[] = [];
+  coauthorSearchControl: FormControl = new FormControl(''); // FormControl para el texto de búsqueda de coautores
+  addedCoauthors: ICoauthor[] = [];
+  articleCoauthors: number[] = [];
   errorMessage: string | null = null;
   successMessage: string | null = null;
   selectedPdf: File | null = null;
   selectedPreviewImg: File | null = null;
   selectedPdfName: string | null = null;
   selectedPreviewImgName: string | null = null;
-  isSearchFocused: boolean = false; // Variable para rastrear el enfoque del cuadro de búsqueda
+  isCategorySearchFocused: boolean = false; // Variable para rastrear el enfoque del cuadro de búsqueda de categorías
+  isCoauthorSearchFocused: boolean = false; // Variable para rastrear el enfoque del cuadro de búsqueda de coautores
 
   constructor(
     private fb: FormBuilder,
     private articleService: ArticleService,
     private categoryService: CategoryService,
-    private articleCategoryService: ArticleCategoryService
+    private articleCategoryService: ArticleCategoryService,
+    private articleCoauthorService: ArticleCoauthorService
   ) {
     this.articleForm = this.fb.group({
       title: ['', Validators.required],
@@ -49,10 +56,16 @@ export class PubliSubirArticuloComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadCoauthors();
 
     // Filtrar categorías cuando cambia el texto de búsqueda
     this.searchControl.valueChanges.subscribe(value => {
       this.filterCategories(value);
+    });
+
+    // Filtrar coautores cuando cambia el texto de búsqueda
+    this.coauthorSearchControl.valueChanges.subscribe(value => {
+      this.filterCoauthors(value);
     });
   }
 
@@ -65,6 +78,19 @@ export class PubliSubirArticuloComponent implements OnInit {
       error: (err) => {
         console.error('Error loading categories', err);
         this.errorMessage = 'Error al cargar las categorías.';
+      }
+    });
+  }
+
+  loadCoauthors(): void {
+    this.articleCoauthorService.getCoauthors().subscribe({
+      next: (coauthors: ICoauthor[]) => {
+        this.coauthors = coauthors;
+        this.filteredCoauthors = coauthors; // Inicialmente, todos los coautores están filtrados
+      },
+      error: (err) => {
+        console.error('Error loading coauthors', err);
+        this.errorMessage = 'Error al cargar los coautores.';
       }
     });
   }
@@ -98,7 +124,7 @@ export class PubliSubirArticuloComponent implements OnInit {
       this.articleCategories.push(category.id);
       this.searchControl.setValue(''); // Limpiar el campo de búsqueda después de agregar
       this.filteredCategories = this.categories; // Resetear la lista filtrada
-      this.isSearchFocused = false; // Ocultar la lista después de agregar
+      this.isCategorySearchFocused = false; // Ocultar la lista después de agregar
     }
   }
 
@@ -117,13 +143,48 @@ export class PubliSubirArticuloComponent implements OnInit {
     }
   }
 
-  onSearchFocus(): void {
-    this.isSearchFocused = true;
+  addCoauthor(coauthor: ICoauthor): void {
+    if (coauthor && coauthor.id !== undefined && !this.addedCoauthors.some(c => c.id === coauthor.id)) {
+      this.addedCoauthors.push(coauthor);
+      this.articleCoauthors.push(coauthor.id);
+      this.coauthorSearchControl.setValue(''); // Limpiar el campo de búsqueda después de agregar
+      this.filteredCoauthors = this.coauthors; // Resetear la lista filtrada
+      this.isCoauthorSearchFocused = false; // Ocultar la lista después de agregar
+    }
   }
 
-  onSearchBlur(): void {
+  removeCoauthor(coauthor: ICoauthor): void {
+    this.addedCoauthors = this.addedCoauthors.filter(c => c.id !== coauthor.id);
+    this.articleCoauthors = this.articleCoauthors.filter(id => id !== coauthor.id);
+  }
+
+  filterCoauthors(searchText: string): void {
+    if (!searchText) {
+      this.filteredCoauthors = this.coauthors;
+    } else {
+      this.filteredCoauthors = this.coauthors.filter(coauthor =>
+        `${coauthor.first_name} ${coauthor.last_name}`.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+  }
+
+  onCategorySearchFocus(): void {
+    this.isCategorySearchFocused = true;
+  }
+
+  onCategorySearchBlur(): void {
     setTimeout(() => {
-      this.isSearchFocused = false;
+      this.isCategorySearchFocused = false;
+    }, 200); // Retraso para permitir el clic en la lista
+  }
+
+  onCoauthorSearchFocus(): void {
+    this.isCoauthorSearchFocused = true;
+  }
+
+  onCoauthorSearchBlur(): void {
+    setTimeout(() => {
+      this.isCoauthorSearchFocused = false;
     }, 200); // Retraso para permitir el clic en la lista
   }
 
@@ -151,15 +212,26 @@ export class PubliSubirArticuloComponent implements OnInit {
         const articleId = response.id;
         this.articleCategoryService.updateArticleCategories(articleId, this.articleCategories).subscribe({
           next: () => {
-            this.successMessage = 'Artículo subido exitosamente';
-            this.errorMessage = null;
-            this.articleForm.reset();
-            this.selectedPdf = null;
-            this.selectedPreviewImg = null;
-            this.selectedPdfName = null;
-            this.selectedPreviewImgName = null;
-            this.addedCategories = [];
-            this.articleCategories = [];
+            this.articleCoauthorService.updateArticleCoauthors(articleId, this.articleCoauthors).subscribe({
+              next: () => {
+                this.successMessage = 'Artículo subido exitosamente';
+                this.errorMessage = null;
+                this.articleForm.reset();
+                this.selectedPdf = null;
+                this.selectedPreviewImg = null;
+                this.selectedPdfName = null;
+                this.selectedPreviewImgName = null;
+                this.addedCategories = [];
+                this.articleCategories = [];
+                this.addedCoauthors = [];
+                this.articleCoauthors = [];
+              },
+              error: (err) => {
+                console.error('Error updating article coauthors', err);
+                this.errorMessage = 'Error al actualizar los coautores del artículo.';
+                this.successMessage = null;
+              }
+            });
           },
           error: (err) => {
             console.error('Error updating article categories', err);

@@ -47,9 +47,9 @@
     <!-- Gestion de categorias -->
     <div class="campo select-categoria">
       <label for="categorySearch">Categorías:</label>
-      <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onSearchFocus()"
-        (blur)="onSearchBlur()">
-      <ul *ngIf="isSearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+      <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onCategorySearchFocus()"
+        (blur)="onCategorySearchBlur()">
+      <ul *ngIf="isCategorySearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
         <li *ngFor="let category of filteredCategories" (click)="addCategory(category)">
           {{ category.category_name }}
         </li>
@@ -61,6 +61,28 @@
         <li *ngFor="let category of addedCategories">
           {{ category.category_name }}
           <span (click)="removeCategory(category)">×</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Gestion de coautores -->
+    <div class="campo select-coauthor">
+      <label for="coauthorSearch">Coautores:</label>
+      <input id="coauthorSearch" [formControl]="coauthorSearchControl" placeholder="Buscar..."
+        (focus)="onCoauthorSearchFocus()" (blur)="onCoauthorSearchBlur()">
+      <ul *ngIf="isCoauthorSearchFocused && filteredCoauthors.length > 0" class="filtered-coauthors-list">
+        <li *ngFor="let coauthor of filteredCoauthors" (click)="addCoauthor(coauthor)">
+          {{ coauthor.first_name }} {{ coauthor.last_name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="campo coauthors-agregados">
+      <ul class="added-coauthors-list">
+        <li *ngFor="let coauthor of addedCoauthors">
+          <img *ngIf="coauthor.profile_img" [src]="coauthor.profile_img" alt="Profile Image" class="coauthor-img">
+          {{ coauthor.first_name }} {{ coauthor.last_name }}
+          <span (click)="removeCoauthor(coauthor)">×</span>
         </li>
       </ul>
     </div>

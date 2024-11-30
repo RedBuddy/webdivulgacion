@@ -8,7 +8,7 @@ import { PubliEditArticuloComponent } from './components/articulos/publi-edit-ar
 import { PubliProyectosComponent } from './components/proyectos/publi-proyectos/publi-proyectos.component';
 import { PubliSubirProyectoComponent } from './components/proyectos/publi-subir-proyecto/publi-subir-proyecto.component';
 import { PubliEditProyectoComponent } from './components/proyectos/publi-edit-proyecto/publi-edit-proyecto.component';
-
+import { SafeUrlPipe } from './../../core/pipes/safe-url-pipe.pipe'; // Importa el pipe
 
 const routes: Routes = [
   {
@@ -30,7 +30,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     PubliHeaderComponent,
     PubliArticulosComponent,
-    PubliProyectosComponent
+    PubliProyectosComponent,
+    SafeUrlPipe
   ]
 })
 

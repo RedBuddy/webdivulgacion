@@ -7,7 +7,6 @@ import { CategoryService } from '../../../../core/services/category.service';
 import { UserDisciplineService } from '../../services/user-discipline.service';
 import { Profile } from '../../../../core/models/profile.model';
 import { ICategory } from '../../../../core/models/category.model';
-import { IUserDiscipline } from '../../../../core/models/user_discipline.model';
 
 
 @Component({
