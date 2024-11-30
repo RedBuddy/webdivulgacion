@@ -16,7 +16,7 @@ const routes: Routes = [
     component: PubliHeaderComponent,
     children: [
       { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
-      { path: 'mis-articulos', component: PubliSubirArticuloComponent },
+      { path: 'mis-articulos', component: PubliArticulosComponent },
       { path: 'mis-proyectos', component: PubliProyectosComponent }
       // { path: 'tema', component: ConfigTemaComponent }
     ]

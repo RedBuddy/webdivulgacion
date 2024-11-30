@@ -11,17 +11,24 @@ $border: #d1d1ccd1;
 }
 
 .article-card {
-  border: 1px solid #ccc;
+  margin-bottom: 2rem;
+  border: 1px solid $border;
   border-radius: 0.2rem;
-  padding: 1rem;
+  padding: 1.5rem;
 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
+  h1 {
+    font-size: 1.5rem;
+  }
+
   h2 {
-    margin: 0 0 8px;
+    font-size: 1rem;
+    font-weight: normal;
   }
 
   p {

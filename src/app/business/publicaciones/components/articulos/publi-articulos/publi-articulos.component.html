@@ -1,12 +1,13 @@
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of articles">
+    <h1>Articulo</h1>
     <h2>{{ article.title }}</h2>
     <p><strong>Autor:</strong> {{ article.id_author }}</p>
     <p><strong>Fecha de Publicación:</strong> {{ article.publication_date | date }}</p>
     <p><strong>DOI:</strong> {{ article.doi }}</p>
     <div class="article-content">
       <ng-container *ngIf="article.pdf; else preview">
-        <a [href]="article.link" target="_blank">Ver versión completa</a>
+        <a [href]="article.link" target="_blank">Texto disponible</a>
       </ng-container>
       <ng-template #preview>
         <img *ngIf="article.preview_img" [src]="article.preview_img" alt="Preview">

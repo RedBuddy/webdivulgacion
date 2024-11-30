@@ -20,7 +20,7 @@ export class ArticleService {
     if (userId === null) {
       return throwError('User ID not found in token');
     }
-    return this.http.get<Article[]>(`${this.apiUrl}/${userId}`).pipe(
+    return this.http.get<Article[]>(`${this.apiUrl}/user_id/${userId}`).pipe(
       tap(articles => console.log('User articles loaded:', articles)),
       catchError(this.handleError)
     );
