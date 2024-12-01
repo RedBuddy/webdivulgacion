@@ -15,6 +15,10 @@ import { CommonModule } from '@angular/common';
 export class PubliArticulosComponent implements OnInit {
   articles: Article[] = [];
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo
+  //Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  Math = Math;
 
   constructor(
     private articleService: ArticleService,
@@ -43,6 +47,17 @@ export class PubliArticulosComponent implements OnInit {
         console.error('Error loading coauthors for article', err);
       }
     });
+  }
+
+  // Método para obtener los artículos de la página actual
+  get paginatedArticles(): Article[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.articles.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 
   editArticle(article: Article): void {
