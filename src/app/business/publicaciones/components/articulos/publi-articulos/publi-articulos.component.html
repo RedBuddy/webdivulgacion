@@ -2,9 +2,9 @@
   <div class="article-card" *ngFor="let article of articles">
     <h1>Articulo</h1>
     <h2>{{ article.title }}</h2>
-    <p><strong>Autor:</strong> {{ article.id_author }}</p>
-    <p><strong>Fecha de Publicación:</strong> {{ article.publication_date | date }}</p>
-    <p><strong>DOI:</strong> {{ article.doi }}</p>
+    <!-- <p><strong>Autor:</strong> {{ article.id_author }}</p> -->
+    <p>{{ article.publication_date | date }}</p>
+    <!-- <p><strong>DOI:</strong> {{ article.doi }}</p> -->
     <div class="article-version">
       <ng-container *ngIf="article.pdf; else preview">
         <!-- <a [href]="article.link" target="_blank"></a> -->
@@ -16,9 +16,27 @@
       </ng-template>
     </div>
 
-    <div class="botones">
-      <button>Estadisticas</button>
-      <button (click)="editArticle(article)">Editar</button>
+    <div class="abajo">
+      <!-- Lista de coautores -->
+      <div class="coauthors-list">
+        <ul class="added-coauthors-list">
+          <li *ngFor="let coauthor of coauthors[article.id]">
+            <div class="user-image-container">
+              <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+                class="coauthor-img">
+              <ng-template #defaultImage>
+                <img src="assets/icons/usuario.png" alt="User">
+              </ng-template>
+            </div>
+            <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="botones">
+        <button>Estadisticas</button>
+        <button (click)="editArticle(article)">Editar</button>
+      </div>
     </div>
 
   </div>

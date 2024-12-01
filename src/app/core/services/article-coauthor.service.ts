@@ -18,7 +18,7 @@ export class ArticleCoauthorService {
       map((coauthors: ICoauthor[]) => coauthors.map((coauthor: ICoauthor) => {
         if (coauthor.profile_img && coauthor.profile_img.data) {
           const byteArray = new Uint8Array(coauthor.profile_img.data);
-          const blob = new Blob([byteArray], { type: 'image/png' }); // Cambia el tipo de imagen si es necesario
+          const blob = new Blob([byteArray], { type: 'image/png' });
           coauthor.profile_img_url = this.createImageUrlFromBlob(blob);
         }
         return coauthor;
@@ -34,10 +34,18 @@ export class ArticleCoauthorService {
     return URL.createObjectURL(blob); // Crear URL temporal para el Blob
   }
 
-  getArticleCoauthors(articleId: number): Observable<{ id_article: number, id_coauthors: number[] }> {
-    return this.http.get<{ id_article: number, id_coauthors: number[] }>(`${this.articleCoauthorUrl}/${articleId}`).pipe(
-      tap(response => {
-        console.log('Article coauthors fetched successfully', response);
+  getArticleCoauthors(articleId: number): Observable<ICoauthor[]> {
+    return this.http.get<ICoauthor[]>(`${this.articleCoauthorUrl}/${articleId}`).pipe(
+      map((coauthors: ICoauthor[]) => coauthors.map((coauthor: ICoauthor) => {
+        if (coauthor.profile_img && coauthor.profile_img.data) {
+          const byteArray = new Uint8Array(coauthor.profile_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          coauthor.profile_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return coauthor;
+      })),
+      tap(coauthors => {
+        console.log('Article coauthors fetched successfully', coauthors);
       }),
       catchError(this.handleError)
     );
