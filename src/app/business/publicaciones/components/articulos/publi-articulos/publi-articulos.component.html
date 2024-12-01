@@ -1,9 +1,9 @@
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of articles">
     <h1>Articulo</h1>
-    <h2>{{ article.title }}</h2>
+    <h2 class="titulo">{{ article.title }}</h2>
     <!-- <p><strong>Autor:</strong> {{ article.id_author }}</p> -->
-    <p>{{ article.publication_date | date }}</p>
+    <p class="fecha">{{ article.publication_date | date }}</p>
     <!-- <p><strong>DOI:</strong> {{ article.doi }}</p> -->
     <div class="article-version">
       <ng-container *ngIf="article.pdf; else preview">
