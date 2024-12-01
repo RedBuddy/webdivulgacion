@@ -80,8 +80,14 @@
     <div class="campo coauthors-agregados">
       <ul class="added-coauthors-list">
         <li *ngFor="let coauthor of addedCoauthors">
-          <img *ngIf="coauthor.profile_img" [src]="coauthor.profile_img" alt="Profile Image" class="coauthor-img">
-          {{ coauthor.first_name }} {{ coauthor.last_name }}
+          <div class="user-image-container">
+            <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+              class="coauthor-img">
+            <ng-template #defaultImage>
+              <img src="assets/icons/usuario.png" alt="User">
+            </ng-template>
+          </div>
+          <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
           <span (click)="removeCoauthor(coauthor)">×</span>
         </li>
       </ul>

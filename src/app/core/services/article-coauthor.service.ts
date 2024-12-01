@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { ICoauthor } from '../models/coauthor.model';
 
 @Injectable({
@@ -15,11 +15,23 @@ export class ArticleCoauthorService {
 
   getCoauthors(): Observable<ICoauthor[]> {
     return this.http.get<ICoauthor[]>(this.coauthorsUrl).pipe(
+      map((coauthors: ICoauthor[]) => coauthors.map((coauthor: ICoauthor) => {
+        if (coauthor.profile_img && coauthor.profile_img.data) {
+          const byteArray = new Uint8Array(coauthor.profile_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' }); // Cambia el tipo de imagen si es necesario
+          coauthor.profile_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return coauthor;
+      })),
       tap(coauthors => {
         console.log('Coauthors fetched successfully', coauthors);
       }),
       catchError(this.handleError)
     );
+  }
+
+  private createImageUrlFromBlob(blob: Blob): string {
+    return URL.createObjectURL(blob); // Crear URL temporal para el Blob
   }
 
   getArticleCoauthors(articleId: number): Observable<{ id_article: number, id_coauthors: number[] }> {

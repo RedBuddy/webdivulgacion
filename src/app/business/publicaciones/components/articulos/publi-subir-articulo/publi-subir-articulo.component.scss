@@ -303,10 +303,36 @@ header {
   }
 
   .added-coauthors-list li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0.2rem 0.5rem;
     // margin: 4px;
     background-color: #e0e0e0;
     border-radius: 0.25rem;
+
+    p {
+      margin: 0 0.2rem 0 0.5rem;
+    }
+
+    .user-image-container {
+      border: 0.1rem solid;
+      border-radius: 50%;
+      // padding: 0.1rem;
+      overflow: hidden; // Oculta el overflow de la imagen
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; // Asegura que la imagen se ajuste bien al contenedor
+        cursor: pointer;
+      }
+    }
   }
 
   .added-coauthors-list span {
