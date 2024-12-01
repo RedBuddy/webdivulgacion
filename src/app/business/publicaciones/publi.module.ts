@@ -17,8 +17,12 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
       { path: 'mis-articulos', component: PubliArticulosComponent },
-      { path: 'mis-proyectos', component: PubliProyectosComponent }
-      // { path: 'tema', component: ConfigTemaComponent }
+      { path: 'mis-proyectos', component: PubliProyectosComponent },
+      // 
+      { path: 'subir-articulos', component: PubliSubirArticuloComponent },
+      { path: 'subir-proyectos', component: PubliSubirProyectoComponent },
+      { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
+      { path: '**', redirectTo: 'mis-articulos' }
     ]
   }
 ];

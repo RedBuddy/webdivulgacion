@@ -5,9 +5,9 @@ import { ArticleCategoryService } from '../../../../../core/services/article-cat
 import { ArticleCoauthorService } from '../../../../../core/services/article-coauthor.service';
 import { CategoryService } from '../../../../../core/services/category.service';
 import { CommonModule } from '@angular/common';
-import { Article } from '../../../../../core/models/article.model';
 import { ICategory } from '../../../../../core/models/category.model';
 import { ICoauthor } from '../../../../../core/models/coauthor.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-publi-subir-articulo',
@@ -43,7 +43,8 @@ export class PubliSubirArticuloComponent implements OnInit {
     private articleService: ArticleService,
     private categoryService: CategoryService,
     private articleCategoryService: ArticleCategoryService,
-    private articleCoauthorService: ArticleCoauthorService
+    private articleCoauthorService: ArticleCoauthorService,
+    private router: Router
   ) {
     this.articleForm = this.fb.group({
       title: ['', Validators.required],
@@ -67,6 +68,11 @@ export class PubliSubirArticuloComponent implements OnInit {
     this.coauthorSearchControl.valueChanges.subscribe(value => {
       this.filterCoauthors(value);
     });
+  }
+
+  //Regresar al router mis publicaciones
+  regresarRouter(): void {
+    this.router.navigate(['mis-publicaciones/mis-articulos']);
   }
 
   loadCategories(): void {
