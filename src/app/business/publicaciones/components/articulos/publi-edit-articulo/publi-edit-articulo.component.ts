@@ -183,6 +183,11 @@ export class PubliEditArticuloComponent implements OnInit {
   }
 
   addCategory(category: ICategory): void {
+    if (this.addedCategories.length >= 5) {
+      this.errorMessage = 'No puedes agregar más de 5 categorías.';
+      return;
+    }
+
     if (category && category.id !== undefined && !this.addedCategories.some(c => c.id === category.id)) {
       this.addedCategories.push(category);
       this.articleCategories.push(category.id);

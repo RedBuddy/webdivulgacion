@@ -125,12 +125,18 @@ export class PubliSubirArticuloComponent implements OnInit {
   }
 
   addCategory(category: ICategory): void {
+    if (this.addedCategories.length >= 5) {
+      this.errorMessage = 'No puedes agregar más de 5 categorías.';
+      return;
+    }
+
     if (category && category.id !== undefined && !this.addedCategories.some(c => c.id === category.id)) {
       this.addedCategories.push(category);
       this.articleCategories.push(category.id);
       this.searchControl.setValue(''); // Limpiar el campo de búsqueda después de agregar
       this.filteredCategories = this.categories; // Resetear la lista filtrada
       this.isCategorySearchFocused = false; // Ocultar la lista después de agregar
+      this.errorMessage = null; // Clear any previous error messages
     }
   }
 

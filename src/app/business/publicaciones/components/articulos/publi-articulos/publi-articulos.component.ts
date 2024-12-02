@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ArticleService } from '../../../../../core/services/article.service';
 import { ArticleCoauthorService } from '../../../../../core/services/article-coauthor.service';
+import { ArticleCategoryService } from '../../../../../core/services/article-category.service';
+import { CategoryService } from '../../../../../core/services/category.service';
 import { Article } from '../../../../../core/models/article.model';
 import { ICoauthor } from '../../../../../core/models/coauthor.model';
+import { ICategory } from '../../../../../core/models/category.model';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +21,8 @@ export class PubliArticulosComponent implements OnInit {
   articles: Article[] = [];
   filteredArticles: Article[] = [];
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo
+  categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por artículo
+  categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   searchControl: FormControl = new FormControl('');
   //Paginación
   currentPage: number = 1;
@@ -27,11 +32,14 @@ export class PubliArticulosComponent implements OnInit {
   constructor(
     private articleService: ArticleService,
     private articleCoauthorService: ArticleCoauthorService,
+    private articleCategoryService: ArticleCategoryService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.loadAllCategories();
     this.loadUserArticles();
     this.route.queryParams.subscribe(params => {
       const search = params['search'] || '';
@@ -50,12 +58,27 @@ export class PubliArticulosComponent implements OnInit {
     });
   }
 
+  loadAllCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories: ICategory[]) => {
+        this.categoryMap = categories.reduce((map, category) => {
+          map[category.id] = category;
+          return map;
+        }, {} as { [key: number]: ICategory });
+      },
+      error: (err) => {
+        console.error('Error loading categories', err);
+      }
+    });
+  }
+
   loadUserArticles(): void {
     this.articleService.getUserArticles().subscribe((articles) => {
       this.articles = articles;
       this.filteredArticles = articles;
       this.articles.forEach(article => {
         this.loadCoauthorsForArticle(article.id);
+        this.loadCategoriesForArticle(article.id);
       });
     });
   }
@@ -67,6 +90,17 @@ export class PubliArticulosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading coauthors for article', err);
+      }
+    });
+  }
+
+  loadCategoriesForArticle(articleId: number): void {
+    this.articleCategoryService.getArticleCategories(articleId).subscribe({
+      next: (response: { id_article: number, id_categories: number[] }) => {
+        this.categories[articleId] = response.id_categories.map(id => this.categoryMap[id]);
+      },
+      error: (err) => {
+        console.error('Error loading categories for article', err);
       }
     });
   }

@@ -1,6 +1,16 @@
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of paginatedArticles">
-    <h1>Articulo</h1>
+    <div class="arriba">
+      <h1>Articulo</h1>
+      <!-- Lista de categorías -->
+      <div class="categories-list">
+        <ul class="added-categories-list">
+          <li *ngFor="let category of categories[article.id]">
+            {{ category.category_name }}
+          </li>
+        </ul>
+      </div>
+    </div>
     <h2 class="titulo">{{ article.title }}</h2>
     <p class="fecha">{{ article.publication_date | date }}</p>
     <div class="article-version">
