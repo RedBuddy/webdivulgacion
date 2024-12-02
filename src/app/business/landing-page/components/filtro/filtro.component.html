@@ -1,0 +1,17 @@
+<div>
+  <h1>Resultados de búsqueda para: "{{ searchText }}"</h1>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <ul>
+    <li *ngFor="let user of filteredUsers">
+      <div class="user-image-container">
+        <img *ngIf="user.profile_img_url; else defaultImage" [src]="user.profile_img_url" class="user-img">
+        <ng-template #defaultImage>
+          <img src="assets/icons/usuario.png" alt="User">
+        </ng-template>
+      </div>
+      <p>{{ user.first_name }} {{ user.last_name }}</p>
+      <p>Disciplinas: {{ user.user_disciplines.join(', ') }}</p>
+      <p>Número de publicaciones: {{ user.publications_count }}</p>
+    </li>
+  </ul>
+</div>

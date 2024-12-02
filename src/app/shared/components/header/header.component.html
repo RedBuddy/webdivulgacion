@@ -16,7 +16,8 @@
 
   <div class="derecha">
     <div class="search-container">
-      <input *ngIf="isSearchVisible" type="text" placeholder="Buscar articulo o investigador...">
+      <input *ngIf="isSearchVisible" (keyup.enter)="searchFilter()" type="text" [formControl]="searchControl"
+        placeholder="Buscar articulo o investigador...">
       <button class="btn-search" (click)="toggleSearch($event)">
         <i class="bi bi-search"></i>
       </button>

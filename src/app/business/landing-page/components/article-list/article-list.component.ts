@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.scss']
 })
-export default class ArticleListComponent implements OnInit {
+export class ArticleListComponent implements OnInit {
   articles: Article[] = [];
   filteredArticles: Article[] = [];
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo

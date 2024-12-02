@@ -9,7 +9,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./business/landing-page/components/article-list/article-list.component'),
+        loadChildren: () => import('./business/landing-page/landing.module').then(m => m.LandingModule)
         //canActivate: [authGuard]
       },
       {
@@ -39,6 +39,10 @@ export const routes: Routes = [
       {
         path: 'mis-publicaciones',
         loadChildren: () => import('./business/publicaciones/publi.module').then(m => m.PubliModule)
+      },
+      {
+        path: 'articulo:id',
+        loadChildren: () => import('./business/articulo/articulo.module').then(m => m.ArticuloModule)
       },
       // {
       //   path: 'config',

@@ -4,15 +4,17 @@ import { AuthService } from '../../../core/services/auth.service';
 import { LoginComponent } from '../../../business/authentication/login/login.component';
 import { RegisterComponent } from '../../../business/authentication/register/register.component';
 import { Subscription } from 'rxjs';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, CommonModule, LoginComponent, RegisterComponent],
+  imports: [RouterLink, RouterLinkActive, CommonModule, LoginComponent, RegisterComponent, ReactiveFormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
+
 export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild('loginModal') loginModal: LoginComponent | undefined;
   @ViewChild('registerModal') registerModal: RegisterComponent | undefined;
@@ -20,10 +22,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   userRole: string | null = null;
   userImage: string | null = null;
+  searchText: string = '';
+
+  searchControl: FormControl = new FormControl('');
 
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.subscriptions.add(
@@ -52,6 +57,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleSearch(event: Event) {
     event.stopPropagation();
     this.isSearchVisible = !this.isSearchVisible;
+    if (!this.isSearchVisible) {
+      this.searchText = '';
+    }
+  }
+
+  searchFilter(): void {
+    const searchValue = this.searchControl.value;
+    if (searchValue) {
+      this.router.navigate(['home/filtrar', searchValue]);
+    }
   }
 
   @HostListener('document:click', ['$event'])
