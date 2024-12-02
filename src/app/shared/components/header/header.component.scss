@@ -11,6 +11,12 @@ $link-activo: #5c5b6e;
   background-color: white;
   padding: 0.3rem 1rem;
 
+  //Sobreponer el modal sobre TODO
+  &.modal-open {
+    z-index: 1000;
+    position: relative;
+  }
+
   .izquierda {
     display: flex;
     align-items: center;

@@ -43,6 +43,6 @@ export class FitroService {
       }
     }
     console.error(errorMessage);
-    return throwError(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }
