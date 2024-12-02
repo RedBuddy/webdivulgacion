@@ -1,1 +1,124 @@
-<p>publi-edit-articulo works!</p>
+<header>
+  <i (click)="regresarRouter()" class="bi bi-arrow-left"></i>
+  <nav>
+    <a>Editar Artículo</a>
+  </nav>
+</header>
+
+<div class="container">
+  <form [formGroup]="articleForm" (ngSubmit)="submitArticle()">
+    <div class="campo">
+      <label for="title">Título:</label>
+      <textarea id="title" formControlName="title" type="text"></textarea>
+      <div
+        *ngIf="articleForm.get('title')?.invalid && (articleForm.get('title')?.dirty || articleForm.get('title')?.touched)"
+        class="error-message">
+        <div *ngIf="articleForm.get('title')?.errors?.['required']">El título es requerido.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="abstract">Resumen:</label>
+      <textarea id="abstract" formControlName="abstract"></textarea>
+    </div>
+
+    <div class="grupo-campos">
+      <div class="campo">
+        <label for="doi">DOI:</label>
+        <input id="doi" formControlName="doi" type="text">
+        <div
+          *ngIf="articleForm.get('doi')?.invalid && (articleForm.get('doi')?.dirty || articleForm.get('doi')?.touched)"
+          class="error-message">
+          <div *ngIf="articleForm.get('doi')?.errors?.['required']">El DOI es requerido.</div>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="link">Enlace:</label>
+        <input id="link" formControlName="link" type="text">
+      </div>
+
+      <div class="campo">
+        <label for="publication_date">Fecha de Publicación:</label>
+        <input id="publication_date" formControlName="publication_date" type="date">
+      </div>
+    </div>
+
+    <!-- Gestion de categorias -->
+    <div class="campo select-categoria">
+      <label for="categorySearch">Categorías:</label>
+      <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onCategorySearchFocus()"
+        (blur)="onCategorySearchBlur()">
+      <ul *ngIf="isCategorySearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+        <li *ngFor="let category of filteredCategories" (click)="addCategory(category)">
+          {{ category.category_name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="campo categorias-agregadas">
+      <ul class="added-categories-list">
+        <li *ngFor="let category of addedCategories">
+          {{ category.category_name }}
+          <span (click)="removeCategory(category)">×</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Gestion de coautores -->
+    <div class="campo select-coauthor">
+      <label for="coauthorSearch">Coautores:</label>
+      <input id="coauthorSearch" [formControl]="coauthorSearchControl" placeholder="Buscar..."
+        (focus)="onCoauthorSearchFocus()" (blur)="onCoauthorSearchBlur()">
+      <ul *ngIf="isCoauthorSearchFocused && filteredCoauthors.length > 0" class="filtered-coauthors-list">
+        <li *ngFor="let coauthor of filteredCoauthors" (click)="addCoauthor(coauthor)">
+          {{ coauthor.first_name }} {{ coauthor.last_name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="campo coauthors-agregados">
+      <ul class="added-coauthors-list">
+        <li *ngFor="let coauthor of addedCoauthors">
+          <div class="user-image-container">
+            <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+              class="coauthor-img">
+            <ng-template #defaultImage>
+              <img src="assets/icons/usuario.png" alt="User">
+            </ng-template>
+          </div>
+          <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
+          <span (click)="removeCoauthor(coauthor)">×</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="documentos-header">
+      <label for="grupo-campos">Documentos:</label>
+    </div>
+
+    <div class="grupo-campos">
+      <div class="campo subir">
+        <i class="bi bi-file-earmark-arrow-up"></i>
+        <div class="btn-subir">
+          <label for="pdf">{{ selectedPdfName ? selectedPdfName : 'Archivo PDF' }}</label>
+          <input id="pdf" type="file" accept="application/pdf" (change)="onFileSelected($event, 'pdf')">
+        </div>
+      </div>
+
+      <div class="campo subir">
+        <i class="bi bi-upload"></i>
+        <div class="btn-subir">
+          <label for="preview_img">{{ selectedPreviewImgName ? selectedPreviewImgName : 'Imagen de Vista Previa'
+            }}</label>
+          <input id="preview_img" type="file" accept="image/*" (change)="onFileSelected($event, 'preview_img')">
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+    <button type="submit" [disabled]="articleForm.invalid">Actualizar Artículo</button>
+  </form>
+</div>

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { Article } from '../models/article.model';
 import { catchError, tap } from 'rxjs/operators';
+import { Article } from '../models/article.model';
 import { AuthService } from '../services/auth.service';
-
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +33,20 @@ export class ArticleService {
     articleData.append('id_author', userId.toString());
     return this.http.post<Article>(this.apiUrl, articleData).pipe(
       tap(article => console.log('Article uploaded:', article)),
+      catchError(this.handleError)
+    );
+  }
+
+  updateArticle(articleId: number, articleData: FormData): Observable<Article> {
+    return this.http.put<Article>(`${this.apiUrl}/${articleId}`, articleData).pipe(
+      tap(article => console.log('Article updated:', article)),
+      catchError(this.handleError)
+    );
+  }
+
+  getArticleById(articleId: number): Observable<Article> {
+    return this.http.get<Article>(`${this.apiUrl}/${articleId}`).pipe(
+      tap(article => console.log('Article loaded:', article)),
       catchError(this.handleError)
     );
   }

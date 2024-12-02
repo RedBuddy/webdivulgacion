@@ -20,6 +20,7 @@ const routes: Routes = [
       { path: 'mis-proyectos', component: PubliProyectosComponent },
       // 
       { path: 'subir-articulos', component: PubliSubirArticuloComponent },
+      { path: 'editar-articulo/:id', component: PubliEditArticuloComponent },
       { path: 'subir-proyectos', component: PubliSubirProyectoComponent },
       { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
       { path: '**', redirectTo: 'mis-articulos' }

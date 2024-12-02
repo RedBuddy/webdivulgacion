@@ -54,6 +54,6 @@ export class PubliHeaderComponent implements OnInit, OnDestroy {
   }
 
   private checkCurrentRoute(url: string): void {
-    this.showHeader = !url.includes('subir-articulos') && !url.includes('subir-proyectos');
+    this.showHeader = !url.includes('subir-articulos') && !url.includes('subir-proyectos') && !url.includes('editar-articulo') && !url.includes('editar-proyecto');
   }
 }

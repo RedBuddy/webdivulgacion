@@ -92,6 +92,6 @@ export class PubliArticulosComponent implements OnInit {
   }
 
   editArticle(article: Article): void {
-    // Implementar la lógica de edición aquí
+    this.router.navigate(['mis-publicaciones/editar-articulo', article.id]);
   }
 }
