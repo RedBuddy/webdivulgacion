@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { User_filter } from '../../../core/models/user_filter.model'; // Asegúrate de que la ruta sea correcta
+import { catchError, map, tap } from 'rxjs/operators';
+import { User_filter } from '../../../core/models/user_filter.model';
+import { Article } from '../../../core/models/article.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { User_filter } from '../../../core/models/user_filter.model'; // Asegúr
 export class FitroService {
 
   private apiUrl = 'http://localhost:3000/user_filter'; // URL del endpoint
+  private articleUrl = 'http://localhost:3000/article_filter';
 
   constructor(private http: HttpClient) { }
 
@@ -23,6 +25,20 @@ export class FitroService {
           user.profile_img_url = this.createImageUrlFromBlob(blob);
         }
         return user;
+      })),
+      catchError(this.handleError)
+    );
+  }
+
+  filterArticles(searchString: string): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.articleUrl}/${searchString}`).pipe(
+      map(articles => articles.map(article => {
+        if (article.preview_img && article.preview_img.data) {
+          const byteArray = new Uint8Array(article.preview_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          article.preview_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return article;
       })),
       catchError(this.handleError)
     );

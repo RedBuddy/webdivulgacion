@@ -1,4 +1,4 @@
-<header class="navbar">
+<header class="navbar" [class.modal-open]="isModalOpen">
   <div class="izquierda">
     <div routerLink="Inicio" class="logo">
       <img src="logo.png" alt="Logo">
@@ -16,7 +16,7 @@
 
   <div class="derecha">
     <div class="search-container">
-      <input *ngIf="isSearchVisible" (keyup.enter)="searchFilter()" type="text" [formControl]="searchControl"
+      <input *ngIf="isSearchVisible" (keydown.enter)="searchFilter()" type="text" [formControl]="searchControl"
         placeholder="Buscar articulo o investigador...">
       <button class="btn-search" (click)="toggleSearch($event)">
         <i class="bi bi-search"></i>

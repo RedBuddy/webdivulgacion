@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userRole: string | null = null;
   userImage: string | null = null;
   searchText: string = '';
+  isModalOpen = false;
 
   searchControl: FormControl = new FormControl('');
 
@@ -80,24 +81,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openLoginModal() {
     if (this.loginModal) {
       this.loginModal.isVisible.set(true);
+      this.isModalOpen = true;
     }
   }
 
   closeLoginModal() {
     if (this.loginModal) {
       this.loginModal.isVisible.set(false);
+      this.isModalOpen = false;
     }
   }
 
   openRegisterModal() {
     if (this.registerModal) {
       this.registerModal.isVisible.set(true);
+      this.isModalOpen = true;
     }
   }
 
   closeRegisterModal() {
     if (this.registerModal) {
       this.registerModal.isVisible.set(false);
+      this.isModalOpen = false;
     }
   }
 
