@@ -69,21 +69,29 @@ $texto: #333;
   }
 
   .article-image-container {
+    position: relative;
     border: 0.1rem solid;
     border-radius: 0.2rem;
-    // padding: 0.1rem;
     overflow: hidden; // Oculta el overflow de la imagen
-    width: 18dvh;
-    height: 18dvh;
+    width: 8%;
+    padding-top: 8%; // Esto asegura que el contenedor sea cuadrado
     display: flex;
     align-items: center;
     justify-content: center;
 
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover; // Asegura que la imagen se ajuste bien al contenedor
-      cursor: pointer;
+    }
+
+    p {
+      position: absolute;
+      top: 40%;
+      left: 5%;
     }
   }
 }
@@ -280,21 +288,24 @@ $texto: #333;
   }
 
   .user-image-container {
+    position: relative;
     border: 0.1rem solid;
     border-radius: 50%;
     // padding: 0.1rem;
     overflow: hidden; // Oculta el overflow de la imagen
-    width: 13dvh;
-    height: 13dvh;
+    width: 8%;
+    padding-top: 8%; // Esto asegura que el contenedor sea cuadrado
     display: flex;
     align-items: center;
     justify-content: center;
 
     img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover; // Asegura que la imagen se ajuste bien al contenedor
-      // cursor: pointer;
+      object-fit: cover;
     }
   }
 }
