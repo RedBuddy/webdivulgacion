@@ -16,17 +16,20 @@ export class FitroService {
 
   filterUsers(searchString: string): Observable<User_filter[]> {
     return this.http.get<User_filter[]>(`${this.apiUrl}/${searchString}`).pipe(
-      map(users => users.map(user => ({
-        ...user,
-        profile_img_url: user.profile_img ? this.convertBufferToUrl(user.profile_img) : null
-      }))),
+      map(users => users.map(user => {
+        if (user.profile_img && user.profile_img.data) {
+          const byteArray = new Uint8Array(user.profile_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          user.profile_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return user;
+      })),
       catchError(this.handleError)
     );
   }
 
-  private convertBufferToUrl(buffer: { type: string; data: number[] }): string {
-    const base64String = btoa(String.fromCharCode(...new Uint8Array(buffer.data)));
-    return `data:image/png;base64,${base64String}`;
+  private createImageUrlFromBlob(blob: Blob): string {
+    return URL.createObjectURL(blob); // Crear URL temporal para el Blob
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
@@ -43,6 +46,6 @@ export class FitroService {
       }
     }
     console.error(errorMessage);
-    return throwError(errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }

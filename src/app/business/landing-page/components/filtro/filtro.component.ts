@@ -1,33 +1,40 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FitroService } from '../../services/fitro.service';
 import { User_filter } from '../../../../core/models/user_filter.model';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-filtro',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './filtro.component.html',
-  styleUrl: './filtro.component.scss'
+  styleUrls: ['./filtro.component.scss']
 })
-
 export class FiltroComponent implements OnInit {
   searchText: string | null = null;
   filteredUsers: User_filter[] = [];
   errorMessage: string | null = null;
+  searchControl: FormControl = new FormControl('');
 
-  constructor(private route: ActivatedRoute, private fitroService: FitroService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private fitroService: FitroService) { }
 
   ngOnInit(): void {
     this.searchText = this.route.snapshot.params['texto'];
-    console.log('Texto de búsqueda:', this.searchText);
     if (this.searchText) {
-      // this.searchControl.setValue(this.searchText, { emitEvent: false });
+      this.searchControl.setValue(this.searchText, { emitEvent: false });
       this.filterUsers(this.searchText);
     }
+
+    this.searchControl.valueChanges.subscribe(value => {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: value },
+        queryParamsHandling: 'merge'
+      });
+      this.filterUsers(value);
+    });
   }
 
   filterUsers(searchString: string): void {
