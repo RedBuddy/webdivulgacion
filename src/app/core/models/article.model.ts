@@ -7,6 +7,10 @@ export interface Article {
   publication_date: Date;
   link?: string;
   pdf?: Blob;
-  preview_img?: Blob;
+  preview_img?: {
+    type: string;
+    data: number[];
+  };
+  preview_img_url?: string | null;
   status?: 'published' | 'archived';
 }
