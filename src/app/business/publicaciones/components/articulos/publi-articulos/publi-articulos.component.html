@@ -38,15 +38,14 @@
         <button (click)="editArticle(article)">Editar</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- Paginación -->
 <div class="pagination">
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
-  <button *ngFor="let page of [].constructor(Math.ceil(articles.length / itemsPerPage)); let i = index"
+  <button *ngFor="let page of [].constructor(Math.ceil(filteredArticles.length / itemsPerPage)); let i = index"
     (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
   <button (click)="changePage(currentPage + 1)"
-    [disabled]="currentPage === Math.ceil(articles.length / itemsPerPage)">Siguiente</button>
+    [disabled]="currentPage === Math.ceil(filteredArticles.length / itemsPerPage)">Siguiente</button>
 </div>

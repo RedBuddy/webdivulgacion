@@ -4,17 +4,21 @@ import { ArticleCoauthorService } from '../../../../../core/services/article-coa
 import { Article } from '../../../../../core/models/article.model';
 import { ICoauthor } from '../../../../../core/models/coauthor.model';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-publi-articulos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './publi-articulos.component.html',
   styleUrls: ['./publi-articulos.component.scss']
 })
 export class PubliArticulosComponent implements OnInit {
   articles: Article[] = [];
+  filteredArticles: Article[] = [];
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo
+  searchControl: FormControl = new FormControl('');
   //Paginación
   currentPage: number = 1;
   itemsPerPage: number = 5;
@@ -22,16 +26,34 @@ export class PubliArticulosComponent implements OnInit {
 
   constructor(
     private articleService: ArticleService,
-    private articleCoauthorService: ArticleCoauthorService
+    private articleCoauthorService: ArticleCoauthorService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loadUserArticles();
+    this.route.queryParams.subscribe(params => {
+      const search = params['search'] || '';
+      this.searchControl.setValue(search, { emitEvent: false });
+      this.filterArticles(search);
+      this.currentPage = 1;
+    });
+
+    this.searchControl.valueChanges.subscribe(value => {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: value },
+        queryParamsHandling: 'merge'
+      });
+      this.filterArticles(value);
+    });
   }
 
   loadUserArticles(): void {
     this.articleService.getUserArticles().subscribe((articles) => {
       this.articles = articles;
+      this.filteredArticles = articles;
       this.articles.forEach(article => {
         this.loadCoauthorsForArticle(article.id);
       });
@@ -49,11 +71,20 @@ export class PubliArticulosComponent implements OnInit {
     });
   }
 
-  // Método para obtener los artículos de la página actual
+  filterArticles(searchText: string): void {
+    if (!searchText) {
+      this.filteredArticles = this.articles;
+    } else {
+      this.filteredArticles = this.articles.filter(article =>
+        article.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+  }
+
   get paginatedArticles(): Article[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.articles.slice(startIndex, endIndex);
+    return this.filteredArticles.slice(startIndex, endIndex);
   }
 
   changePage(page: number): void {

@@ -4,7 +4,7 @@
     <a routerLink="mis-proyectos" routerLinkActive="active-link">Mis proyectos</a>
   </nav>
   <div class="derecha">
-    <input type="text" placeholder="Buscar...">
+    <input (input)="searchArticles()" type="text" [formControl]="searchControl" placeholder="Buscar...">
     <button (click)="navigateToPublish()"><i class="bi bi-plus-circle"></i> Publicar</button>
   </div>
 </header>
