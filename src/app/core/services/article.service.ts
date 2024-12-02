@@ -14,6 +14,13 @@ export class ArticleService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
+  getAllArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(this.apiUrl).pipe(
+      tap(articles => console.log('All articles loaded:', articles)),
+      catchError(this.handleError)
+    );
+  }
+
   getUserArticles(): Observable<Article[]> {
     const userId = this.authService.getUserIdFromToken();
     if (userId === null) {

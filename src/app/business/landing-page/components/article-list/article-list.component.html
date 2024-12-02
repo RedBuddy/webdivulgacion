@@ -1,1 +1,47 @@
-<p>article-list works!</p>
+<div class="cards-container">
+  <div class="article-card" *ngFor="let article of paginatedArticles">
+    <h1>Articulo</h1>
+    <h2 class="titulo">{{ article.title }}</h2>
+    <p class="fecha">{{ article.publication_date | date }}</p>
+    <div class="article-version">
+      <ng-container *ngIf="article.pdf; else preview">
+        <p>Texto completo</p>
+      </ng-container>
+      <ng-template #preview>
+        <p>Preview</p>
+      </ng-template>
+    </div>
+
+    <div class="abajo">
+      <!-- Lista de coautores -->
+      <div class="coauthors-list">
+        <ul class="added-coauthors-list">
+          <li *ngFor="let coauthor of coauthors[article.id]">
+            <div class="user-image-container">
+              <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+                class="coauthor-img">
+              <ng-template #defaultImage>
+                <img src="assets/icons/usuario.png" alt="User">
+              </ng-template>
+            </div>
+            <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="botones">
+        <!-- <button>Estadisticas</button> -->
+        <button (click)="viewArticle(article)">ver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Paginación -->
+<div class="pagination">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+  <button *ngFor="let page of [].constructor(Math.ceil(filteredArticles.length / itemsPerPage)); let i = index"
+    (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+  <button (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === Math.ceil(filteredArticles.length / itemsPerPage)">Siguiente</button>
+</div>
