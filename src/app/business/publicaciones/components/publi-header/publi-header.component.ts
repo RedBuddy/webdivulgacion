@@ -23,10 +23,13 @@ export class PubliHeaderComponent implements OnInit, OnDestroy {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    // Verificar la ruta actual al inicializar el componente
+    this.checkCurrentRoute(this.router.url);
+
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      this.showHeader = !event.url.includes('subir-articulos') && !event.url.includes('subir-proyectos');
+      this.checkCurrentRoute(event.url);
     });
   }
 
@@ -50,4 +53,7 @@ export class PubliHeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['mis-publicaciones/mis-articulos'], { queryParams: { search: searchValue } });
   }
 
+  private checkCurrentRoute(url: string): void {
+    this.showHeader = !url.includes('subir-articulos') && !url.includes('subir-proyectos');
+  }
 }
