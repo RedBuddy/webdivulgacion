@@ -73,7 +73,7 @@ $texto: #333;
 
     .article-image-container {
       width: 50%;
-      height: 70%;
+      max-height: 50%;
       align-self: flex-end;
       position: relative;
       border: 0.1rem solid $border;
