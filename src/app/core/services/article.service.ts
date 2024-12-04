@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Article } from '../models/article.model';
+import { Author } from '../models/author.model';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -36,6 +37,21 @@ export class ArticleService {
     }
     return this.http.get<Article[]>(`${this.apiUrl}/user_id/${userId}`).pipe(
       tap(articles => console.log('User articles loaded:', articles)),
+      catchError(this.handleError)
+    );
+  }
+
+  getAuthorByArticleId(articleId: number): Observable<Author> {
+    return this.http.get<Author>(`${this.apiUrl}/author/${articleId}`).pipe(
+      map(author => {
+        if (author.profile_img && author.profile_img.data) {
+          const byteArray = new Uint8Array(author.profile_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          author.profile_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return author;
+      }),
+      tap(author => console.log('Author loaded:', author)),
       catchError(this.handleError)
     );
   }

@@ -3,35 +3,56 @@
 
     <div class="contenedor-izq">
 
-      <div class="card-header">
-        <h1>Articulo</h1>
-        <!-- Lista de categorías -->
-        <div class="categories-list">
-          <ul class="added-categories-list">
-            <li *ngFor="let category of categories[article.id]">
-              {{ category.category_name }}
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <h2 class="titulo">{{ article.title }}</h2>
-      <p class="fecha">{{ article.publication_date | date }}</p>
-
-      <!-- Lista de coautores -->
-      <div class="coauthors-list">
-        <ul class="added-coauthors-list">
-          <li *ngFor="let coauthor of coauthors[article.id]">
-            <div class="user-image-container">
-              <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
-                class="coauthor-img">
-              <ng-template #defaultImage>
+      <div class="izq-sup">
+        <div class="card-header">
+          <!-- Aquí se muestra el autor -->
+          <div class="author-info" *ngIf="authors[article.id]">
+            <div class="author-img-container">
+              <ng-container *ngIf="authors[article.id].profile_img_url; else noAuthorImage">
+                <img [src]="authors[article.id].profile_img_url" alt="Author Image">
+              </ng-container>
+              <ng-template #noAuthorImage>
                 <img src="assets/icons/usuario.png" alt="User">
               </ng-template>
             </div>
-            <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
-          </li>
-        </ul>
+            <div>
+              <p>Articulo por</p>
+              <p class="autor-name">{{ authors[article.id].first_name }} {{ authors[article.id].last_name }}</p>
+            </div>
+
+          </div>
+          <!-- Lista de categorías -->
+          <div class="categories-list">
+            <ul class="added-categories-list">
+              <li *ngFor="let category of categories[article.id]">
+                {{ category.category_name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="titulo">{{ article.title }}</h2>
+
+      </div>
+
+      <div class="izq-abajo">
+        <p class="fecha">{{ article.publication_date | date }}</p>
+
+        <!-- Lista de coautores -->
+        <div class="coauthors-list">
+          <ul class="added-coauthors-list">
+            <li *ngFor="let coauthor of coauthors[article.id]">
+              <div class="user-image-container">
+                <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+                  class="coauthor-img">
+                <ng-template #defaultImage>
+                  <img src="assets/icons/usuario.png" alt="User">
+                </ng-template>
+              </div>
+              <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
+            </li>
+          </ul>
+        </div>
       </div>
 
     </div>

@@ -6,6 +6,7 @@ import { CategoryService } from '../../../../core/services/category.service';
 import { Article } from '../../../../core/models/article.model';
 import { ICoauthor } from '../../../../core/models/coauthor.model';
 import { ICategory } from '../../../../core/models/category.model';
+import { Author } from '../../../../core/models/author.model';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -23,6 +24,7 @@ export class ArticleListComponent implements OnInit {
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo
   categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por artículo
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
+  authors: { [key: number]: Author } = {}; // Mapa de autores por artículo
   searchControl: FormControl = new FormControl('');
   //Paginación
   currentPage: number = 1;
@@ -60,13 +62,19 @@ export class ArticleListComponent implements OnInit {
   }
 
   loadAllArticles(): void {
-    this.articleService.getAllArticles().subscribe((articles) => {
-      this.articles = articles;
-      this.filteredArticles = articles;
-      this.articles.forEach(article => {
-        this.loadCoauthorsForArticle(article.id);
-        this.loadCategoriesForArticle(article.id);
-      });
+    this.articleService.getAllArticles().subscribe({
+      next: (articles: Article[]) => {
+        this.articles = articles;
+        this.filteredArticles = articles;
+        this.articles.forEach(article => {
+          this.loadCoauthorsForArticle(article.id);
+          this.loadCategoriesForArticle(article.id);
+          this.loadAuthorForArticle(article.id);
+        });
+      },
+      error: (err) => {
+        console.error('Error loading articles', err);
+      }
     });
   }
 
@@ -88,6 +96,17 @@ export class ArticleListComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading categories for article', err);
+      }
+    });
+  }
+
+  loadAuthorForArticle(articleId: number): void {
+    this.articleService.getAuthorByArticleId(articleId).subscribe({
+      next: (author: Author) => {
+        this.authors[articleId] = author;
+      },
+      error: (err) => {
+        console.error('Error loading author for article', err);
       }
     });
   }

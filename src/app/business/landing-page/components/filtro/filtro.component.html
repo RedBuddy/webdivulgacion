@@ -1,22 +1,120 @@
-<div class="cards-container user-cards">
-  <div class="user-card" *ngFor="let user of filteredUsers">
-    <div class="arriba">
-      <h1 class="titulo">{{ user.first_name }} {{ user.last_name }}</h1>
-      <div class="user-image-container">
-        <ng-container *ngIf="user.profile_img_url; else defaultImage">
-          <img [src]="user.profile_img_url" alt="Profile Image" class="user-img">
-        </ng-container>
-        <ng-template #defaultImage>
-          <img src="assets/icons/usuario.png" alt="User" class="user-img">
-        </ng-template>
+<header>
+  <nav>
+    <a (click)="showArticles()" [ngClass]="{'active-link': showingArticles}">Mostrar Artículos</a>
+    <a (click)="showUsers()" [ngClass]="{'active-link': showingUsers}">Mostrar Usuarios</a>
+  </nav>
+  <div class="derecha">
+    <input type="text" placeholder="Buscar articulo o investigador..." [(ngModel)]="searchText"
+      (keydown.enter)="search()">
+    <button (click)="search()"><i class="bi bi-search"></i></button>
+  </div>
+</header>
+
+
+<div *ngIf="showingArticles" class="cards-container">
+  <div class="article-card" *ngFor="let article of paginatedArticles">
+
+    <div class="contenedor-izq">
+
+      <div class="izq-sup">
+        <div class="card-header">
+          <!-- Aquí se muestra el autor -->
+          <div class="author-info" *ngIf="authors[article.id]">
+            <div class="author-img-container">
+              <ng-container *ngIf="authors[article.id].profile_img_url; else noAuthorImage">
+                <img [src]="authors[article.id].profile_img_url" alt="Author Image">
+              </ng-container>
+              <ng-template #noAuthorImage>
+                <img src="assets/icons/usuario.png" alt="User">
+              </ng-template>
+            </div>
+            <div>
+              <p>Articulo por</p>
+              <p class="autor-name">{{ authors[article.id].first_name }} {{ authors[article.id].last_name }}</p>
+            </div>
+          </div>
+
+          <!-- Lista de categorías -->
+          <div class="categories-list">
+            <ul class="added-categories-list">
+              <li *ngFor="let category of categories[article.id]">
+                {{ category.category_name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="titulo">{{ article.title }}</h2>
+
       </div>
+
+      <div class="izq-abajo">
+        <p class="fecha">{{ article.publication_date | date }}</p>
+        <!-- Lista de coautores -->
+        <div class="coauthors-list">
+          <ul class="added-coauthors-list">
+            <li *ngFor="let coauthor of coauthors[article.id]">
+              <div class="user-image-container">
+                <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+                  class="coauthor-img">
+                <ng-template #defaultImage>
+                  <img src="assets/icons/usuario.png" alt="User">
+                </ng-template>
+              </div>
+              <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
     </div>
 
-    <div class="abajo">
+    <div class="contenedor-der">
+
+      <div class="article-version">
+        <ng-container *ngIf="article.pdf; else preview">
+          <p>Texto completo</p>
+        </ng-container>
+        <ng-template #preview>
+          <p>Preview</p>
+        </ng-template>
+      </div>
+
+
+      <ng-container *ngIf="article.preview_img_url">
+        <div class="article-image-container">
+          <img [src]="article.preview_img_url" alt="Preview Image" class="article-img">
+        </div>
+      </ng-container>
+
+
+      <div class="botones">
+        <!-- <button>Estadisticas</button> -->
+        <button>ver</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="showingUsers" class="user-cards-container">
+  <div class="user-card" *ngFor="let user of paginatedUsers">
+    <h1>Usuario</h1>
+    <h2 class="titulo">{{ user.first_name }} {{ user.last_name }}</h2>
+    <div class="user-image-container">
+      <ng-container *ngIf="user.profile_img_url; else defaultImage">
+        <img [src]="user.profile_img_url" alt="Profile Image">
+      </ng-container>
+      <ng-template #defaultImage>
+        <img src="assets/icons/usuario.png" alt="User">
+      </ng-template>
+    </div>
+
+    <div class="user-info">
       <!-- Lista de disciplinas -->
-      <div class="categories-list">
-        <h2 class="titulo-disciplinas">Disciplinas</h2>
-        <ul class="added-categories-list">
+      <div class="disciplines-list">
+        <ul class="added-disciplines-list">
           <li *ngFor="let discipline of user.user_disciplines">
             {{ discipline }}
           </li>
@@ -29,37 +127,15 @@
     </div>
   </div>
 
-  <div class="article-card" *ngFor="let article of filteredArticles">
-    <div class="arriba">
-      <div class="">
-        <h1>Artículo</h1>
-        <h2 class="titulo">{{ article.title }}</h2>
-        <p class="fecha">{{ article.publication_date | date }}</p>
-      </div>
+</div>
 
-      <div class="article-image-container">
-        <ng-container *ngIf="article.preview_img_url; else noPreview">
-          <img [src]="article.preview_img_url" alt="Preview Image" class="article-img">
-        </ng-container>
-        <ng-template #noPreview>
-          <p>Sin vista previa</p>
-        </ng-template>
-      </div>
-    </div>
 
-    <div class="abajo">
-      <!-- Lista de categorías -->
-      <div class="categories-list">
-        <ul class="added-categories-list">
-          <li *ngFor="let category of categories[article.id]">
-            {{ category?.category_name }}
-          </li>
-        </ul>
-      </div>
-
-      <div class="botones">
-        <button>Ver Artículo</button>
-      </div>
-    </div>
-  </div>
+<!-- Paginación -->
+<div class="pagination">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+  <button
+    *ngFor="let page of [].constructor(Math.ceil((showingArticles ? filteredArticles.length : filteredUsers.length) / itemsPerPage)); let i = index"
+    (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+  <button (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === Math.ceil((showingArticles ? filteredArticles.length : filteredUsers.length) / itemsPerPage)">Siguiente</button>
 </div>
