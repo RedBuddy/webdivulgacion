@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { Article } from '../models/article.model';
 import { AuthService } from '../services/auth.service';
 
@@ -16,6 +16,14 @@ export class ArticleService {
 
   getAllArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(this.apiUrl).pipe(
+      map(articles => articles.map(article => {
+        if (article.preview_img && article.preview_img.data) {
+          const byteArray = new Uint8Array(article.preview_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          article.preview_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return article;
+      })),
       tap(articles => console.log('All articles loaded:', articles)),
       catchError(this.handleError)
     );
@@ -56,6 +64,10 @@ export class ArticleService {
       tap(article => console.log('Article loaded:', article)),
       catchError(this.handleError)
     );
+  }
+
+  private createImageUrlFromBlob(blob: Blob): string {
+    return URL.createObjectURL(blob); // Crear URL temporal para el Blob
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

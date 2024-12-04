@@ -1,28 +1,23 @@
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of paginatedArticles">
-    <div class="arriba">
-      <h1>Articulo</h1>
-      <!-- Lista de categorías -->
-      <div class="categories-list">
-        <ul class="added-categories-list">
-          <li *ngFor="let category of categories[article.id]">
-            {{ category.category_name }}
-          </li>
-        </ul>
-      </div>
-    </div>
-    <h2 class="titulo">{{ article.title }}</h2>
-    <p class="fecha">{{ article.publication_date | date }}</p>
-    <div class="article-version">
-      <ng-container *ngIf="article.pdf; else preview">
-        <p>Texto completo</p>
-      </ng-container>
-      <ng-template #preview>
-        <p>Preview</p>
-      </ng-template>
-    </div>
 
-    <div class="abajo">
+    <div class="contenedor-izq">
+
+      <div class="card-header">
+        <h1>Articulo</h1>
+        <!-- Lista de categorías -->
+        <div class="categories-list">
+          <ul class="added-categories-list">
+            <li *ngFor="let category of categories[article.id]">
+              {{ category.category_name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 class="titulo">{{ article.title }}</h2>
+      <p class="fecha">{{ article.publication_date | date }}</p>
+
       <!-- Lista de coautores -->
       <div class="coauthors-list">
         <ul class="added-coauthors-list">
@@ -38,6 +33,27 @@
           </li>
         </ul>
       </div>
+
+    </div>
+
+    <div class="contenedor-der">
+
+      <div class="article-version">
+        <ng-container *ngIf="article.pdf; else preview">
+          <p>Texto completo</p>
+        </ng-container>
+        <ng-template #preview>
+          <p>Preview</p>
+        </ng-template>
+      </div>
+
+
+      <ng-container *ngIf="article.preview_img_url">
+        <div class="article-image-container">
+          <img [src]="article.preview_img_url" alt="Preview Image" class="article-img">
+        </div>
+      </ng-container>
+
 
       <div class="botones">
         <!-- <button>Estadisticas</button> -->
