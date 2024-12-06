@@ -52,7 +52,7 @@
       </div>
 
       <div class="campo">
-        <label for="new_password">Nueva Contraseña</label>
+        <label for="new_password">Nueva Contraseña (Opcional)</label>
         <input type="password" id="new_password" formControlName="new_password">
         <div
           *ngIf="accountForm.get('new_password')?.invalid && (accountForm.get('new_password')?.dirty || accountForm.get('new_password')?.touched)"
@@ -76,7 +76,7 @@
       <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
       <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
 
-      <button type="submit" [disabled]="accountForm.invalid">Actualizar Cuenta</button>
+      <button type="submit" [disabled]="accountForm.invalid">Guardar cambios</button>
     </form>
   </div>
 </div>

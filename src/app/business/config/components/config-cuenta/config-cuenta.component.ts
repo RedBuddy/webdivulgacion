@@ -24,8 +24,8 @@ export class ConfigCuentaComponent implements OnInit {
       last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       current_password: ['', Validators.required],
-      new_password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm_password: ['', Validators.required],
+      new_password: ['', [Validators.minLength(8)]],
+      confirm_password: [''],
       profile_img: [null]
     }, { validators: this.passwordMatchValidator });
   }
@@ -44,7 +44,7 @@ export class ConfigCuentaComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error('Error loading user data', err);
+        // console.error('Error loading user data', err);
         this.errorMessage = 'Error al cargar los datos del usuario.';
       }
     });

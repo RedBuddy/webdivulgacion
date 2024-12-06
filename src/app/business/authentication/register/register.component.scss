@@ -57,6 +57,7 @@ $gris: #808080;
         }
 
         input[type="text"],
+        input[type="url"],
         input[type="email"],
         input[type="password"],
         input[type="file"] {
@@ -73,6 +74,11 @@ $gris: #808080;
             outline: none;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
           }
+        }
+
+        textarea {
+          width: 100%;
+          resize: none;
         }
 
         .password-container {
@@ -103,7 +109,8 @@ $gris: #808080;
         }
       }
 
-      button[type="submit"] {
+      .custom-submit-btn {
+        width: 100%;
         padding: 0.5rem;
         background-color: $btn;
         color: white;
@@ -184,4 +191,45 @@ $gris: #808080;
   font-size: 1rem;
   padding: 0.3rem;
   text-align: center;
+}
+
+.nav-pills {
+  display: none;
+}
+
+.custom-next-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: $btn;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: $btn-hover;
+  }
+
+  &:disabled {
+    background-color: $gris;
+    cursor: not-allowed;
+  }
+}
+
+.custom-prev-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+
+  i {
+    font-size: 1.5rem;
+    color: $btn;
+
+    &:hover {
+      color: $btn-hover;
+    }
+  }
 }

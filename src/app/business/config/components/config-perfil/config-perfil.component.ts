@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ProfileService } from '../../services/profile.service';
+import { ProfileService } from '../../../../core/services/profile.service';
 import { CategoryService } from '../../../../core/services/category.service';
-import { UserDisciplineService } from '../../services/user-discipline.service';
+import { UserDisciplineService } from '../../../../core/services/user-discipline.service';
 import { Profile } from '../../../../core/models/profile.model';
 import { ICategory } from '../../../../core/models/category.model';
 
@@ -16,6 +16,7 @@ import { ICategory } from '../../../../core/models/category.model';
   templateUrl: './config-perfil.component.html',
   styleUrls: ['./config-perfil.component.scss']
 })
+
 export class ConfigPerfilComponent implements OnInit {
   profileForm: FormGroup;
   categories: ICategory[] = [];
@@ -33,11 +34,16 @@ export class ConfigPerfilComponent implements OnInit {
     private profileService: ProfileService,
     private categoryService: CategoryService,
     private userDisciplineService: UserDisciplineService
-
   ) {
     this.profileForm = this.fb.group({
+      university: [''],
+      faculty: [''],
+      department: [''],
+      orcid: ['', Validators.pattern('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]')],
       biography: ['', Validators.required],
       experience: ['', Validators.required],
+      google_scholar_link: [''],
+      research_gate_link: [''],
       disciplines: [[]]
     });
   }
@@ -144,7 +150,10 @@ export class ConfigPerfilComponent implements OnInit {
       return;
     }
 
-    const profile: Profile = this.profileForm.value;
+    const profile: Profile = {
+      ...this.profileForm.value,
+      id_user: this.initialProfile?.id_user
+    };
 
     if (this.initialProfile && this.isProfileUnchanged(profile)) {
       this.errorMessage = 'No hay cambios para guardar.';
@@ -181,6 +190,12 @@ export class ConfigPerfilComponent implements OnInit {
   private isProfileUnchanged(profile: Profile): boolean {
     return this.initialProfile?.biography === profile.biography &&
       this.initialProfile?.experience === profile.experience &&
+      this.initialProfile?.university === profile.university &&
+      this.initialProfile?.faculty === profile.faculty &&
+      this.initialProfile?.department === profile.department &&
+      this.initialProfile?.orcid === profile.orcid &&
+      this.initialProfile?.google_scholar_link === profile.google_scholar_link &&
+      this.initialProfile?.research_gate_link === profile.research_gate_link &&
       JSON.stringify(this.userDisciplines) === JSON.stringify(this.profileForm.get('disciplines')?.value);
   }
 }

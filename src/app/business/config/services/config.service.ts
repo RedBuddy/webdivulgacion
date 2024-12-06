@@ -10,6 +10,7 @@ import { IUser } from '../../../core/models/user.model';
 })
 export class ConfigService {
   private userUrl = 'http://localhost:3000/users';
+  private userUpdateUrl = 'http://localhost:3000/user_update';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -30,11 +31,11 @@ export class ConfigService {
     }
 
     // Ver el contenido de FormData
-    for (const [key, value] of (formData as any).entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (const [key, value] of (formData as any).entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
 
-    return this.http.put<any>(`${this.userUrl}/${userId}`, formData).pipe(
+    return this.http.put<any>(`${this.userUpdateUrl}/${userId}`, formData).pipe(
       switchMap(() => this.authService.login(user.email, currentPassword)), // Re-login después de la actualización
       catchError(this.handleError)
     );
@@ -54,11 +55,11 @@ export class ConfigService {
     let errorMessage = 'Algo salió mal, intenta de nuevo.';
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `${error.error.message}`;
     } else {
       // Error del lado del servidor
       if (error.error && error.error.message) {
-        errorMessage = `Error: ${error.error.message}`;
+        errorMessage = `${error.error.message}`;
       }
     }
     console.error('An error occurred:', errorMessage);

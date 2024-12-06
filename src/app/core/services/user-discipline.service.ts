@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { IUserDiscipline } from '../../../core/models/user_discipline.model'; // Asegúrate de que la ruta sea correcta
+import { IUserDiscipline } from '../models/user_discipline.model'; // Asegúrate de que la ruta sea correcta
 
 @Injectable({
   providedIn: 'root'

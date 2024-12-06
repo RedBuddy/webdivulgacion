@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserDisciplineService } from './user-discipline.service';
+import { UserDisciplineService } from '../../business/config/services/user-discipline.service';
 
 describe('UserDisciplineService', () => {
   let service: UserDisciplineService;

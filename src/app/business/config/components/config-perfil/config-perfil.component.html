@@ -1,6 +1,21 @@
 <div class="container">
   <div class="form-wrapper">
     <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <div class="campo campos-anidados">
+        <div class="campo-input">
+          <label for="university">Universidad:</label>
+          <input type="text" id="university" formControlName="university">
+        </div>
+        <div class="campo-input">
+          <label for="faculty">Facultad:</label>
+          <input type="text" id="faculty" formControlName="faculty">
+        </div>
+        <div class="campo-input">
+          <label for="department">Departamento:</label>
+          <input type="text" id="department" formControlName="department">
+        </div>
+      </div>
+
       <div class="campo">
         <label for="biography">Biografía:</label>
         <textarea id="biography" formControlName="biography"></textarea>
@@ -19,6 +34,31 @@
           class="error-message">
           <div *ngIf="profileForm.get('experience')?.errors?.['required']">La experiencia es requerida.</div>
         </div>
+      </div>
+
+
+      <div class="campo campos-anidados">
+        <div class="campo-input">
+          <label for="orcid">Orcid:</label>
+          <input type="text" id="orcid" formControlName="orcid" placeholder="Formato: 0000-0000-0000-0000">
+          <div
+            *ngIf="profileForm.get('orcid')?.invalid && (profileForm.get('orcid')?.dirty || profileForm.get('orcid')?.touched)"
+            class="error-message">
+            <div *ngIf="profileForm.get('orcid')?.errors?.['pattern']">El formato orcid no es válido.</div>
+          </div>
+        </div>
+        <div class="campo-input">
+          <label for="google_scholar_link">Perfil de Google Scholar:</label>
+          <input type="url" id="google_scholar_link" formControlName="google_scholar_link">
+        </div>
+        <div class="campo-input">
+          <label for="research_gate_link">Perfil de ResearchGate:</label>
+          <input type="url" id="research_gate_link" formControlName="research_gate_link">
+        </div>
+      </div>
+
+      <div class="campo">
+
       </div>
 
       <div class="campo select-categoria">

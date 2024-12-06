@@ -144,3 +144,31 @@ form {
     background-color: $gris;
   }
 }
+
+.campos-anidados {
+  display: flex;
+  width: 100%;
+  gap: 1.5rem;
+
+  .campo-input {
+    width: calc(33.333%);
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.3rem;
+    // padding-right: 2.5rem; // Espacio para el icono
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    color: #333;
+
+    &:focus {
+      border-color: $btn-hover;
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+}
