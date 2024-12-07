@@ -1,1 +1,45 @@
-<p>publi-proyectos works!</p>
+<div class="container">
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div class="cards-container" *ngIf="projects && projects.length > 0">
+    <div *ngFor="let project of paginatedProjects" class="project-card">
+      <div class="arriba">
+        <h2 class="titulo">{{ project.title }}</h2>
+        <!-- Lista de categorías -->
+        <div class="categories-list">
+          <ul class="added-categories-list">
+            <li *ngFor="let category of categories[project.id]">
+              {{ category.category_name }}
+            </li>
+          </ul>
+        </div>
+
+        <p class="detalles">{{ project.details }}</p>
+
+
+      </div>
+      <p class="fecha"><strong>Vacantes:</strong> {{ project.vacancies }}</p>
+      <p class="fecha"><strong>Estado:</strong> {{ project.status }}</p>
+      <p class="fecha"><strong>Fecha de Creación:</strong> {{ project.created_at | date }}</p>
+      <div class="article-version">
+        <ng-container *ngIf="project.preview_img_url">
+          <img [src]="project.preview_img_url" alt="Imagen de Vista Previa" class="article-img">
+        </ng-container>
+      </div>
+      <div class="abajo">
+
+        <div class="botones">
+          <button (click)="editProject(project)">Editar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Paginación -->
+<div class="pagination" *ngIf="filteredProjects.length > itemsPerPage">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+  <button *ngFor="let page of [].constructor(Math.ceil(filteredProjects.length / itemsPerPage)); let i = index"
+    (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+  <button (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === Math.ceil(filteredProjects.length / itemsPerPage)">Siguiente</button>
+</div>

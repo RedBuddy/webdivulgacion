@@ -18,10 +18,13 @@ const routes: Routes = [
       { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
       { path: 'mis-articulos', component: PubliArticulosComponent },
       { path: 'mis-proyectos', component: PubliProyectosComponent },
-      // 
+      // subrutas de articulos
       { path: 'subir-articulos', component: PubliSubirArticuloComponent },
       { path: 'editar-articulo/:id', component: PubliEditArticuloComponent },
+      // subrutas de proyectos
       { path: 'subir-proyectos', component: PubliSubirProyectoComponent },
+      { path: 'editar-proyecto/:id', component: PubliEditProyectoComponent },
+
       { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
       { path: '**', redirectTo: 'mis-articulos' }
     ]
