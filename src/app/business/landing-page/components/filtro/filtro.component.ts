@@ -172,11 +172,8 @@ export class FiltroComponent implements OnInit {
 
   search(): void {
     if (this.searchText) {
-      if (this.showingArticles) {
-        this.filterArticles(this.searchText);
-      } else {
-        this.filterUsers(this.searchText);
-      }
+      this.filterArticles(this.searchText);
+      this.filterUsers(this.searchText);
     }
   }
 

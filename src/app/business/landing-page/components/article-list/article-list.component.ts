@@ -64,8 +64,8 @@ export class ArticleListComponent implements OnInit {
   loadAllArticles(): void {
     this.articleService.getAllArticles().subscribe({
       next: (articles: Article[]) => {
-        this.articles = articles;
-        this.filteredArticles = articles;
+        this.articles = articles.filter(article => article.status !== 'archived');
+        this.filteredArticles = this.articles;
         this.articles.forEach(article => {
           this.loadCoauthorsForArticle(article.id);
           this.loadCategoriesForArticle(article.id);
