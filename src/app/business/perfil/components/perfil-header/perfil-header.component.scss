@@ -1,0 +1,132 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+$link-hover: #0000ff;
+
+.profile-header {
+  margin: 3rem 5rem 1rem 5rem;
+  border: 1px solid $border;
+  border-radius: 0.2rem;
+  padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  .profile-campos {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    .profile-img-container {
+      border: 0.1rem solid $border;
+      border-radius: 50%;
+      overflow: hidden;
+      width: 6rem;
+      height: 6rem;
+      margin-bottom: 0.5rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .profile-data {
+      p {
+        margin: 0;
+      }
+
+      .data-name {
+        font-size: 1.1rem;
+        font-weight: normal;
+      }
+
+      .data-fac {
+        font-size: 1rem;
+        font-weight: lighter;
+      }
+
+      .data-uni {
+        font-size: 0.9rem;
+        font-weight: lighter;
+      }
+    }
+  }
+
+  .botones {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      background-color: $btn;
+      color: white;
+      border: none;
+      border-radius: 0.3rem;
+      padding: 0.2rem 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $btn-hover;
+      }
+    }
+  }
+}
+
+.nav-container {
+  margin: 0 5rem;
+  display: flex;
+  // justify-content: space-between;
+
+  nav {
+    display: flex;
+    justify-content: left;
+    gap: 5rem;
+
+    a {
+      display: flex;
+      justify-content: center;
+      text-decoration: none;
+      color: $link;
+      transition: color 0.3s;
+      width: 11rem;
+
+      &.active-link {
+        font-weight: bold;
+        color: $link-activo;
+        border-bottom: 0.1rem solid $link-activo;
+      }
+
+      &:hover {
+        color: $hover;
+      }
+    }
+  }
+}
+
+.profile-links {
+  position: absolute;
+  right: 1rem;
+
+  a {
+    color: $link;
+    text-decoration: none;
+    margin-left: 1rem;
+    transition: color 0.3s;
+
+    border-bottom: 0.1rem solid $border;
+
+    &:hover {
+      color: $link-hover;
+    }
+  }
+}

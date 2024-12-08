@@ -1,3 +1,5 @@
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of paginatedArticles">
 
@@ -5,22 +7,8 @@
 
       <div class="izq-sup">
         <div class="card-header">
-          <!-- Aquí se muestra el autor -->
-          <div class="author-info" *ngIf="authors[article.id]">
-            <div class="author-img-container">
-              <ng-container *ngIf="authors[article.id].profile_img_url; else noAuthorImage">
-                <img [src]="authors[article.id].profile_img_url" alt="Author Image">
-              </ng-container>
-              <ng-template #noAuthorImage>
-                <img src="assets/icons/usuario.png" alt="User">
-              </ng-template>
-            </div>
-            <div>
-              <p>Articulo por</p>
-              <p class="autor-name">{{ authors[article.id].first_name }} {{ authors[article.id].last_name }}</p>
-            </div>
 
-          </div>
+          <h1>Artículo</h1>
           <!-- Lista de categorías -->
           <div class="categories-list">
             <ul class="added-categories-list">
@@ -78,14 +66,14 @@
 
       <div class="botones">
         <!-- <button>Estadisticas</button> -->
-        <button (click)="viewArticle(article)">Ver artículo</button>
+        <button>Ver artículo</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Paginación -->
-<div class="pagination">
+<div class="pagination" *ngIf="filteredArticles.length > itemsPerPage">
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
   <button *ngFor="let page of [].constructor(Math.ceil(filteredArticles.length / itemsPerPage)); let i = index"
     (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>

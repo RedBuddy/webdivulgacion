@@ -106,6 +106,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToProfile() {
+    const userId = this.authService.getUserIdFromToken();
+    if (userId) {
+      this.router.navigate(['/perfil', userId]);
+    }
+  }
+
   logout() {
     this.authService.logout();
   }

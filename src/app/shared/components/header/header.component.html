@@ -34,7 +34,7 @@
         </ng-template>
       </div>
       <div class="user-dropdown-content">
-        <a href="#">Mi perfil</a>
+        <a (click)="goToProfile()">Mi perfil</a>
         <a routerLink="config">Configuración</a>
         <!-- <a href="#">Tema</a> -->
         <div *ngIf="userRole === 'admin'">

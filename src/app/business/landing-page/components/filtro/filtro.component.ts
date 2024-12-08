@@ -47,7 +47,7 @@ export class FiltroComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    // private router: Router,
+    private router: Router,
     private fitroService: FitroService,
     private articleCategoryService: ArticleCategoryService,
     private categoryService: CategoryService,
@@ -199,4 +199,7 @@ export class FiltroComponent implements OnInit {
     }
   }
 
+  viewProfile(userId: string): void {
+    this.router.navigate(['/perfil', userId]);
+  }
 }

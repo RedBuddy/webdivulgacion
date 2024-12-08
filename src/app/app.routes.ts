@@ -44,6 +44,10 @@ export const routes: Routes = [
         path: 'articulo:id',
         loadChildren: () => import('./business/articulo/articulo.module').then(m => m.ArticuloModule)
       },
+      {
+        path: 'perfil',
+        loadChildren: () => import('./business/perfil/perfil.module').then(m => m.PerfilModule)
+      },
       // {
       //   path: 'config',
       //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),

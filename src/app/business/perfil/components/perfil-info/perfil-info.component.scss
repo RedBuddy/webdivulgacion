@@ -1,0 +1,61 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+$link-hover: #0000ff;
+
+.about-card {
+  margin: 2rem 5rem;
+
+  border: 1px solid $border;
+  border-radius: 0.2rem;
+  padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  position: relative;
+
+  .about-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: $texto;
+  }
+
+  label {
+    // font-size: 0.8rem;
+    font-weight: bold;
+    color: $texto;
+  }
+
+  .about-bio {
+    p {
+      font-size: 1rem;
+      font-weight: lighter;
+      color: $texto;
+    }
+  }
+
+  p {
+    margin-bottom: 2rem;
+  }
+
+  .about-disciplines {
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0 0 0 1rem;
+
+      li {
+        margin: 0 2rem 0 0;
+        padding: 0;
+        font-size: 1rem;
+        font-weight: 100;
+      }
+    }
+  }
+}

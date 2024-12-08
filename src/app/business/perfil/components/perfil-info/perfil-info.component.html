@@ -1,0 +1,23 @@
+<div class="about-card" *ngIf="userAbout">
+  <h2 class="about-title">Acerca de {{ userAbout.first_name }}</h2>
+
+  <div class="about-bio" *ngIf="userAbout.biography">
+    <label>Biografía:</label>
+    <p>{{ userAbout.biography }}</p>
+  </div>
+
+  <div class="about-exp" *ngIf="userAbout.experience">
+    <label>Expeciencia:</label>
+    <p *ngIf="userAbout.experience">{{ userAbout.experience }}</p>
+  </div>
+
+
+  <div class="about-disciplines" *ngIf="userAbout.disciplines.length > 0">
+    <label>Áreas de especialización:</label>
+    <ul>
+      <li *ngFor="let discipline of userAbout.disciplines">{{ discipline }}</li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>

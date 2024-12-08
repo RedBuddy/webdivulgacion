@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResearchProjectsService } from '../../../../../core/services/research-projects.service';
-import { ProjectCategoryService } from '../../../../../core/services/project-category.service';
-import { CategoryService } from '../../../../../core/services/category.service';
-import { ResearchProject } from '../../../../../core/models/research-project.model';
-import { ICategory } from '../../../../../core/models/category.model';
+import { ResearchProjectsService } from '../../../../core/services/research-projects.service';
+import { ProjectCategoryService } from '../../../../core/services/project-category.service';
+import { CategoryService } from '../../../../core/services/category.service';
+import { ResearchProject } from '../../../../core/models/research-project.model';
+import { ICategory } from '../../../../core/models/category.model';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-publi-proyectos',
+  selector: 'app-perfil-proyectos',
   standalone: true,
   imports: [CommonModule, RouterModule, ReactiveFormsModule],
-  templateUrl: './publi-proyectos.component.html',
-  styleUrls: ['./publi-proyectos.component.scss']
+  templateUrl: './perfil-proyectos.component.html',
+  styleUrl: './perfil-proyectos.component.scss'
 })
-export class PubliProyectosComponent implements OnInit {
+export class PerfilProyectosComponent implements OnInit {
+  profileId: string | null = null;
   projects: ResearchProject[] = [];
   filteredProjects: ResearchProject[] = [];
   categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por proyecto
@@ -33,27 +33,14 @@ export class PubliProyectosComponent implements OnInit {
     private projectCategoryService: ProjectCategoryService,
     private categoryService: CategoryService,
     private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.loadAllCategories();
-    this.loadUserProjects();
-    this.route.queryParams.subscribe(params => {
-      const search = params['search'] || '';
-      this.searchControl.setValue(search, { emitEvent: false });
-      this.filterProjects(search);
-      this.currentPage = 1;
-    });
-
-    this.searchControl.valueChanges.subscribe(value => {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { search: value },
-        queryParamsHandling: 'merge'
-      });
-      this.filterProjects(value);
+    this.route.parent?.paramMap.subscribe(params => {
+      this.profileId = params.get('id');
+      this.loadAllCategories();
+      this.loadUserProjects();
     });
   }
 
@@ -72,8 +59,8 @@ export class PubliProyectosComponent implements OnInit {
   }
 
   loadUserProjects(): void {
-    const userId = this.authService.getUserIdFromToken();
-    if (userId === null) {
+    const userId = parseInt(this.profileId!, 10);
+    if (this.profileId === null) {
       this.errorMessage = 'No se pudo obtener el ID del usuario.';
       return;
     }

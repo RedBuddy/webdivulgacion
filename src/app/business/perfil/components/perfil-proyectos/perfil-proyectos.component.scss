@@ -8,10 +8,10 @@ $border: #d1d1ccd1;
 $texto: #333;
 
 .cards-container {
-  margin: 3rem 8rem;
+  margin: 2rem 5rem;
 }
 
-.article-card {
+.project-card {
   display: flex;
 
   margin-bottom: 2rem;
@@ -99,7 +99,9 @@ $texto: #333;
     justify-content: space-between;
 
     .article-version {
-      text-align: end;
+      display: flex;
+      justify-content: end;
+      gap: 1rem;
 
       p {
         font-size: 1.1rem;
@@ -109,6 +111,7 @@ $texto: #333;
     }
 
     .article-image-container {
+      margin-top: 0.5rem;
       width: 50%;
       max-height: min-content;
       align-self: flex-end;
@@ -135,6 +138,13 @@ $texto: #333;
   }
 
   .titulo {
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin: 0;
+    // min-height: 4rem;
+  }
+
+  .detalles {
     font-size: 1rem;
     font-weight: normal;
     min-height: 4rem;
@@ -157,7 +167,7 @@ $texto: #333;
       background-color: $btn;
       color: white;
       border: none;
-      border-radius: 0.3rem;
+      border-radius: 0.4rem;
       cursor: pointer;
       font-size: 0.9rem;
 
@@ -241,4 +251,9 @@ $texto: #333;
       background-color: white;
     }
   }
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 5rem;
 }

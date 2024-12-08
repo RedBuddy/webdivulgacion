@@ -29,12 +29,16 @@ export class ResearchProjectsService {
     );
   }
 
-  getUserProjects(): Observable<ResearchProject[]> {
-    const userId = this.authService.getUserIdFromToken();
-    if (userId === null) {
-      return throwError('User ID not found in token');
-    }
+  getUserProjects(userId: number): Observable<ResearchProject[]> {
     return this.http.get<ResearchProject[]>(`${this.apiUrl}/user_id/${userId}`).pipe(
+      map(projects => projects.map(project => {
+        if (project.preview_img && project.preview_img.data) {
+          const byteArray = new Uint8Array(project.preview_img.data);
+          const blob = new Blob([byteArray], { type: 'image/png' });
+          project.preview_img_url = this.createImageUrlFromBlob(blob);
+        }
+        return project;
+      })),
       tap(projects => console.log('User projects loaded')),
       catchError(this.handleError)
     );

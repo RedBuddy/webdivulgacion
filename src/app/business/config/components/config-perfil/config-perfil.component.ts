@@ -7,6 +7,7 @@ import { CategoryService } from '../../../../core/services/category.service';
 import { UserDisciplineService } from '../../../../core/services/user-discipline.service';
 import { Profile } from '../../../../core/models/profile.model';
 import { ICategory } from '../../../../core/models/category.model';
+import { AuthService } from '../../../../core/services/auth.service';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class ConfigPerfilComponent implements OnInit {
     private fb: FormBuilder,
     private profileService: ProfileService,
     private categoryService: CategoryService,
-    private userDisciplineService: UserDisciplineService
+    private userDisciplineService: UserDisciplineService,
+    private authService: AuthService
   ) {
     this.profileForm = this.fb.group({
       university: [''],
@@ -59,7 +61,12 @@ export class ConfigPerfilComponent implements OnInit {
   }
 
   loadUserProfile(): void {
-    this.profileService.getProfile().subscribe({
+    const userId = this.authService.getUserIdFromToken();
+    if (userId === null) {
+      this.errorMessage = 'Usuario no autenticado';
+      return;
+    }
+    this.profileService.getProfile(userId).subscribe({
       next: (profile: Profile) => {
         this.initialProfile = profile;
         this.profileForm.patchValue(profile);

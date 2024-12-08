@@ -30,13 +30,16 @@ export class ArticleService {
     );
   }
 
-  getUserArticles(): Observable<Article[]> {
-    const userId = this.authService.getUserIdFromToken();
-    if (userId === null) {
-      return throwError('User ID not found in token');
-    }
+  getUserArticles(userId: number): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.apiUrl}/user_id/${userId}`).pipe(
-      tap(articles => console.log('User articles loaded')),
+      map(articles => articles.map(article => {
+        if (article.preview_img) {
+          const byteArray = new Uint8Array(article.preview_img.data);
+          const blob = new Blob([byteArray], { type: article.preview_img.type });
+          article.preview_img_url = URL.createObjectURL(blob);
+        }
+        return article;
+      })),
       catchError(this.handleError)
     );
   }

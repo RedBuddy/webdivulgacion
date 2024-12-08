@@ -8,7 +8,7 @@ $border: #d1d1ccd1;
 $texto: #333;
 
 .cards-container {
-  margin: 3rem 8rem;
+  margin: 2rem 5rem;
 }
 
 .article-card {
@@ -33,6 +33,11 @@ $texto: #333;
       align-items: center;
       gap: 1rem;
       margin-bottom: 0.5rem;
+
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
 
       .author-info {
         display: flex;
@@ -241,4 +246,9 @@ $texto: #333;
       background-color: white;
     }
   }
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 5rem;
 }

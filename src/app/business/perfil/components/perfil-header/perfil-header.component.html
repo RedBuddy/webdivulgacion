@@ -1,0 +1,36 @@
+<div class="profile-header" *ngIf="userCard">
+  <div class="profile-campos">
+    <div class="profile-img-container">
+      <img [src]="userCard.profile_img_url || 'assets/icons/usuario.png'" alt="Avatar">
+    </div>
+    <div class="profile-data">
+      <p class="data-name">{{ userCard.first_name }} {{ userCard.last_name }}</p>
+      <p class="data-fac" *ngIf="userCard.faculty">{{ userCard.faculty }}</p>
+      <p class="data-uni" *ngIf="userCard.university"> {{ userCard.university }}</p>
+    </div>
+  </div>
+
+
+
+  <div class="profile-links">
+    <a *ngIf="userCard.google_scholar_link" [href]="userCard.google_scholar_link" target="_blank">Google Scholar</a>
+    <a *ngIf="userCard.research_gate_link" [href]="userCard.research_gate_link" target="_blank">ResearchGate</a>
+  </div>
+
+  <div class="botones">
+    <div class="profile-orcid">
+      <p *ngIf="userCard.orcid"><strong>Orcid:</strong> {{userCard.orcid}}</p>
+    </div>
+    <button>Contactar</button>
+  </div>
+</div>
+
+<div class="nav-container">
+  <nav>
+    <a routerLink="info" routerLinkActive="active-link">Acerca de</a>
+    <a routerLink="articulos" routerLinkActive="active-link">Artículos</a>
+    <a routerLink="proyectos" routerLinkActive="active-link">Proyectos disponibles</a>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>
