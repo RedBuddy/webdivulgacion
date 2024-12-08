@@ -331,18 +331,21 @@ header {
   width: calc(25% - 1rem);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  // align-items: center;
+  // min-height: 18rem;
 
-  h1 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #007bff;
+  .user-name {
+    font-size: 1.1rem;
+    font-weight: normal;
+    // margin: 0.5rem 0;
+    text-align: center;
   }
 
-  .titulo {
-    font-size: 1rem;
-    font-weight: normal;
-    margin: 0.5rem 0;
+  .user-img {
+    display: flex;
+    justify-content: center;
+    // margin-bottom: 0.5rem;
   }
 
   .user-image-container {
@@ -351,10 +354,7 @@ header {
     overflow: hidden;
     width: 5rem;
     height: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 
     img {
       width: 100%;
@@ -364,13 +364,16 @@ header {
   }
 
   .user-info {
-    text-align: center;
+    // text-align: center;
 
     .disciplines-list {
+      display: flex;
+      flex-wrap: wrap;
+
       ul {
-        list-style-type: none;
+        // list-style-type: none;
         padding: 0;
-        margin: 0;
+        margin: 0 0 0 1rem;
 
         li {
           margin: 0.2rem 0;
@@ -380,20 +383,46 @@ header {
       }
     }
 
-    .botones {
-      margin-top: 1rem;
+    .user-data {
+      margin-bottom: 1rem;
 
-      button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 0.2rem;
-        padding: 0.5rem 1rem;
-        cursor: pointer;
+      p {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
 
-        &:hover {
-          background-color: darken(#007bff, 10%);
-        }
+      .data-uni {
+        font-size: 1.1rem;
+        font-weight: normal;
+      }
+
+      .data-fac {
+        font-size: 1rem;
+        font-weight: lighter;
+      }
+
+      .data-dep {
+        font-size: 0.85rem;
+        font-weight: lighter;
+      }
+    }
+  }
+
+  .botones {
+    text-align: center;
+    // align-self: flex-end;
+
+    button {
+      background-color: $btn;
+      color: white;
+      border: none;
+      border-radius: 0.2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $btn-hover;
       }
     }
   }

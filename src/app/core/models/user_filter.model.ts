@@ -6,6 +6,9 @@ export interface User_filter {
     data: number[];
   };
   profile_img_url?: string | null;
+  university?: string;
+  faculty?: string;
+  department?: string;
   user_disciplines: string[];
   publications_count: number;
 }

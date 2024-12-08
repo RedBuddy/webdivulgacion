@@ -100,31 +100,43 @@
 
 <div *ngIf="showingUsers" class="user-cards-container">
   <div class="user-card" *ngFor="let user of paginatedUsers">
-    <h1>Usuario</h1>
-    <h2 class="titulo">{{ user.first_name }} {{ user.last_name }}</h2>
-    <div class="user-image-container">
-      <ng-container *ngIf="user.profile_img_url; else defaultImage">
-        <img [src]="user.profile_img_url" alt="Profile Image">
-      </ng-container>
-      <ng-template #defaultImage>
-        <img src="assets/icons/usuario.png" alt="User">
-      </ng-template>
+
+    <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
+
+    <div class="user-img">
+      <div class="user-image-container">
+        <ng-container *ngIf="user.profile_img_url; else defaultImage">
+          <img [src]="user.profile_img_url" alt="Profile Image">
+        </ng-container>
+        <ng-template #defaultImage>
+          <img src="assets/icons/usuario.png" alt="User">
+        </ng-template>
+      </div>
     </div>
 
     <div class="user-info">
       <!-- Lista de disciplinas -->
-      <div class="disciplines-list">
+      <!-- <div class="disciplines-list">
+        <p>Habilidades y experiencia</p>
         <ul class="added-disciplines-list">
           <li *ngFor="let discipline of user.user_disciplines">
             {{ discipline }}
           </li>
         </ul>
+      </div> -->
+
+      <div class="user-data">
+        <p class="data-uni">{{ user.university }}</p>
+        <p class="data-fac">{{ user.faculty }}</p>
+        <p class="data-dep">{{ user.department }}</p>
       </div>
 
-      <div class="botones">
-        <button>Ver Perfil</button>
-      </div>
     </div>
+
+    <div class="botones">
+      <button>Ver Perfil</button>
+    </div>
+
   </div>
 
 </div>

@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './filtro.component.html',
   styleUrls: ['./filtro.component.scss']
 })
+
 export class FiltroComponent implements OnInit {
   searchText: string | null = null;
   filteredUsers: User_filter[] = [];
@@ -29,8 +30,8 @@ export class FiltroComponent implements OnInit {
   paginatedArticles: Article[] = [];
 
   coauthors: { [key: number]: ICoauthor[] } = {};
-  categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por artículo
-  categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
+  categories: { [key: number]: ICategory[] } = {};
+  categoryMap: { [key: number]: ICategory } = {};
   authors: { [key: number]: Author } = {};
   errorMessage: string | null = null;
   showingArticles: boolean = true;
@@ -55,7 +56,7 @@ export class FiltroComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadAllCategories();
+    // this.loadAllCategories();
 
     this.route.paramMap.subscribe(params => {
       this.searchText = params.get('texto');
@@ -103,7 +104,7 @@ export class FiltroComponent implements OnInit {
       next: (articles: Article[]) => {
         this.filteredArticles = articles;
         this.filteredArticles.forEach(article => {
-          this.loadCategoriesForArticle(article.id);
+          // this.loadCategoriesForArticle(article.id);
           this.loadCoauthorsForArticle(article.id);
           this.loadAuthorForArticle(article.id);
         });
