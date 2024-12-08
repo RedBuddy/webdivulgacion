@@ -41,12 +41,17 @@ $texto: #333;
     position: absolute;
     top: 1rem;
     right: 1.2rem;
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
 
     p {
       font-size: 1.1rem;
       font-weight: 400;
+      margin: 0;
     }
   }
+
   .botones {
     align-self: flex-end;
     display: flex;
@@ -175,4 +180,9 @@ $texto: #333;
   align-items: center;
   // gap: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 5rem;
 }

@@ -16,7 +16,7 @@ export class CategoryService {
   getCategories(): Observable<ICategory[]> {
     return this.http.get<ICategory[]>(this.categoryUrl).pipe(
       tap(categories => {
-        console.log('Categories fetched successfully', categories);
+        console.log('Categories fetched successfully');
       }),
       catchError(this.handleError)
     );

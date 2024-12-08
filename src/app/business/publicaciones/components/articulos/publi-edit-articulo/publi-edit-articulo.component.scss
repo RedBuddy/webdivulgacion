@@ -104,6 +104,20 @@ header {
         }
       }
 
+      select {
+        border: 1px solid $border;
+        padding: 0.56rem;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        color: #333;
+
+        &:focus {
+          border-color: $focus;
+          outline: none;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      }
+
       input[type="text"] {
         width: 20rem;
       }

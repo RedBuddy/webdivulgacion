@@ -50,7 +50,12 @@ export class PubliHeaderComponent implements OnInit, OnDestroy {
 
   searchArticles(): void {
     const searchValue = this.searchControl.value;
-    this.router.navigate(['mis-publicaciones/mis-articulos'], { queryParams: { search: searchValue } });
+    const currentRoute = this.router.url.split('?')[0];
+    if (currentRoute.includes('mis-articulos')) {
+      this.router.navigate(['mis-publicaciones/mis-articulos'], { queryParams: { search: searchValue }, queryParamsHandling: 'merge' });
+    } else if (currentRoute.includes('mis-proyectos')) {
+      this.router.navigate(['mis-publicaciones/mis-proyectos'], { queryParams: { search: searchValue }, queryParamsHandling: 'merge' });
+    }
   }
 
   private checkCurrentRoute(url: string): void {

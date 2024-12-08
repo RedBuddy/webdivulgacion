@@ -1,1 +1,72 @@
-<p>publi-edit-proyecto works!</p>
+<header>
+  <i (click)="regresarRouter()" class="bi bi-arrow-left"></i>
+  <nav>
+    <a>Editar Proyecto</a>
+  </nav>
+</header>
+
+<div class="container">
+  <form [formGroup]="projectForm" (ngSubmit)="submitProject()">
+    <div class="campo">
+      <label for="title">Título:</label>
+      <input id="title" formControlName="title" type="text">
+      <div
+        *ngIf="projectForm.get('title')?.invalid && (projectForm.get('title')?.dirty || projectForm.get('title')?.touched)"
+        class="error-message">
+        <div *ngIf="projectForm.get('title')?.errors?.['required']">El título es requerido.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="details">Detalles:</label>
+      <textarea id="details" formControlName="details"></textarea>
+    </div>
+
+    <div class="campo">
+      <label for="vacancies">Vacantes:</label>
+      <input id="vacancies" formControlName="vacancies" type="number">
+    </div>
+
+    <div class="campo">
+      <label for="status">Estado:</label>
+      <select id="status" formControlName="status">
+        <option value="active">Activo</option>
+        <option value="inactive">Archivado</option>
+      </select>
+    </div>
+
+    <div class="campo subir">
+      <i class="bi bi-upload"></i>
+      <div class="btn-subir">
+        <label for="preview_img">{{ selectedPreviewImgName ? selectedPreviewImgName : 'Imagen de Vista Previa'
+          }}</label>
+        <input id="preview_img" type="file" accept="image/*" (change)="onFileSelected($event, 'preview_img')">
+      </div>
+    </div>
+
+    <div class="campo select-categoria">
+      <label for="categorySearch">Categorías:</label>
+      <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onCategorySearchFocus()"
+        (blur)="onCategorySearchBlur()">
+      <ul *ngIf="isCategorySearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+        <li *ngFor="let category of filteredCategories" (click)="addCategory(category)">
+          {{ category.category_name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="campo categorias-agregadas">
+      <ul class="added-categories-list">
+        <li *ngFor="let category of addedCategories">
+          {{ category.category_name }}
+          <span (click)="removeCategory(category)">×</span>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+    <button type="submit" [disabled]="projectForm.invalid">Guardar Cambios</button>
+  </form>
+</div>

@@ -9,7 +9,7 @@
   <form [formGroup]="projectForm" (ngSubmit)="submitProject()">
     <div class="campo">
       <label for="title">Título:</label>
-      <textarea id="title" formControlName="title" type="text"></textarea>
+      <input id="title" formControlName="title" type="text">
       <div
         *ngIf="projectForm.get('title')?.invalid && (projectForm.get('title')?.dirty || projectForm.get('title')?.touched)"
         class="error-message">

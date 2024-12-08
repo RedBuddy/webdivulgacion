@@ -17,7 +17,7 @@ export class ResearchProjectsService {
   getAllProjects(): Observable<ResearchProject[]> {
     return this.http.get<ResearchProject[]>(this.apiUrl).pipe(
       map(projects => projects.map(project => {
-        if (project.preview_img) {
+        if (project.preview_img && project.preview_img.data) {
           const byteArray = new Uint8Array(project.preview_img.data);
           const blob = new Blob([byteArray], { type: 'image/png' });
           project.preview_img_url = this.createImageUrlFromBlob(blob);

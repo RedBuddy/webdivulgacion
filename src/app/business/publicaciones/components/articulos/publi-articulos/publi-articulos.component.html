@@ -1,3 +1,5 @@
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of paginatedArticles">
     <div class="arriba">
@@ -16,6 +18,13 @@
     <p class="fecha">{{ article.publication_date | date }}</p>
     <!-- <p><strong>DOI:</strong> {{ article.doi }}</p> -->
     <div class="article-version">
+      <ng-container *ngIf="article.status === 'published'; else inactiveStatus">
+        <p class="status">Activo</p>
+      </ng-container>
+      <ng-template #inactiveStatus>
+        <p class="status">Archivado</p>
+      </ng-template>
+      <p>|</p>
       <ng-container *ngIf="article.pdf; else preview">
         <!-- <a [href]="article.link" target="_blank"></a> -->
         <p>Texto completo</p>
@@ -52,7 +61,7 @@
 </div>
 
 <!-- Paginación -->
-<div class="pagination">
+<div class="pagination" *ngIf="filteredArticles.length > itemsPerPage">
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
   <button *ngFor="let page of [].constructor(Math.ceil(filteredArticles.length / itemsPerPage)); let i = index"
     (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>

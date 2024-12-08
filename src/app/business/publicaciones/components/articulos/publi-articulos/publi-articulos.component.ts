@@ -23,6 +23,8 @@ export class PubliArticulosComponent implements OnInit {
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo
   categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por artículo
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
+  errorMessage: string | null = null;
+
   searchControl: FormControl = new FormControl('');
   //Paginación
   currentPage: number = 1;
@@ -73,13 +75,23 @@ export class PubliArticulosComponent implements OnInit {
   }
 
   loadUserArticles(): void {
-    this.articleService.getUserArticles().subscribe((articles) => {
-      this.articles = articles;
-      this.filteredArticles = articles;
-      this.articles.forEach(article => {
-        this.loadCoauthorsForArticle(article.id);
-        this.loadCategoriesForArticle(article.id);
-      });
+    this.articleService.getUserArticles().subscribe({
+      next: (articles: Article[]) => {
+        if (articles === null) {
+          this.errorMessage = 'No tienes artículos publicados.';
+        } else {
+          this.articles = articles;
+          this.filteredArticles = articles;
+          this.articles.forEach(article => {
+            this.loadCoauthorsForArticle(article.id);
+            this.loadCategoriesForArticle(article.id);
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error loading user articles', err);
+        this.errorMessage = 'Error al cargar los artículos del usuario.';
+      }
     });
   }
 

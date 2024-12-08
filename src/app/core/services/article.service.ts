@@ -25,7 +25,7 @@ export class ArticleService {
         }
         return article;
       })),
-      tap(articles => console.log('All articles loaded:', articles)),
+      tap(articles => console.log('All articles loaded')),
       catchError(this.handleError)
     );
   }
@@ -36,7 +36,7 @@ export class ArticleService {
       return throwError('User ID not found in token');
     }
     return this.http.get<Article[]>(`${this.apiUrl}/user_id/${userId}`).pipe(
-      tap(articles => console.log('User articles loaded:', articles)),
+      tap(articles => console.log('User articles loaded')),
       catchError(this.handleError)
     );
   }
@@ -51,7 +51,7 @@ export class ArticleService {
         }
         return author;
       }),
-      tap(author => console.log('Author loaded:', author)),
+      tap(author => console.log('Author loaded')),
       catchError(this.handleError)
     );
   }
@@ -63,21 +63,21 @@ export class ArticleService {
     }
     articleData.append('id_author', userId.toString());
     return this.http.post<Article>(this.apiUrl, articleData).pipe(
-      tap(article => console.log('Article uploaded:', article)),
+      tap(article => console.log('Article uploaded')),
       catchError(this.handleError)
     );
   }
 
   updateArticle(articleId: number, articleData: FormData): Observable<Article> {
     return this.http.put<Article>(`${this.apiUrl}/${articleId}`, articleData).pipe(
-      tap(article => console.log('Article updated:', article)),
+      tap(article => console.log('Article updated')),
       catchError(this.handleError)
     );
   }
 
   getArticleById(articleId: number): Observable<Article> {
     return this.http.get<Article>(`${this.apiUrl}/${articleId}`).pipe(
-      tap(article => console.log('Article loaded:', article)),
+      tap(article => console.log('Article loaded')),
       catchError(this.handleError)
     );
   }

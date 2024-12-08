@@ -70,12 +70,22 @@ export class PubliProyectosComponent implements OnInit {
   }
 
   loadUserProjects(): void {
-    this.researchProjectsService.getUserProjects().subscribe((projects) => {
-      this.projects = projects;
-      this.filteredProjects = projects;
-      this.projects.forEach(project => {
-        this.loadCategoriesForProject(project.id);
-      });
+    this.researchProjectsService.getUserProjects().subscribe({
+      next: (projects: ResearchProject[]) => {
+        if (projects === null) {
+          this.errorMessage = 'No tienes proyectos publicados.';
+        } else {
+          this.projects = projects;
+          this.filteredProjects = projects;
+          this.projects.forEach(project => {
+            this.loadCategoriesForProject(project.id);
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error loading user projects', err);
+        this.errorMessage = 'Error al cargar los proyectos del usuario.';
+      }
     });
   }
 

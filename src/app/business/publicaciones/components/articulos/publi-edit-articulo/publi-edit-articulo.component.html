@@ -42,6 +42,14 @@
         <label for="publication_date">Fecha de Publicación:</label>
         <input id="publication_date" formControlName="publication_date" type="date">
       </div>
+
+      <div class="campo">
+        <label for="status">Estado:</label>
+        <select id="status" formControlName="status">
+          <option value="published">Publicado</option>
+          <option value="archived">Archivado</option>
+        </select>
+      </div>
     </div>
 
     <!-- Gestion de categorias -->

@@ -55,7 +55,8 @@ export class PubliEditArticuloComponent implements OnInit {
       doi: ['', Validators.required],
       abstract: [''],
       publication_date: ['', Validators.required],
-      link: ['']
+      link: [''],
+      status: ['published', Validators.required] // Agregar el campo de estado
     });
   }
 
