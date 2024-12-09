@@ -89,8 +89,8 @@ export class ConfigCuentaComponent implements OnInit {
 
     this.configService.updateAccount(user, currentPassword, newPassword, this.profile_img || undefined).subscribe({
       next: (response) => {
-        console.log('Account updated successfully', response);
-        this.successMessage = response.message || 'Account updated successfully'; // Mostrar mensaje de éxito del backend o mensaje por defecto
+        // console.log('Account updated successfully', response);
+        this.successMessage = response.message || 'Cuenta actualizada con éxito'; // Mostrar mensaje de éxito del backend o mensaje por defecto
         this.errorMessage = null; // Limpiar mensaje de error
       },
       error: (err) => {

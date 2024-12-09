@@ -202,4 +202,8 @@ export class FiltroComponent implements OnInit {
   viewProfile(userId: string): void {
     this.router.navigate(['/perfil', userId]);
   }
+
+  viewArticle(articleId: string): void {
+    this.router.navigate(['/articulo', articleId]);
+  }
 }

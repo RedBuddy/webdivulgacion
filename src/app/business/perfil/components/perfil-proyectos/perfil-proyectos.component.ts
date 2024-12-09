@@ -66,8 +66,8 @@ export class PerfilProyectosComponent implements OnInit {
     }
     this.researchProjectsService.getUserProjects(userId).subscribe({
       next: (projects: ResearchProject[]) => {
-        if (projects === null) {
-          this.errorMessage = 'No tienes proyectos publicados.';
+        if (projects.length === 0) {
+          this.errorMessage = 'No hay proyectos publicados por el usuario.';
         } else {
           this.projects = projects;
           this.filteredProjects = projects;

@@ -41,7 +41,7 @@ export const routes: Routes = [
         loadChildren: () => import('./business/publicaciones/publi.module').then(m => m.PubliModule)
       },
       {
-        path: 'articulo:id',
+        path: 'articulo',
         loadChildren: () => import('./business/articulo/articulo.module').then(m => m.ArticuloModule)
       },
       {

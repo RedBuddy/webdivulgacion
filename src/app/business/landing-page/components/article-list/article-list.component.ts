@@ -131,7 +131,7 @@ export class ArticleListComponent implements OnInit {
     this.currentPage = page;
   }
 
-  viewArticle(article: Article): void {
-    this.router.navigate(['ver-articulo', article.id]);
+  viewArticle(articleId: string): void {
+    this.router.navigate(['/articulo', articleId]);
   }
 }

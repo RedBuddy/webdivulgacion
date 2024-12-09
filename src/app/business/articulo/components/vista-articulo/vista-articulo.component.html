@@ -1,3 +1,106 @@
-<div>
-  <p>El ID del artículo es: {{ articleId }}</p>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+<div class="article-card" *ngIf="article">
+
+  <div class="contenedor-izq">
+
+    <div class="izq-sup">
+      <div class="card-header">
+
+        <h1>Artículo</h1>
+      </div>
+
+      <h2 class="titulo">{{ article.title }}</h2>
+
+    </div>
+
+    <div class="izq-abajo">
+      <p class="fecha">{{ article.publication_date | date }}</p>
+
+      <!-- Lista de coautores -->
+      <div class="coauthors-list">
+        <ul class="added-coauthors-list">
+          <li *ngFor="let coauthor of coauthors">
+            <div class="user-image-container">
+              <img *ngIf="coauthor.profile_img_url; else defaultImage" [src]="coauthor.profile_img_url"
+                class="coauthor-img">
+              <ng-template #defaultImage>
+                <img src="assets/icons/usuario.png" alt="User">
+              </ng-template>
+            </div>
+            <p>{{ coauthor.first_name }} {{ coauthor.last_name }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="contenedor-der">
+
+    <div class="article-version">
+      <ng-container *ngIf="article.pdf; else preview">
+        <p>Texto completo</p>
+      </ng-container>
+      <ng-template #preview>
+        <p>Preview</p>
+      </ng-template>
+    </div>
+
+
+    <ng-container *ngIf="article.preview_img_url">
+      <div class="article-image-container">
+        <img [src]="article.preview_img_url" alt="Preview Image" class="article-img">
+      </div>
+    </ng-container>
+
+
+    <div class="botones">
+      <!-- <button>Estadisticas</button> -->
+      <button>Ver artículo</button>
+    </div>
+  </div>
+</div>
+
+<div class="nav-container">
+  <nav>
+    <a (click)="setActiveTab('contenido')" [class.active-link]="activeTab === 'contenido'">Contenido</a>
+    <a (click)="setActiveTab('coautores')" [class.active-link]="activeTab === 'coautores'">Coautores</a>
+  </nav>
+</div>
+
+<div *ngIf="activeTab === 'contenido'" class="about-card">
+  <label>Abstract:</label>
+  <p> {{ article?.abstract }}</p>
+  <!-- Disciplinas -->
+  <div class="about-disciplines" *ngIf="categories.length > 0">
+    <label>Categorías:</label>
+    <ul>
+      <li *ngFor="let category of categories">{{ category.category_name }}</li>
+    </ul>
+  </div>
+  <!-- <div *ngIf="article?.pdf_url">
+    <a [href]="article?.pdf_url" target="_blank">Ver PDF</a>
+  </div> -->
+</div>
+
+<div class="user-cards-container" *ngIf="activeTab === 'coautores'">
+  <div class="user-card" *ngFor="let coauthor of coauthors">
+    <h2 class="user-name">{{ coauthor.first_name }} {{ coauthor.last_name }}</h2>
+
+    <div class="user-img">
+      <div class="user-image-container">
+        <ng-container *ngIf="coauthor.profile_img_url; else defaultImage">
+          <img [src]="coauthor.profile_img_url" alt="Profile Image">
+        </ng-container>
+        <ng-template #defaultImage>
+          <img src="assets/icons/usuario.png" alt="User">
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="botones">
+      <button (click)="viewProfile(coauthor.id.toString())">Ver Perfil</button>
+    </div>
+  </div>
 </div>

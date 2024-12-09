@@ -80,6 +80,14 @@ export class ArticleService {
 
   getArticleById(articleId: number): Observable<Article> {
     return this.http.get<Article>(`${this.apiUrl}/${articleId}`).pipe(
+      map(article => {
+        if (article.pdf) {
+          const byteArray = new Uint8Array(article.pdf.data);
+          const blob = new Blob([byteArray], { type: article.pdf.type });
+          article.pdf_url = URL.createObjectURL(blob);
+        }
+        return article;
+      }),
       tap(article => console.log('Article loaded')),
       catchError(this.handleError)
     );

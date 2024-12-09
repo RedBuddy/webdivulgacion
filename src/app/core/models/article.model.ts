@@ -6,7 +6,11 @@ export interface Article {
   abstract?: string;
   publication_date: Date;
   link?: string;
-  pdf?: Blob;
+  pdf?: {
+    type: string;
+    data: number[];
+  };
+  pdf_url?: string | null;
   preview_img?: {
     type: string;
     data: number[];

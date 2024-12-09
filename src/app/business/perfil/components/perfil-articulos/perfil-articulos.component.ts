@@ -75,7 +75,7 @@ export class PerfilArticulosComponent implements OnInit {
     }
     this.articleService.getUserArticles(userId).subscribe({
       next: (articles: Article[]) => {
-        if (articles === null) {
+        if (articles.length === 0) {
           this.errorMessage = 'No hay articulos publicados por el usuario.';
         } else {
           this.articles = articles.filter(article => article.status !== 'archived');
@@ -135,7 +135,7 @@ export class PerfilArticulosComponent implements OnInit {
     this.currentPage = page;
   }
 
-  editArticle(article: Article): void {
-    this.router.navigate(['mis-publicaciones/editar-articulo', article.id]);
+  viewArticle(articleId: string): void {
+    this.router.navigate(['/articulo', articleId]);
   }
 }
