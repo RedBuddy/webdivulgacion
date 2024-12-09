@@ -1,1 +1,54 @@
-<p>mis-preguntas works!</p>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+<div class="cards-container">
+  <div class="question-card" *ngFor="let question of questions" class="question-card">
+    <div class="contenedor-izq">
+      <div class="izq-sup">
+        <div class="card-header">
+          <!-- Aquí se muestra el autor -->
+          <h1>Pregunta</h1>
+          <!-- <div class="author-info" *ngIf="authors[question.id]">
+            <div class="author-img-container">
+              <ng-container *ngIf="authors[question.id].profile_img_url; else noAuthorImage">
+                <img [src]="authors[question.id].profile_img_url" alt="Author Image">
+              </ng-container>
+              <ng-template #noAuthorImage>
+                <img src="assets/icons/usuario.png" alt="User">
+              </ng-template>
+            </div>
+            <div>
+              <p>Pregunta por</p>
+              <p class="autor-name">{{ authors[question.id].first_name }} {{ authors[question.id].last_name }}</p>
+            </div>
+          </div> -->
+
+          <!-- Lista de categorías -->
+          <div class="categories-list">
+            <ul class="added-categories-list">
+              <li *ngFor="let category of categories[question.id]">
+                {{ category.category_name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="titulo">{{ question.title }}</h2>
+        <h3 class="descripcion">{{ question.body }}</h3>
+
+      </div>
+
+      <div class="izq-abajo">
+        <p class="fecha">{{ question.created_at | date }}</p>
+      </div>
+    </div>
+    <div class="contenedor-der">
+      <div class="article-version">
+        <p class="fecha">{{ question.created_at | date }}</p>
+      </div>
+      <div class="botones">
+        <button (click)="viewQuestion(question.id)">Ver Pregunta</button>
+        <button>Eliminar</button>
+      </div>
+    </div>
+
+  </div>

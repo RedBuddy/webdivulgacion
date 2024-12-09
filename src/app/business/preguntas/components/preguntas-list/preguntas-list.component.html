@@ -39,14 +39,14 @@
       <div class="izq-abajo">
         <p class="fecha">{{ question.created_at | date }}</p>
       </div>
-
-      <div class="contenedor-der">
-        <div class="article-version">
-          <p class="fecha">{{ question.created_at | date }}</p>
-        </div>
-        <div class="botones">
-          <button (click)="viewQuestion(question.id)">Ver Pregunta</button>
-        </div>
+    </div>
+    <div class="contenedor-der">
+      <div class="article-version">
+        <p class="fecha">{{ question.created_at | date }}</p>
+      </div>
+      <div class="botones">
+        <button (click)="viewQuestion(question.id)">Ver Pregunta</button>
       </div>
     </div>
+
   </div>

@@ -1,0 +1,185 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+
+.cards-container {
+  margin: 3rem 8rem;
+}
+
+.question-card {
+  display: flex;
+
+  margin-bottom: 2rem;
+  border: 1px solid $border;
+  border-radius: 0.2rem;
+  padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  position: relative; // Añadir posición relativa para el contenedor
+
+  .contenedor-izq {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .author-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        line-height: 1.1rem;
+
+        p {
+          font-size: 0.8rem;
+          font-weight: lighter;
+          margin: 0;
+        }
+
+        .autor-name {
+          font-size: 1.1rem;
+          font-weight: 400;
+          margin: 0;
+          color: rgb(100, 100, 192);
+        }
+
+        .author-img-container {
+          border: 0.1rem solid;
+          border-radius: 50%;
+          // padding: 0.1rem;
+          overflow: hidden; // Oculta el overflow de la imagen
+          width: 2.5rem;
+          height: 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; // Asegura que la imagen se ajuste bien al contenedor
+            cursor: pointer;
+          }
+        }
+      }
+
+      .categories-list {
+        ul {
+          display: flex;
+          gap: 2rem;
+          // list-style-type: none;
+          padding: 0;
+          margin: 0 0 0 1rem;
+
+          li {
+            margin: 0;
+            padding: 0;
+            font-size: 0.8rem;
+            font-weight: lighter;
+          }
+        }
+      }
+    }
+  }
+
+  .contenedor-der {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .article-version {
+      text-align: end;
+
+      p {
+        font-size: 1.1rem;
+        font-weight: 400;
+        margin: 0;
+      }
+    }
+
+    .article-image-container {
+      width: 50%;
+      max-height: min-content;
+      align-self: flex-end;
+      position: relative;
+      border: 0.1rem solid $border;
+      border-radius: 0.2rem;
+      overflow: hidden; // Oculta el overflow de la imagen
+      // width: 8%;
+      // padding-top: 8%; // Esto asegura que el contenedor sea cuadrado
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+
+      img {
+        // position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; // Asegura que la imagen se ajuste bien al contenedor
+      }
+    }
+  }
+
+  .titulo {
+    font-size: 1.1rem;
+    font-weight: normal;
+    // min-height: 4rem;
+  }
+
+  .descripcion {
+    font-size: 0.9rem;
+    font-weight: lighter;
+    margin: 0.5rem 0;
+  }
+
+  .fecha {
+    margin: 0 0 0.2rem 0;
+  }
+
+  .botones {
+    // align-self: flex-end;
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+    width: 100%;
+
+    button {
+      width: 50%;
+      // padding: 0.1rem 0.5rem;
+      background-color: $btn;
+      color: white;
+      border: none;
+      border-radius: 0.3rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+
+      &:hover {
+        background-color: $btn-hover;
+      }
+    }
+  }
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 5rem;
+}

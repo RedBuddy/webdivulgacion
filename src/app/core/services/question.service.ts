@@ -21,14 +21,14 @@ export class QuestionService {
     );
   }
 
-  getQuestionById(questionId: number): Observable<Question> {
-    return this.http.get<Question>(`${this.apiUrl}/${questionId}`).pipe(
+  getUserQuestions(userId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.apiUrl}/user_id/${userId}`).pipe(
       catchError(this.handleError)
     );
   }
 
-  getUserQuestions(userId: number): Observable<Question[]> {
-    return this.http.get<Question[]>(`${this.apiUrl}/user/${userId}`).pipe(
+  getQuestionById(questionId: number): Observable<Question> {
+    return this.http.get<Question>(`${this.apiUrl}/${questionId}`).pipe(
       catchError(this.handleError)
     );
   }
