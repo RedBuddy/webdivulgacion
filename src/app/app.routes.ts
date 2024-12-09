@@ -14,7 +14,7 @@ export const routes: Routes = [
       },
       {
         path: 'preguntas',
-        loadComponent: () => import('./business/preguntas/components/pregunta-header/pregunta-header.component'),
+        loadChildren: () => import('./business/preguntas/preguntas.module').then(m => m.PreguntasModule)
         //canActivate: [authGuard]
       },
       {
@@ -52,6 +52,7 @@ export const routes: Routes = [
         path: 'verificar-email',
         loadComponent: () => import('./business/authentication/verificar-email/verificar-email.component'),
       },
+
       // {
       //   path: 'config',
       //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),

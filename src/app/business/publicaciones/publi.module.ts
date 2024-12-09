@@ -25,7 +25,6 @@ const routes: Routes = [
       { path: 'subir-proyectos', component: PubliSubirProyectoComponent },
       { path: 'editar-proyecto/:id', component: PubliEditProyectoComponent },
 
-      { path: '', redirectTo: 'mis-articulos', pathMatch: 'full' },
       { path: '**', redirectTo: 'mis-articulos' }
     ]
   }

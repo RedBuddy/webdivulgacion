@@ -1,0 +1,55 @@
+<header>
+  <i (click)="regresarRouter()" class="bi bi-arrow-left"></i>
+  <nav>
+    <a>Subir Pregunta</a>
+  </nav>
+</header>
+
+<div class="container">
+  <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+    <div class="campo">
+      <label for="title">Título:</label>
+      <textarea id="title" formControlName="title" type="text"></textarea>
+      <div
+        *ngIf="questionForm.get('title')?.invalid && (questionForm.get('title')?.dirty || questionForm.get('title')?.touched)"
+        class="error-message">
+        <div *ngIf="questionForm.get('title')?.errors?.['required']">El título es requerido.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="body">Cuerpo:</label>
+      <textarea id="body" formControlName="body" rows="5" placeholder="Ingrese el cuerpo de la pregunta"></textarea>
+      <div *ngIf="questionForm.get('body')?.invalid && questionForm.get('body')?.touched" class="error-message">
+        El cuerpo es requerido.
+      </div>
+    </div>
+
+    <!-- Gestion de categorias -->
+    <div class="campo select-categoria">
+      <label for="categorySearch">Categorías:</label>
+      <input id="categorySearch" [formControl]="searchControl" placeholder="Buscar..." (focus)="onCategorySearchFocus()"
+        (blur)="onCategorySearchBlur()">
+      <ul *ngIf="isCategorySearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+        <li *ngFor="let category of filteredCategories" (click)="addCategory(category)">
+          {{ category.category_name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="campo categorias-agregadas">
+      <ul class="added-categories-list">
+        <li *ngFor="let category of addedCategories">
+          {{ category.category_name }}
+          <span (click)="removeCategory(category)">×</span>
+        </li>
+      </ul>
+    </div>
+
+
+    <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+    <button type="submit" [disabled]="questionForm.invalid">Subir Pregunta</button>
+  </form>
+</div>
