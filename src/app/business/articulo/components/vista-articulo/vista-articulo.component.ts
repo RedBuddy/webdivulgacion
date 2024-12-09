@@ -12,6 +12,7 @@ import { CategoryService } from '../../../../core/services/category.service';
 import { Article } from '../../../../core/models/article.model';
 import { ICategory } from '../../../../core/models/category.model';
 import { ICoauthor } from '../../../../core/models/coauthor.model';
+import { Author } from '../../../../core/models/author.model';
 
 
 
@@ -30,6 +31,7 @@ export class VistaArticuloComponent implements OnInit {
   article: Article | null = null;
   categories: ICategory[] = [];
   coauthors: ICoauthor[] = [];
+  author: Author | null = null;
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   errorMessage: string | null = null;
 
@@ -74,10 +76,10 @@ export class VistaArticuloComponent implements OnInit {
     this.articleService.getArticleById(ArtId).subscribe({
       next: (article: Article) => {
         this.article = article;
-
         this.safePdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(article.pdf_url || '');
         this.loadCategoriesForArticle(article.id);
         this.loadCoauthorsForArticle(article.id);
+        this.loadAuthorForArticle(article.id);
       },
       error: (err) => {
         console.error('Error loading article', err);
@@ -104,6 +106,17 @@ export class VistaArticuloComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading coauthors for article', err);
+      }
+    });
+  }
+
+  loadAuthorForArticle(articleId: number): void {
+    this.articleService.getAuthorByArticleId(articleId).subscribe({
+      next: (author: Author) => {
+        this.author = author;
+      },
+      error: (err) => {
+        console.error('Error loading author for article', err);
       }
     });
   }

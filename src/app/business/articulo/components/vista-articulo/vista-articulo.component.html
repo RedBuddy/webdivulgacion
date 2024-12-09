@@ -6,7 +6,21 @@
     <div class="izq-sup">
       <div class="card-header">
 
-        <h1>Artículo</h1>
+        <!-- Aquí se muestra el autor -->
+        <div class="author-info" *ngIf="author">
+          <div class="author-img-container">
+            <ng-container *ngIf="author.profile_img_url; else noAuthorImage">
+              <img [src]="author.profile_img_url" alt="Author Image">
+            </ng-container>
+            <ng-template #noAuthorImage>
+              <img src="assets/icons/usuario.png" alt="User">
+            </ng-template>
+          </div>
+          <div>
+            <p>Articulo por</p>
+            <p class="autor-name">{{ author.first_name }} {{ author.last_name }}</p>
+          </div>
+        </div>
       </div>
 
       <h2 class="titulo">{{ article.title }}</h2>
