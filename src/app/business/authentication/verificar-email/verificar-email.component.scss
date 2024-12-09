@@ -1,0 +1,98 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+$texto-claro: #555;
+
+.verificar-email-container {
+  width: 30%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.2rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .link {
+    margin: 0.5rem;
+    a {
+      color: $link;
+      text-decoration: underline;
+      font-size: 0.9rem;
+      cursor: pointer;
+
+      &:hover {
+        color: $link-activo;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    color: $texto;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    label {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: $texto-claro;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 0.3rem;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.6rem;
+      background-color: $btn;
+      color: white;
+      border: none;
+      border-radius: 0.2rem;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      &:hover:not(:disabled) {
+        background-color: $btn-hover;
+      }
+    }
+  }
+
+  .success-message {
+    color: #28a745;
+    font-size: 1rem;
+    margin: 1rem 0 0.3rem 0;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 1rem;
+    margin: 1rem 0 0.3rem 0;
+  }
+}

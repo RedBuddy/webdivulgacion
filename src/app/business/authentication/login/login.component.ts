@@ -36,9 +36,17 @@ export class LoginComponent {
         this.closeModal.emit();
       },
       error: (err) => {
-        console.error('Login failed', err);
-        // Handle login error
-        this.errorMessage = 'Usuario o contraseña incorrectos'; // Establecer el mensaje de error
+        this.errorMessage = err.message; // Establecer el mensaje de error
+
+        if (err.status === 403) {
+          setTimeout(() => {
+            this.errorMessage = 'Seras redirigido a verificación de email en 3 segundos';
+          }, 1000);
+          setTimeout(() => {
+            this.closeModal.emit();
+            this.router.navigate(['verificar-email']);
+          }, 3000);
+        }
       }
     });
   }

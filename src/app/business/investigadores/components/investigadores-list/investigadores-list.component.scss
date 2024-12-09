@@ -1,0 +1,149 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+
+.user-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 3rem 8rem;
+}
+
+.user-card {
+  border: 0.1rem solid $border;
+  border-radius: 0.2rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  width: calc(25% - 1rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // align-items: center;
+  // min-height: 18rem;
+
+  .user-name {
+    font-size: 1.1rem;
+    font-weight: normal;
+    // margin: 0.5rem 0;
+    text-align: center;
+  }
+
+  .user-img {
+    display: flex;
+    justify-content: center;
+    // margin-bottom: 0.5rem;
+  }
+
+  .user-image-container {
+    border: 0.1rem solid $border;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 0.5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .user-info {
+    // text-align: center;
+
+    .disciplines-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      ul {
+        // list-style-type: none;
+        padding: 0;
+        margin: 0 0 0 1rem;
+
+        li {
+          margin: 0.2rem 0;
+          font-size: 0.9rem;
+          font-weight: lighter;
+        }
+      }
+    }
+
+    .user-data {
+      margin-bottom: 1rem;
+
+      p {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .data-uni {
+        font-size: 1.1rem;
+        font-weight: normal;
+      }
+
+      .data-fac {
+        font-size: 1rem;
+        font-weight: lighter;
+      }
+
+      .data-dep {
+        font-size: 0.85rem;
+        font-weight: lighter;
+      }
+    }
+  }
+
+  .botones {
+    text-align: center;
+    // align-self: flex-end;
+
+    button {
+      background-color: $btn;
+      color: white;
+      border: none;
+      border-radius: 0.2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $btn-hover;
+      }
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+
+  button {
+    margin: 0 0.2rem;
+    padding: 0.3rem 0.7rem;
+    border: none;
+    // background-color: #007bff;
+    color: $texto;
+    cursor: pointer;
+    border-radius: 0.25rem;
+
+    &:disabled {
+      // background-color: #cccccc50;
+      // cursor: not-allowed;
+      display: none;
+    }
+
+    &.active {
+      border: 2px solid $btn-hover;
+      color: black;
+      background-color: white;
+    }
+  }
+}

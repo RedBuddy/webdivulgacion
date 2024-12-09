@@ -6,6 +6,7 @@ import { Profile } from '../models/profile.model';
 import { AuthService } from '../services/auth.service';
 import { UserCard } from '../models/profile_card.model';
 import { UserAbout } from '../models/user_about.model';
+import { User_filter } from '../models/user_filter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ import { UserAbout } from '../models/user_about.model';
 export class ProfileService {
   private profileUrl = 'http://localhost:3000/profile';
   private profileCardUrl = 'http://localhost:3000/profile_card';
-  private userAboutUrl = 'http://localhost:3000/profile_about'; // URL base para UserAbout
+  private userAboutUrl = 'http://localhost:3000/profile_about';
+  private authorListUrl = 'http://localhost:3000/authors_profile';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -68,6 +70,20 @@ export class ProfileService {
       tap(response => {
         console.log('User about loaded successfully');
       }),
+      catchError(this.handleError)
+    );
+  }
+
+  getAuthorList(): Observable<User_filter[]> {
+    return this.http.get<User_filter[]>(this.authorListUrl).pipe(
+      map(authors => authors.map(author => {
+        if (author.profile_img) {
+          const byteArray = new Uint8Array(author.profile_img.data);
+          const blob = new Blob([byteArray], { type: author.profile_img.type });
+          author.profile_img_url = URL.createObjectURL(blob);
+        }
+        return author;
+      })),
       catchError(this.handleError)
     );
   }

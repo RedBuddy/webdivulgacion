@@ -1,0 +1,30 @@
+<div class="verificar-email-container">
+  <h1>Verificar Correo Electrónico</h1>
+
+  <div class="form" *ngIf="showVerifyForm">
+    <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+      <label for="token">Token de Verificación:</label>
+      <input id="token" formControlName="token" type="text" placeholder="Ingrese su token de verificación">
+      <button type="submit" [disabled]="verifyForm.invalid">Verificar</button>
+    </form>
+    <div class="link">
+      <a (click)="toggleForm()">No tienes un token? Reenviar correo de verificación</a>
+    </div>
+  </div>
+
+  <div class="form" *ngIf="!showVerifyForm">
+    <form [formGroup]="resendForm" (ngSubmit)="resendVerificationEmail()">
+      <label for="email">Correo Electrónico:</label>
+      <input id="email" formControlName="email" type="email" placeholder="Ingrese su correo electrónico">
+      <button type="submit" [disabled]="resendForm.invalid">Reenviar Correo de Verificación</button>
+    </form>
+    <div class="link">
+      <a (click)="toggleForm()">Ya tienes un token? Verificar correo electrónico</a>
+    </div>
+  </div>
+
+  <div *ngIf="verificationMessage" class="success-message">{{ verificationMessage }}</div>
+  <div *ngIf="errorMessage" class="error-message"><i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+  </div>
+  <div *ngIf="resendMessage" class="success-message">{{ resendMessage }}</div>
+</div>

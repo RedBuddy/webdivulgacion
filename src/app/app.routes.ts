@@ -48,6 +48,10 @@ export const routes: Routes = [
         path: 'perfil',
         loadChildren: () => import('./business/perfil/perfil.module').then(m => m.PerfilModule)
       },
+      {
+        path: 'verificar-email',
+        loadComponent: () => import('./business/authentication/verificar-email/verificar-email.component'),
+      },
       // {
       //   path: 'config',
       //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),

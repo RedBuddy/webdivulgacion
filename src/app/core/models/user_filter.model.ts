@@ -10,6 +10,5 @@ export interface User_filter {
   university?: string;
   faculty?: string;
   department?: string;
-  user_disciplines: string[];
   publications_count: number;
 }

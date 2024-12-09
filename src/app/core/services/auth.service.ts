@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
@@ -12,6 +12,8 @@ export class AuthService {
   private login_url: string = 'http://localhost:3000/login';
   private register_url: string = 'http://localhost:3000/register';
   private profile_img_url: string = 'http://localhost:3000/users/profile_img';
+  private verifyEmailUrl: string = 'http://localhost:3000/verify-email';
+  private resentEmailUrl: string = 'http://localhost:3000/resend-verification-email';
   private tokenKey = 'auth_token';
   private refresh_url: string = 'http://localhost:3000/refresh-token';
   private RefreshTokenKey = 'refresh_token';
@@ -38,13 +40,10 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
           this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
-          this.router.navigate(['/inicio']);
+          this.router.navigate(['home']);
         }
       }),
-      catchError(error => {
-        console.error('Error during login:', error);
-        return throwError(error);
-      })
+      catchError(this.handleError)
     );
   }
 
@@ -59,13 +58,24 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
           this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
-          this.router.navigate(['/inicio']);
+          this.router.navigate(['home']);
         }
       }),
-      catchError(error => {
-        console.error('Error during registration:', error);
-        return throwError(error);
-      })
+      catchError(this.handleError)
+    );
+  }
+
+  verifyEmail(token: string): Observable<any> {
+    return this.HttpClient.get<any>(this.verifyEmailUrl, {
+      params: { token }
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  resendVerificationEmail(email: string): Observable<any> {
+    return this.HttpClient.post<any>(this.resentEmailUrl, { email }).pipe(
+      catchError(this.handleError)
     );
   }
 
@@ -208,4 +218,16 @@ export class AuthService {
     return this.userImageSubject.value;
   }
 
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Algo salió mal, intenta de nuevo.';
+    if (error.error instanceof ErrorEvent) {
+      // Error del lado del cliente
+      errorMessage = `${error.error.message}`;
+    } else {
+      // Error del lado del servidor
+      errorMessage = error.error.message || 'Error del servidor';
+    }
+    return throwError({ status: error.status, message: errorMessage });
+  }
 }
