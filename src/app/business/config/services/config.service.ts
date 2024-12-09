@@ -36,7 +36,7 @@ export class ConfigService {
     // }
 
     return this.http.put<any>(`${this.userUpdateUrl}/${userId}`, formData).pipe(
-      switchMap(() => this.authService.login(user.email, currentPassword)), // Re-login después de la actualización
+      switchMap(() => this.authService.first_login(user.email, currentPassword)), // Re-login después de la actualización
       catchError(this.handleError)
     );
   }
