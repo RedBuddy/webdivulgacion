@@ -2,6 +2,7 @@ export interface User_filter {
   id: number;
   first_name: string;
   last_name: string;
+  email?: string;
   profile_img?: {
     type: string;
     data: number[];

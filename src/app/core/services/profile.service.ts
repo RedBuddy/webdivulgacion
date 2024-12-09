@@ -16,6 +16,7 @@ export class ProfileService {
   private profileCardUrl = 'http://localhost:3000/profile_card';
   private userAboutUrl = 'http://localhost:3000/profile_about';
   private authorListUrl = 'http://localhost:3000/authors_profile';
+  private adminListUrl = 'http://localhost:3000/admins_profile';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -76,6 +77,20 @@ export class ProfileService {
 
   getAuthorList(): Observable<User_filter[]> {
     return this.http.get<User_filter[]>(this.authorListUrl).pipe(
+      map(authors => authors.map(author => {
+        if (author.profile_img) {
+          const byteArray = new Uint8Array(author.profile_img.data);
+          const blob = new Blob([byteArray], { type: author.profile_img.type });
+          author.profile_img_url = URL.createObjectURL(blob);
+        }
+        return author;
+      })),
+      catchError(this.handleError)
+    );
+  }
+
+  getAdminList(): Observable<User_filter[]> {
+    return this.http.get<User_filter[]>(this.adminListUrl).pipe(
       map(authors => authors.map(author => {
         if (author.profile_img) {
           const byteArray = new Uint8Array(author.profile_img.data);
