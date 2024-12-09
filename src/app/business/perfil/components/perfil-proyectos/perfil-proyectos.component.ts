@@ -7,6 +7,8 @@ import { ResearchProject } from '../../../../core/models/research-project.model'
 import { ICategory } from '../../../../core/models/category.model';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { ProfileService } from '../../../../core/services/profile.service';
+import { UserCard } from '../../../../core/models/profile_card.model';
 
 @Component({
   selector: 'app-perfil-proyectos',
@@ -28,12 +30,15 @@ export class PerfilProyectosComponent implements OnInit {
   itemsPerPage: number = 5;
   Math = Math;
 
+  email: string | null = null;
+
   constructor(
     private researchProjectsService: ResearchProjectsService,
     private projectCategoryService: ProjectCategoryService,
     private categoryService: CategoryService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +46,9 @@ export class PerfilProyectosComponent implements OnInit {
       this.profileId = params.get('id');
       this.loadAllCategories();
       this.loadUserProjects();
+      if (this.profileId) {
+        this.loadUserCard(this.profileId);
+      }
     });
   }
 
@@ -83,6 +91,8 @@ export class PerfilProyectosComponent implements OnInit {
     });
   }
 
+
+
   loadCategoriesForProject(projectId: number): void {
     this.projectCategoryService.getProjectCategories(projectId).subscribe({
       next: (response: { id_project: number, id_categories: number[] }) => {
@@ -116,5 +126,24 @@ export class PerfilProyectosComponent implements OnInit {
 
   editProject(project: ResearchProject): void {
     this.router.navigate(['mis-publicaciones/editar-proyecto', project.id]);
+  }
+
+  loadUserCard(userId: string): void {
+    this.profileService.getUserCard(userId).subscribe({
+      next: (userCard: UserCard) => {
+        this.email = userCard.email;
+      },
+      error: (err) => {
+        console.error('Error loading user card', err);
+        this.errorMessage = 'Error al cargar la tarjeta de usuario.';
+      }
+    });
+  }
+
+
+  contactUser(): void {
+    if (this.email) {
+      this.router.navigate(['contacto/mensaje', { email: this.email }]);
+    }
   }
 }

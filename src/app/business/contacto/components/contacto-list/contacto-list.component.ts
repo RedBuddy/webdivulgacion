@@ -62,7 +62,9 @@ export class ContactoListComponent implements OnInit {
     this.paginateUsers();
   }
 
-  viewProfile(userId: string): void {
-    this.router.navigate(['/perfil', userId]);
+  contactUser(email: string | undefined): void {
+    if (email) {
+      this.router.navigate(['contacto/mensaje', { email: email }]);
+    }
   }
 }
