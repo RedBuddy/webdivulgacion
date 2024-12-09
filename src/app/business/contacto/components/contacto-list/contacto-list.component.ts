@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './contacto-list.component.scss'
 })
 
-export default class ContactoListComponent implements OnInit {
+export class ContactoListComponent implements OnInit {
   filteredUsers: User_filter[] = [];
   paginatedUsers: User_filter[] = [];
   errorMessage: string | null = null;

@@ -21,7 +21,7 @@
     <div class="profile-orcid">
       <p *ngIf="userCard.orcid"><strong>Orcid:</strong> {{userCard.orcid}}</p>
     </div>
-    <button>Contactar</button>
+    <button (click)="contactUser(userCard.email)">Contactar</button>
   </div>
 </div>
 

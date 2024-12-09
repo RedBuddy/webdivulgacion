@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, RouterModule, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { UserCard } from '../../../../core/models/profile_card.model';
 
@@ -13,6 +13,7 @@ import { UserCard } from '../../../../core/models/profile_card.model';
   templateUrl: './perfil-header.component.html',
   styleUrl: './perfil-header.component.scss'
 })
+
 export class PerfilHeaderComponent implements OnInit {
   profileId: string | null = null;
   userCard: UserCard | null = null;
@@ -20,7 +21,8 @@ export class PerfilHeaderComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -42,5 +44,11 @@ export class PerfilHeaderComponent implements OnInit {
         this.errorMessage = 'Error al cargar la tarjeta de usuario.';
       }
     });
+  }
+
+  contactUser(email: string): void {
+    if (email) {
+      this.router.navigate(['contacto/mensaje', { email: email }]);
+    }
   }
 }

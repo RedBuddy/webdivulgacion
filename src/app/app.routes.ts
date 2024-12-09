@@ -29,7 +29,7 @@ export const routes: Routes = [
       },
       {
         path: 'contacto',
-        loadComponent: () => import('./business/contacto/components/contacto-list/contacto-list.component'),
+        loadChildren: () => import('./business/contacto/contacto.module').then(m => m.ContactoModule),
         // canActivate: [authGuard]
       },
       {

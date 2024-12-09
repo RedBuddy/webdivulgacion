@@ -1,0 +1,91 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+$texto-claro: #555;
+
+.contacto-mensaje-container {
+  width: 40%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.2rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 1rem;
+    color: $texto;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem; /* 20px */
+    text-align: left;
+
+    label {
+      display: block;
+      font-size: 1rem; /* 16px */
+      margin-bottom: 0.5rem; /* 8px */
+      color: #555;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.625rem; /* 10px */
+      border: 0.0625rem solid #ccc; /* 1px */
+      border-radius: 0.25rem; /* 4px */
+      font-size: 1rem; /* 16px */
+      resize: none;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem; /* 14px */
+      margin-top: 0.3125rem; /* 5px */
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 0.625rem; /* 10px */
+    background-color: $btn;
+    color: white;
+    border: none;
+    border-radius: 0.25rem; /* 4px */
+    font-size: 1rem; /* 16px */
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: $btn-hover;
+    }
+  }
+
+  .success-message {
+    color: #28a745;
+    font-size: 1rem;
+    margin: 1rem 0 0.3rem 0;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 1rem;
+    margin: 1rem 0 0.3rem 0;
+  }
+}
