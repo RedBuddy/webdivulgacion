@@ -13,36 +13,28 @@ export class ArticleCategoryService {
 
   getArticleCategories(articleId: number): Observable<{ id_article: number, id_categories: number[] }> {
     return this.http.get<{ id_article: number, id_categories: number[] }>(`${this.articleCategoryUrl}/${articleId}`).pipe(
-      tap(response => {
-        console.log('Article categories fetched successfully', response);
-      }),
+      // tap(response => {console.log('Article categories fetched successfully');}),
       catchError(this.handleError)
     );
   }
 
   updateArticleCategories(articleId: number, categories: number[]): Observable<any> {
     return this.http.put<any>(`${this.articleCategoryUrl}/${articleId}`, { id_article: articleId, id_categories: categories }).pipe(
-      tap(response => {
-        console.log('Article categories updated successfully', response);
-      }),
+      // tap(response => { console.log('Article categories updated successfully'); }),
       catchError(this.handleError)
     );
   }
 
   addArticleCategory(articleId: number, categoryId: number): Observable<any> {
     return this.http.post<any>(this.articleCategoryUrl, { id_article: articleId, id_category: categoryId }).pipe(
-      tap(response => {
-        console.log('Article category added successfully', response);
-      }),
+      // tap(response => { console.log('Article category added successfully'); }),
       catchError(this.handleError)
     );
   }
 
   deleteArticleCategory(articleId: number, categoryId: number): Observable<any> {
     return this.http.delete<any>(`${this.articleCategoryUrl}/${articleId}`, { body: { id_category: categoryId } }).pipe(
-      tap(response => {
-        console.log('Article category deleted successfully', response);
-      }),
+      // tap(response => { console.log('Article category deleted successfully'); }),
       catchError(this.handleError)
     );
   }

@@ -78,8 +78,8 @@ export class RegisterComponent implements OnInit {
       formData.append('last_name', this.registerForm.get('last_name')?.value);
       formData.append('email', this.registerForm.get('email')?.value);
       formData.append('password', this.registerForm.get('password')?.value);
-      formData.append('confirm_password', this.registerForm.get('confirm_password')?.value);
-      formData.append('terms', this.registerForm.get('terms')?.value);
+      // formData.append('confirm_password', this.registerForm.get('confirm_password')?.value);
+      // formData.append('terms', this.registerForm.get('terms')?.value);
 
       if (this.profile_img) {
         formData.append('profile_img', this.profile_img);

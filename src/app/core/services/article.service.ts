@@ -25,7 +25,7 @@ export class ArticleService {
         }
         return article;
       })),
-      tap(articles => console.log('All articles loaded')),
+      // tap(articles => console.log('All articles loaded')),
       catchError(this.handleError)
     );
   }
@@ -54,7 +54,7 @@ export class ArticleService {
         }
         return author;
       }),
-      tap(author => console.log('Author loaded')),
+      // tap(author => console.log('Author loaded')),
       catchError(this.handleError)
     );
   }
@@ -66,14 +66,14 @@ export class ArticleService {
     }
     articleData.append('id_author', userId.toString());
     return this.http.post<Article>(this.apiUrl, articleData).pipe(
-      tap(article => console.log('Article uploaded')),
+      // tap(article => console.log('Article uploaded')),
       catchError(this.handleError)
     );
   }
 
   updateArticle(articleId: number, articleData: FormData): Observable<Article> {
     return this.http.put<Article>(`${this.apiUrl}/${articleId}`, articleData).pipe(
-      tap(article => console.log('Article updated')),
+      // tap(article => console.log('Article updated')),
       catchError(this.handleError)
     );
   }
@@ -83,12 +83,12 @@ export class ArticleService {
       map(article => {
         if (article.pdf) {
           const byteArray = new Uint8Array(article.pdf.data);
-          const blob = new Blob([byteArray], { type: article.pdf.type });
+          const blob = new Blob([byteArray], { type: 'application/pdf' });
           article.pdf_url = URL.createObjectURL(blob);
         }
         return article;
       }),
-      tap(article => console.log('Article loaded')),
+      // tap(article => console.log('Article loaded')),
       catchError(this.handleError)
     );
   }

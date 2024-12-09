@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 //Servicios
 import { ArticleService } from '../../../../core/services/article.service';
 import { ArticleCategoryService } from '../../../../core/services/article-category.service';
@@ -31,7 +33,9 @@ export class VistaArticuloComponent implements OnInit {
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   errorMessage: string | null = null;
 
-  activeTab: 'contenido' | 'coautores' = 'contenido'; // Tab activa
+  safePdfUrl: SafeResourceUrl = '';
+
+  activeTab: 'contenido' | 'coautores' | 'pdf' = 'contenido'; // Tab activa
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +43,8 @@ export class VistaArticuloComponent implements OnInit {
     private articleCategoryService: ArticleCategoryService,
     private articleCoauthorService: ArticleCoauthorService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +74,8 @@ export class VistaArticuloComponent implements OnInit {
     this.articleService.getArticleById(ArtId).subscribe({
       next: (article: Article) => {
         this.article = article;
+
+        this.safePdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(article.pdf_url || '');
         this.loadCategoriesForArticle(article.id);
         this.loadCoauthorsForArticle(article.id);
       },
@@ -101,12 +108,18 @@ export class VistaArticuloComponent implements OnInit {
     });
   }
 
-  setActiveTab(tab: 'contenido' | 'coautores'): void {
+  setActiveTab(tab: 'contenido' | 'coautores' | 'pdf'): void {
     this.activeTab = tab;
   }
 
   viewProfile(userId: string): void {
     this.router.navigate(['/perfil', userId]);
+  }
+
+  openPdf(): void {
+    if (this.article?.pdf_url) {
+      window.open(this.article.pdf_url, '_blank');
+    }
   }
 
 }

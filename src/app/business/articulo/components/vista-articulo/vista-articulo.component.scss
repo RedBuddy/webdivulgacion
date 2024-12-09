@@ -409,3 +409,19 @@ $link-hover: #0000ff;
     }
   }
 }
+
+.article-pdf-container {
+  margin: 2rem 5rem;
+  display: flex;
+  justify-content: center;
+
+  iframe {
+    width: 80%;
+    height: 60rem;
+  }
+}
+
+.error-message {
+  margin-top: 5rem;
+  text-align: center;
+}

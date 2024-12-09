@@ -1,7 +1,6 @@
 <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 <div class="article-card" *ngIf="article">
-
   <div class="contenedor-izq">
 
     <div class="izq-sup">
@@ -57,7 +56,7 @@
 
     <div class="botones">
       <!-- <button>Estadisticas</button> -->
-      <button>Ver artículo</button>
+      <button (click)="openPdf()">Ver artículo</button>
     </div>
   </div>
 </div>
@@ -66,6 +65,7 @@
   <nav>
     <a (click)="setActiveTab('contenido')" [class.active-link]="activeTab === 'contenido'">Contenido</a>
     <a (click)="setActiveTab('coautores')" [class.active-link]="activeTab === 'coautores'">Coautores</a>
+    <a (click)="setActiveTab('pdf')" [class.active-link]="activeTab === 'pdf'">PDF</a>
   </nav>
 </div>
 
@@ -79,9 +79,6 @@
       <li *ngFor="let category of categories">{{ category.category_name }}</li>
     </ul>
   </div>
-  <!-- <div *ngIf="article?.pdf_url">
-    <a [href]="article?.pdf_url" target="_blank">Ver PDF</a>
-  </div> -->
 </div>
 
 <div class="user-cards-container" *ngIf="activeTab === 'coautores'">
@@ -103,4 +100,13 @@
       <button (click)="viewProfile(coauthor.id.toString())">Ver Perfil</button>
     </div>
   </div>
+</div>
+
+<div class="article-pdf-container" *ngIf="activeTab === 'pdf'">
+  <ng-container *ngIf="article?.pdf_url; else noPdf">
+    <iframe [src]="safePdfUrl" type="application/pdf"></iframe>
+  </ng-container>
+  <ng-template #noPdf>
+    <p class="error-message">No hay PDF disponible para este artículo.</p>
+  </ng-template>
 </div>

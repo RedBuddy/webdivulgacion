@@ -24,7 +24,7 @@ export class ArticleCoauthorService {
         return coauthor;
       })),
       tap(coauthors => {
-        console.log('Coauthors fetched successfully', coauthors);
+        console.log('Coauthors fetched successfully');
       }),
       catchError(this.handleError)
     );
@@ -45,7 +45,7 @@ export class ArticleCoauthorService {
         return coauthor;
       })),
       tap(coauthors => {
-        console.log('Article coauthors fetched successfully', coauthors);
+        console.log('Article coauthors fetched successfully');
       }),
       catchError(this.handleError)
     );
@@ -54,7 +54,7 @@ export class ArticleCoauthorService {
   updateArticleCoauthors(articleId: number, coauthors: number[]): Observable<any> {
     return this.http.put<any>(`${this.articleCoauthorUrl}/${articleId}`, { id_article: articleId, id_coauthors: coauthors }).pipe(
       tap(response => {
-        console.log('Article coauthors updated successfully', response);
+        console.log('Article coauthors updated successfully');
       }),
       catchError(this.handleError)
     );
@@ -63,7 +63,7 @@ export class ArticleCoauthorService {
   addArticleCoauthor(articleId: number, coauthorId: number): Observable<any> {
     return this.http.post<any>(this.articleCoauthorUrl, { id_article: articleId, id_coauthor: coauthorId }).pipe(
       tap(response => {
-        console.log('Article coauthor added successfully', response);
+        console.log('Article coauthor added successfully');
       }),
       catchError(this.handleError)
     );
@@ -72,7 +72,7 @@ export class ArticleCoauthorService {
   deleteArticleCoauthor(articleId: number, coauthorId: number): Observable<any> {
     return this.http.delete<any>(`${this.articleCoauthorUrl}/${articleId}`, { body: { id_coauthor: coauthorId } }).pipe(
       tap(response => {
-        console.log('Article coauthor deleted successfully', response);
+        console.log('Article coauthor deleted successfully');
       }),
       catchError(this.handleError)
     );

@@ -10,7 +10,7 @@ import { tap, catchError, switchMap } from 'rxjs/operators';
 
 export class AuthService {
   private login_url: string = 'http://localhost:3000/login';
-  private register_url: string = 'http://localhost:3000/users';
+  private register_url: string = 'http://localhost:3000/register';
   private profile_img_url: string = 'http://localhost:3000/users/profile_img';
   private tokenKey = 'auth_token';
   private refresh_url: string = 'http://localhost:3000/refresh-token';
