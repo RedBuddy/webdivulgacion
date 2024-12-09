@@ -85,5 +85,7 @@ export default class VerificarEmailComponent implements OnInit {
 
   toggleForm(): void {
     this.showVerifyForm = !this.showVerifyForm;
+    this.verificationMessage = null;
+    this.resendMessage = null;
   }
 }

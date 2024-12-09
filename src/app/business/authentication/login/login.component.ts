@@ -40,7 +40,7 @@ export class LoginComponent {
 
         if (err.status === 403) {
           setTimeout(() => {
-            this.errorMessage = 'Seras redirigido a verificación de email en 3 segundos';
+            this.errorMessage = 'Serás redirigido a verificación de email en 3 segundos';
           }, 1000);
           setTimeout(() => {
             this.closeModal.emit();

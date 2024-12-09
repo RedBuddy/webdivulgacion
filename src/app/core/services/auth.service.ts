@@ -10,6 +10,7 @@ import { tap, catchError, switchMap } from 'rxjs/operators';
 
 export class AuthService {
   private login_url: string = 'http://localhost:3000/login';
+  private first_login_url: string = 'http://localhost:3000/login-bypass';
   private register_url: string = 'http://localhost:3000/register';
   private profile_img_url: string = 'http://localhost:3000/users/profile_img';
   private verifyEmailUrl: string = 'http://localhost:3000/verify-email';
@@ -47,9 +48,26 @@ export class AuthService {
     );
   }
 
+  first_login(identifier: string, password: string): Observable<any> {
+    return this.HttpClient.post<any>(this.first_login_url, { identifier, password }).pipe(
+      tap(res => {
+        if (res.token) {
+          this.setToken(res.token);
+          this.setRefreshToken(res.refreshToken);
+          this.autoRefreshToken();
+          this.isAuthenticatedSubject.next(true);
+          this.userRoleSubject.next(this.getUserRole());
+          this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
+          this.router.navigate(['home']);
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   register(formData: FormData): Observable<any> {
     return this.HttpClient.post<any>(this.register_url, formData).pipe(
-      switchMap(res => this.login(formData.get('email') as string, formData.get('password') as string)),
+      switchMap(res => this.first_login(formData.get('email') as string, formData.get('password') as string)),
       tap(res => {
         if (res.token) {
           this.setToken(res.token);

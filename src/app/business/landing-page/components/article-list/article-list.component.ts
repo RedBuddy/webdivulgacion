@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
   templateUrl: './article-list.component.html',
   styleUrls: ['./article-list.component.scss']
 })
+
 export class ArticleListComponent implements OnInit {
   articles: Article[] = [];
   filteredArticles: Article[] = [];

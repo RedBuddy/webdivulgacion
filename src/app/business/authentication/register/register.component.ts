@@ -90,9 +90,8 @@ export class RegisterComponent implements OnInit {
           console.log('Registro exitoso', response);
           this.createProfile();
         },
-        error: (error) => {
-          console.error('Error en el registro', error);
-          this.errorMessage = 'Error en el registro. Por favor, inténtelo de nuevo.';
+        error: (err) => {
+          this.errorMessage = err.message;
         }
       });
     }
@@ -116,9 +115,8 @@ export class RegisterComponent implements OnInit {
         console.log('Perfil creado exitosamente', response);
         this.close();
       },
-      error: (error) => {
-        console.error('Error al crear el perfil', error);
-        this.errorMessage = 'Error al crear el perfil. Por favor, inténtelo de nuevo.';
+      error: (err) => {
+        this.errorMessage = err.message;
       }
     });
   }
