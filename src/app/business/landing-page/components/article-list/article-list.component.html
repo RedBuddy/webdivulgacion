@@ -85,7 +85,7 @@
 </div>
 
 <!-- Paginación -->
-<div class="pagination">
+<div class="pagination" *ngIf="filteredArticles.length > itemsPerPage">
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
   <button *ngFor="let page of [].constructor(Math.ceil(filteredArticles.length / itemsPerPage)); let i = index"
     (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
