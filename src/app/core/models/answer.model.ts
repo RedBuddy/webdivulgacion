@@ -1,14 +1,20 @@
 
-export interface IAnswer {
-  id?: number;
-  id_question: number;
-  body: string;
-  id_user: number;
+export interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  profile_img?: {
+    type: string;
+    data: number[];
+  };
+  profile_img_url?: string;
 }
 
-// Ejemplo de peticion
-const answer1: IAnswer = {
-  id_question: 1,
-  body: 'This is an example answer',
-  id_user: 1
-};
+export interface Answer {
+  id: number;
+  body: string;
+  id_question: number;
+  user: User;
+  created_at: Date;
+  updated_at?: Date;
+}

@@ -5,6 +5,7 @@ import { PreguntaHeaderComponent } from './components/pregunta-header/pregunta-h
 import { PreguntasListComponent } from './components/preguntas-list/preguntas-list.component';
 import { MisPreguntasComponent } from './components/mis-preguntas/mis-preguntas.component';
 import { PreguntaSubirComponent } from './components/pregunta-subir/pregunta-subir.component';
+import { PreguntaDetailComponent } from './components/pregunta-detail/pregunta-detail.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: 'mis-preguntas', component: MisPreguntasComponent },
       { path: 'subir', component: PreguntaSubirComponent }
     ]
-  }
+  },
+  { path: 'detalle/:id', component: PreguntaDetailComponent }
 ];
 
 

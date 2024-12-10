@@ -1,1 +1,62 @@
-<p>pregunta-detail works!</p>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+<div *ngIf="question" class="pregunta-detail-container">
+  <div class="pregunta-header">
+    <div class="author-info" *ngIf="author">
+      <div class="author-img-container">
+        <ng-container *ngIf="author.profile_img_url; else noAuthorImage">
+          <img [src]="author.profile_img_url" alt="Author Image">
+        </ng-container>
+        <ng-template #noAuthorImage>
+          <img src="assets/icons/usuario.png" alt="User">
+        </ng-template>
+      </div>
+      <div>
+        <p>Pregunta por</p>
+        <p class="autor-name">{{ author.first_name }} {{ author.last_name }}</p>
+      </div>
+    </div>
+
+    <h1>{{ question.title }}</h1>
+    <p>{{ question.body }}</p>
+    <p class="pregunta-fecha">Creado el: {{ question.created_at | date }}</p>
+    <!-- Información del autor -->
+
+  </div>
+
+  <div class="respuestas-list">
+    <h2>Respuestas</h2>
+    <div *ngFor="let respuesta of respuestas" class="respuesta-card">
+      <div class="res-author">
+        <div class="author-img-container">
+          <ng-container *ngIf="respuesta.user.profile_img_url; else noAuthorImage">
+            <img [src]="respuesta.user.profile_img_url" alt="Author Image">
+          </ng-container>
+          <ng-template #noAuthorImage>
+            <img src="assets/icons/usuario.png" alt="User">
+          </ng-template>
+        </div>
+        <div>
+          <p>Respuesta por</p>
+          <p class="autor-name">{{ respuesta.user.first_name }} {{ respuesta.user.last_name }}</p>
+        </div>
+      </div>
+      <p class="res-fecha">{{ respuesta.created_at | date }}</p>
+      <p class="res-body">{{ respuesta.body }}</p>
+    </div>
+  </div>
+
+  <div class="respuesta-form">
+    <h2>Responder</h2>
+    <form [formGroup]="respuestaForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="respuesta">Tu respuesta:</label>
+        <textarea id="respuesta" formControlName="body" rows="5" placeholder="Escribe tu respuesta aquí"></textarea>
+        <div *ngIf="respuestaForm.get('body')?.invalid && respuestaForm.get('body')?.touched" class="error-message">
+          La respuesta es requerida.
+        </div>
+      </div>
+      <button type="submit" [disabled]="respuestaForm.invalid">Enviar Respuesta</button>
+    </form>
+  </div>
+</div>

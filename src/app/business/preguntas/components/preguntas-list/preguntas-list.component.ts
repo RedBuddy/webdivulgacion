@@ -137,6 +137,6 @@ export class PreguntasListComponent implements OnInit {
   }
 
   viewQuestion(questionId: number): void {
-    // Navegar a la vista de la pregunta
+    this.router.navigate(['preguntas/detalle', questionId]);
   }
 }
