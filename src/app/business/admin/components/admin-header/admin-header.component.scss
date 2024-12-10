@@ -1,0 +1,63 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+
+header {
+  margin: 3rem 8rem 1rem 8rem;
+  display: flex;
+  justify-content: space-between;
+
+  nav {
+    display: flex;
+    justify-content: left;
+    gap: 5rem;
+
+    a {
+      display: flex;
+      justify-content: center;
+      text-decoration: none;
+      color: $link;
+      transition: color 0.3s;
+      width: 9rem;
+
+      &.active-link {
+        font-weight: bold;
+        color: $link-activo;
+        border-bottom: 0.1rem solid $link-activo;
+      }
+
+      &:hover {
+        color: $hover;
+      }
+    }
+  }
+
+  .derecha {
+    display: flex;
+    gap: 1rem;
+
+    input {
+      border: 1px solid $border;
+      width: 16rem;
+      padding: 0.2rem 0.625rem;
+      border-radius: 0.2rem;
+    }
+
+    button {
+      background-color: $btn;
+      color: white;
+      padding: 0.2rem 0.625rem;
+      border: none;
+      border-radius: 0.2rem;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: $btn-hover;
+      }
+    }
+  }
+}

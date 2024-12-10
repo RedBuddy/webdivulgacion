@@ -52,7 +52,10 @@ export const routes: Routes = [
         path: 'verificar-email',
         loadComponent: () => import('./business/authentication/verificar-email/verificar-email.component'),
       },
-
+      {
+        path: 'admin',
+        loadChildren: () => import('./business/admin/admin.module').then(m => m.AdminModule),
+      },
       // {
       //   path: 'config',
       //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),
