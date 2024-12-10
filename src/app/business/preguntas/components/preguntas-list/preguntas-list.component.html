@@ -1,7 +1,7 @@
 <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 <div class="cards-container">
-  <div class="question-card" *ngFor="let question of questions" class="question-card">
+  <div class="question-card" *ngFor="let question of paginatedQuestions" class="question-card">
     <div class="contenedor-izq">
       <div class="izq-sup">
         <div class="card-header">
@@ -49,4 +49,13 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Paginación -->
+  <div class="pagination" *ngIf="filteredQuestions.length > itemsPerPage">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+    <button *ngFor="let page of [].constructor(Math.ceil(filteredQuestions.length / itemsPerPage)); let i = index"
+      (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+    <button (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === Math.ceil(filteredQuestions.length / itemsPerPage)">Siguiente</button>
   </div>

@@ -173,3 +173,31 @@ $texto: #333;
     }
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+
+  button {
+    margin: 0 0.2rem;
+    padding: 0.3rem 0.7rem;
+    border: none;
+    // background-color: #007bff;
+    color: $texto;
+    cursor: pointer;
+    border-radius: 0.25rem;
+
+    &:disabled {
+      // background-color: #cccccc50;
+      // cursor: not-allowed;
+      display: none;
+    }
+
+    &.active {
+      border: 2px solid $btn-hover;
+      color: black;
+      background-color: white;
+    }
+  }
+}

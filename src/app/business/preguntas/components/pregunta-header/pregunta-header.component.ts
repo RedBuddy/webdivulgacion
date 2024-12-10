@@ -43,13 +43,13 @@ export class PreguntaHeaderComponent {
     this.router.navigate(['preguntas/subir']);
   }
 
-  searchArticles(): void {
+  searchPreguntas(): void {
     const searchValue = this.searchControl.value;
     const currentRoute = this.router.url.split('?')[0];
-    if (currentRoute.includes('mis-articulos')) {
-      this.router.navigate(['mis-publicaciones/mis-articulos'], { queryParams: { search: searchValue }, queryParamsHandling: 'merge' });
-    } else if (currentRoute.includes('mis-proyectos')) {
-      this.router.navigate(['mis-publicaciones/mis-proyectos'], { queryParams: { search: searchValue }, queryParamsHandling: 'merge' });
+    if (currentRoute.includes('lista')) {
+      this.router.navigate(['preguntas/lista'], { queryParams: { search: searchValue }, queryParamsHandling: 'merge' });
+    } else if (currentRoute.includes('mis-preguntas')) {
+      this.router.navigate(['preguntas/mis-preguntas'], { queryParams: { search: searchValue }, queryParamsHandling: 'merge' });
     }
   }
 

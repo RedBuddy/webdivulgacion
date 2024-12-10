@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+//Servicios
 import { QuestionService } from '../../../../core/services/question.service';
 import { QuestionCategoryService } from '../../../../core/services/question-category.service';
 import { CategoryService } from '../../../../core/services/category.service';
+import { AuthService } from '../../../../core/services/auth.service';
+//Modelos
 import { Question } from '../../../../core/models/question.model';
 import { ICategory } from '../../../../core/models/category.model';
-import { CommonModule } from '@angular/common';
 import { Author } from '../../../../core/models/author.model';
-import { AuthService } from '../../../../core/services/auth.service';
+
 
 @Component({
   selector: 'app-mis-preguntas',
@@ -18,21 +23,46 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 export class MisPreguntasComponent implements OnInit {
   questions: Question[] = [];
+  filteredQuestions: Question[] = [];
   authors: { [key: number]: Author } = {};
   categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por pregunta
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   errorMessage: string | null = null;
+  searchControl: FormControl = new FormControl('');
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  Math = Math;
 
   constructor(
     private questionService: QuestionService,
     private questionCategoryService: QuestionCategoryService,
     private categoryService: CategoryService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loadAllCategories();
     this.loadQuestions();
+
+    this.route.queryParams.subscribe(params => {
+      const search = params['search'] || '';
+      this.searchControl.setValue(search, { emitEvent: false });
+      this.filterQuestions(search);
+      this.currentPage = 1;
+    });
+
+    this.searchControl.valueChanges.subscribe(value => {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: value },
+        queryParamsHandling: 'merge'
+      });
+      this.filterQuestions(value);
+    });
   }
 
   loadAllCategories(): void {
@@ -62,6 +92,7 @@ export class MisPreguntasComponent implements OnInit {
           return
         }
         this.questions = questions;
+        this.filteredQuestions = questions;
         this.questions.forEach(question => {
           this.loadAuthorForQuestion(question.id);
           this.loadCategoriesForQuestion(question.id);
@@ -95,6 +126,26 @@ export class MisPreguntasComponent implements OnInit {
         console.error('Error loading categories for question', err);
       }
     });
+  }
+
+  filterQuestions(searchText: string): void {
+    if (!searchText) {
+      this.filteredQuestions = this.questions;
+    } else {
+      this.filteredQuestions = this.questions.filter(question =>
+        question.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+  }
+
+  get paginatedQuestions(): Question[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredQuestions.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 
   viewQuestion(questionId: number): void {

@@ -4,7 +4,7 @@
     <a routerLink="mis-preguntas" routerLinkActive="active-link">Mis preguntas</a>
   </nav>
   <div class="derecha">
-    <input type="text" placeholder="Buscar preguntas...">
+    <input (input)="searchPreguntas()" type="text" [formControl]="searchControl" placeholder="Buscar preguntas...">
     <button (click)="navigateToPublish()"><i class="bi bi-question-circle"></i> Hacer pregunta</button>
   </div>
 </header>
