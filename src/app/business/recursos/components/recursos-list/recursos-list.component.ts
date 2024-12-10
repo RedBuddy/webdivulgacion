@@ -18,6 +18,10 @@ export class RecursosListComponent implements OnInit {
   filteredResources: Resource[] = [];
   authors: { [key: number]: Author } = {}; // Mapa de autores por recurso
   errorMessage: string | null = null;
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  Math = Math;
 
   constructor(private resourceService: ResourceService, private route: ActivatedRoute) { }
 
@@ -60,5 +64,15 @@ export class RecursosListComponent implements OnInit {
     if (resource.pdf_url) {
       window.open(resource.pdf_url, '_blank');
     }
+  }
+
+  get paginatedResources(): Resource[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredResources.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 }
