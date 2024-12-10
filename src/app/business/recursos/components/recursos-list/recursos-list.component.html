@@ -1,0 +1,36 @@
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+<div class="cards-container">
+  <div *ngFor="let resource of filteredResources" class="resource-card">
+    <div class="contenedor-izq">
+      <div class="card-header">
+        <div class="author-info" *ngIf="authors[resource.id]">
+          <div class="author-img-container">
+            <ng-container *ngIf="authors[resource.id].profile_img_url; else noAuthorImage">
+              <img [src]="authors[resource.id].profile_img_url" alt="Author Image">
+            </ng-container>
+            <ng-template #noAuthorImage>
+              <img src="assets/icons/usuario.png" alt="User">
+            </ng-template>
+          </div>
+          <div>
+            <p>{{ resource.resource_category }} por</p>
+            <p class="autor-name">{{ authors[resource.id].first_name }} {{ authors[resource.id].last_name }}</p>
+          </div>
+        </div>
+      </div>
+      <h2 class="titulo">{{ resource.title }}</h2>
+      <p class="descripcion">{{ resource.description }}</p>
+      <p class="fecha">Publicado el: {{ resource.publication_date | date }}</p>
+    </div>
+    <div class="contenedor-der">
+      <div class="resource-version">
+        <p class="fecha">{{ resource.publication_date | date }}</p>
+      </div>
+      <div class="botones">
+        <a class="btn" *ngIf="resource.link" [href]="resource.link" target="_blank">Ver Enlace</a>
+        <button class="btn" *ngIf="resource.pdf_url" (click)="openPdf(resource)">Ver PDF</button>
+      </div>
+    </div>
+  </div>
+</div>

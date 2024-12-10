@@ -19,7 +19,7 @@ export const routes: Routes = [
       },
       {
         path: 'recursos',
-        loadComponent: () => import('./business/recursos/components/recursos-header/recursos-header.component'),
+        loadChildren: () => import('./business/recursos/recursos.module').then(m => m.RecursosModule),
         //canActivate: [authGuard]
       },
       {
