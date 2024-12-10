@@ -8,7 +8,7 @@ $border: #d1d1ccd1;
 $texto: #333;
 
 .cards-container {
-  margin: 3rem 8rem;
+  margin: 1.5rem 8rem 3rem 8rem;
 }
 
 .article-card {
@@ -239,6 +239,32 @@ $texto: #333;
       border: 2px solid $btn-hover;
       color: black;
       background-color: white;
+    }
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 3rem 8rem 0rem 8rem;
+
+  label {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  select {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid $border;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: $btn-hover;
     }
   }
 }

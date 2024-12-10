@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-filtro',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './filtro.component.html',
   styleUrls: ['./filtro.component.scss']
 })
@@ -40,6 +40,7 @@ export class FiltroComponent implements OnInit {
   Math = Math;
 
   searchControl: FormControl = new FormControl('');
+  sortControl: FormControl = new FormControl('recent');
 
   // Paginación
   currentPage: number = 1;
@@ -64,6 +65,9 @@ export class FiltroComponent implements OnInit {
         this.searchControl.setValue(this.searchText, { emitEvent: false });
         this.filterUsers(this.searchText);
         this.filterArticles(this.searchText);
+        this.sortControl.valueChanges.subscribe(value => {
+          this.sortArticles(value);
+        });
       }
     });
   }
@@ -102,12 +106,13 @@ export class FiltroComponent implements OnInit {
   filterArticles(searchString: string): void {
     this.fitroService.filterArticles(searchString).subscribe({
       next: (articles: Article[]) => {
-        this.filteredArticles = articles;
+        this.filteredArticles = articles.filter(article => article.status !== 'archived');
         this.filteredArticles.forEach(article => {
           // this.loadCategoriesForArticle(article.id);
           this.loadCoauthorsForArticle(article.id);
           this.loadAuthorForArticle(article.id);
         });
+        this.sortArticles(this.sortControl.value); // Ordenar artículos al cargar
         this.paginateArticles();
         this.errorMessage = null;
       },
@@ -150,6 +155,15 @@ export class FiltroComponent implements OnInit {
         console.error('Error loading author for article', err);
       }
     });
+  }
+
+  sortArticles(sortOption: string): void {
+    if (sortOption === 'recent') {
+      this.filteredArticles.sort((a, b) => new Date(b.publication_date).getTime() - new Date(a.publication_date).getTime());
+    } else if (sortOption === 'oldest') {
+      this.filteredArticles.sort((a, b) => new Date(a.publication_date).getTime() - new Date(b.publication_date).getTime());
+    }
+    this.paginateArticles();
   }
 
   clearResults(): void {

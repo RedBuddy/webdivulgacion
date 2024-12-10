@@ -1,3 +1,11 @@
+<div class="filters">
+  <label for="sort">Ordenar por:</label>
+  <select id="sort" [formControl]="sortControl">
+    <option value="recent">Más recientes</option>
+    <option value="oldest">Más antiguos</option>
+  </select>
+</div>
+
 <div class="cards-container">
   <div class="article-card" *ngFor="let article of paginatedArticles">
 

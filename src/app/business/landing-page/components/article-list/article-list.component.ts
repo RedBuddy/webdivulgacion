@@ -27,6 +27,7 @@ export class ArticleListComponent implements OnInit {
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   authors: { [key: number]: Author } = {}; // Mapa de autores por artículo
   searchControl: FormControl = new FormControl('');
+  sortControl: FormControl = new FormControl('recent'); // Control para el select de ordenamiento
   //Paginación
   currentPage: number = 1;
   itemsPerPage: number = 5;
@@ -45,6 +46,9 @@ export class ArticleListComponent implements OnInit {
     this.loadAllArticles();
     this.searchControl.valueChanges.subscribe(value => {
       this.filterArticles(value);
+    });
+    this.sortControl.valueChanges.subscribe(value => {
+      this.sortArticles(value);
     });
   }
 
@@ -72,6 +76,7 @@ export class ArticleListComponent implements OnInit {
           this.loadCategoriesForArticle(article.id);
           this.loadAuthorForArticle(article.id);
         });
+        this.sortArticles(this.sortControl.value); // Ordenar artículos al cargar
       },
       error: (err) => {
         console.error('Error loading articles', err);
@@ -119,6 +124,15 @@ export class ArticleListComponent implements OnInit {
       this.filteredArticles = this.articles.filter(article =>
         article.title.toLowerCase().includes(searchText.toLowerCase())
       );
+    }
+    this.sortArticles(this.sortControl.value); // Ordenar artículos después de filtrar
+  }
+
+  sortArticles(sortOption: string): void {
+    if (sortOption === 'recent') {
+      this.filteredArticles.sort((a, b) => new Date(b.publication_date).getTime() - new Date(a.publication_date).getTime());
+    } else if (sortOption === 'oldest') {
+      this.filteredArticles.sort((a, b) => new Date(a.publication_date).getTime() - new Date(b.publication_date).getTime());
     }
   }
 

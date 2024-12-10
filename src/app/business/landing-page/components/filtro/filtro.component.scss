@@ -418,3 +418,29 @@ header {
   }
 }
 // marca para ver avance
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 1rem;
+
+  label {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  select {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid $border;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: $btn-hover;
+    }
+  }
+}
