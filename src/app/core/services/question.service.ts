@@ -45,8 +45,8 @@ export class QuestionService {
     );
   }
 
-  deleteQuestion(questionId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${questionId}`).pipe(
+  disableQuestion(questionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/disable/${questionId}`).pipe(
       catchError(this.handleError)
     );
   }

@@ -29,6 +29,7 @@ export class MisPreguntasComponent implements OnInit {
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   errorMessage: string | null = null;
   searchControl: FormControl = new FormControl('');
+  questionToDelete: Question | null = null; // Pregunta a eliminar
 
   // Paginación
   currentPage: number = 1;
@@ -91,8 +92,8 @@ export class MisPreguntasComponent implements OnInit {
           this.errorMessage = 'No tienes preguntas publicadas.';
           return
         }
-        this.questions = questions;
-        this.filteredQuestions = questions;
+        this.questions = questions.filter(question => question.active); // Filtrar solo preguntas activas
+        this.filteredQuestions = this.questions;
         this.questions.forEach(question => {
           this.loadAuthorForQuestion(question.id);
           this.loadCategoriesForQuestion(question.id);
@@ -150,5 +151,30 @@ export class MisPreguntasComponent implements OnInit {
 
   viewQuestion(questionId: number): void {
     this.router.navigate(['preguntas/detalle', questionId]);
+  }
+
+  confirmDelete(question: Question): void {
+    this.questionToDelete = question;
+  }
+
+  deleteQuestion(): void {
+    if (this.questionToDelete) {
+      this.questionService.disableQuestion(this.questionToDelete.id).subscribe({
+        next: () => {
+          this.questions = this.questions.filter(question => question.id !== this.questionToDelete!.id);
+          this.filteredQuestions = this.filteredQuestions.filter(question => question.id !== this.questionToDelete!.id);
+          this.questionToDelete = null;
+        },
+        error: (err) => {
+          console.error('Error deleting question', err);
+          this.errorMessage = 'Error al eliminar la pregunta.';
+          this.questionToDelete = null;
+        }
+      });
+    }
+  }
+
+  cancelDelete(): void {
+    this.questionToDelete = null;
   }
 }

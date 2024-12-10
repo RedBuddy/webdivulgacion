@@ -79,8 +79,8 @@ export class PreguntasListComponent implements OnInit {
   loadQuestions(): void {
     this.questionService.getAllQuestions().subscribe({
       next: (questions: Question[]) => {
-        this.questions = questions;
-        this.filteredQuestions = questions;
+        this.questions = questions.filter(question => question.active); // Filtrar solo preguntas activas
+        this.filteredQuestions = this.questions;
         this.questions.forEach(question => {
           this.loadAuthorForQuestion(question.id);
           this.loadCategoriesForQuestion(question.id);
