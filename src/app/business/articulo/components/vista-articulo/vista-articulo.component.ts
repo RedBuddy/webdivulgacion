@@ -82,8 +82,7 @@ export class VistaArticuloComponent implements OnInit {
         this.loadAuthorForArticle(article.id);
       },
       error: (err) => {
-        console.error('Error loading article', err);
-        this.errorMessage = 'Error al cargar el artículo.';
+        this.errorMessage = err.message;
       }
     });
   }

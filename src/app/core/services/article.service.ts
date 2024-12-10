@@ -101,14 +101,12 @@ export class ArticleService {
     let errorMessage = 'Algo salió mal, intenta de nuevo.';
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `${error.error.message}`;
     } else {
       // Error del lado del servidor
-      if (error.error && error.error.message) {
-        errorMessage = `Error: ${error.error.message}`;
-      }
+      errorMessage = error.error.message || 'Error del servidor';
     }
     console.error('An error occurred:', errorMessage);
-    return throwError(errorMessage);
+    return throwError({ status: error.status, message: errorMessage });
   }
 }
