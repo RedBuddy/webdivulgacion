@@ -25,7 +25,7 @@ export const routes: Routes = [
       {
         path: 'investigadores',
         loadComponent: () => import('./business/investigadores/components/investigadores-list/investigadores-list.component'),
-        canActivate: [authGuard]
+        // canActivate: [authGuard]
       },
       {
         path: 'contacto',
