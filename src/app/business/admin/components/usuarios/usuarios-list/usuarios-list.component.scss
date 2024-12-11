@@ -1,0 +1,147 @@
+$color-logo: #02182b;
+$hover: #635252;
+$btn: #003b5c;
+$btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+
+.table-container {
+  margin: 1rem 8rem 2rem 8rem;
+}
+
+.usuarios-table {
+  width: 100%;
+  font-size: 1rem;
+  text-align: left;
+  border: 0.2rem solid #ddd;
+
+  th,
+  td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #e7e2e2;
+  }
+
+  .img-container {
+    border: 0.1rem solid;
+    border-radius: 50%;
+    overflow: hidden; // Oculta el overflow de la imagen
+    width: 2.7rem;
+    height: 2.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; // Asegura que la imagen se ajuste bien al contenedor
+      cursor: pointer;
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 0.2rem;
+    box-sizing: border-box;
+  }
+
+  select {
+    width: 100%;
+    padding: 0.35rem;
+    box-sizing: border-box;
+  }
+
+  button {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &:last-child {
+      background-color: #dc3545;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+
+  button {
+    margin: 0 0.2rem;
+    padding: 0.3rem 0.7rem;
+    border: none;
+    color: $texto;
+    cursor: pointer;
+    border-radius: 0.25rem;
+
+    &:disabled {
+      display: none;
+    }
+
+    &.active {
+      border: 2px solid $btn-hover;
+      color: black;
+      background-color: white;
+    }
+  }
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.success-message {
+  color: #28a745;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin: 0rem 8rem 0rem 8rem;
+
+  input {
+    padding: 0.3rem 0.5rem;
+    width: 20%;
+    border: 1px solid $border;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: $btn-hover;
+    }
+  }
+}

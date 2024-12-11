@@ -1,1 +1,50 @@
-<p>categorias-list works!</p>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+<div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+<div class="filters">
+  <!-- Formulario para agregar nueva categoría -->
+  <div class="add-category-form">
+    <h3>Agregar Categoría:</h3>
+    <form [formGroup]="addForm" (ngSubmit)="addCategory()">
+      <!-- <label for="category_name">Agregar categoría:</label> -->
+      <input id="category_name" formControlName="category_name">
+      <button type="submit" [disabled]="addForm.invalid">Agregar</button>
+    </form>
+  </div>
+
+  <input id="search" type="text" [formControl]="searchControl" placeholder="Buscar categorías...">
+</div>
+
+<div class="table-container">
+  <table class="categorias-table">
+    <thead>
+      <tr>
+        <th>Nombre de Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of paginatedCategories">
+        <td *ngIf="editingCategoryId !== category.id">{{ category.category_name }}</td>
+        <td *ngIf="editingCategoryId === category.id" [formGroup]="editForm">
+          <input formControlName="category_name">
+        </td>
+        <td>
+          <button *ngIf="editingCategoryId !== category.id" (click)="startEditing(category)">Editar</button>
+          <button *ngIf="editingCategoryId === category.id" (click)="saveCategory()">Guardar</button>
+          <button *ngIf="editingCategoryId === category.id" (click)="cancelEditing()">Cancelar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Paginación -->
+<div class="pagination" *ngIf="categories.length > itemsPerPage">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+  <button *ngFor="let page of [].constructor(Math.ceil(categories.length / itemsPerPage)); let i = index"
+    (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+  <button (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === Math.ceil(categories.length / itemsPerPage)">Siguiente</button>
+</div>

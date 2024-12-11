@@ -3,13 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../core/services/auth.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, delay, switchMap } from 'rxjs/operators';
-import { IUser } from '../../../core/models/user.model';
+import { IUser, IUser_data } from '../../../core/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
-  private userUrl = 'http://localhost:3000/users';
+  private userUrl = 'http://localhost:3000/user_data';
   private userUpdateUrl = 'http://localhost:3000/user_update';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
@@ -30,23 +30,18 @@ export class ConfigService {
       formData.append('profile_img', profileImg, 'profile_img');
     }
 
-    // Ver el contenido de FormData
-    // for (const [key, value] of (formData as any).entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
-
     return this.http.put<any>(`${this.userUpdateUrl}/${userId}`, formData).pipe(
       switchMap(() => this.authService.first_login(user.email, currentPassword)), // Re-login después de la actualización
       catchError(this.handleError)
     );
   }
 
-  getUser(): Observable<IUser> {
+  getUser(): Observable<IUser_data> {
     const userId = this.authService.getUserIdFromToken();
     if (userId === null) {
       return throwError('User ID not found in token');
     }
-    return this.http.get<IUser>(`${this.userUrl}/${userId}`).pipe(
+    return this.http.get<IUser_data>(`${this.userUrl}/${userId}`).pipe(
       catchError(this.handleError)
     );
   }

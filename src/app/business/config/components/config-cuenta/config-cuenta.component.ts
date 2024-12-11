@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from '../../services/config.service'; // Asegúrate de que la ruta sea correcta
-import { IUser } from '../../../../core/models/user.model'; // Asegúrate de que la ruta sea correcta
+import { IUser, IUser_data } from '../../../../core/models/user.model'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-config-cuenta',
@@ -36,7 +36,7 @@ export class ConfigCuentaComponent implements OnInit {
 
   loadUserData(): void {
     this.configService.getUser().subscribe({
-      next: (user: IUser) => {
+      next: (user: IUser_data) => {
         this.accountForm.patchValue({
           first_name: user.first_name,
           last_name: user.last_name,

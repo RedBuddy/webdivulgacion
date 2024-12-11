@@ -1,1 +1,90 @@
-<p>usuarios-list works!</p>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+<div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+<div class="filters">
+  <input id="search" type="text" [formControl]="searchControl" placeholder="Buscar usuarios...">
+</div>
+
+<div class="table-container">
+  <table class="usuarios-table">
+    <thead>
+      <tr>
+        <th>Imagen</th>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Verificado</th>
+        <th>Status</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of paginatedUsers">
+        <td>
+          <div class="img-container">
+            <img *ngIf="user.profile_img_url; else noImage" [src]="user.profile_img_url" alt="User Image">
+            <ng-template #noImage>
+              <img src="assets/icons/usuario.png" alt="User">
+            </ng-template>
+          </div>
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ user.username }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <input formControlName="username" readonly>
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ user.first_name }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <input formControlName="first_name">
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ user.last_name }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <input formControlName="last_name">
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ user.email }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <input formControlName="email">
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ getRoleName(user.role_id) }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <select formControlName="role_id">
+            <option value="1">Lector</option>
+            <option value="2">Autor</option>
+            <option value="3">Editor</option>
+            <option value="4">Admin</option>
+          </select>
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ user.verified ? 'Sí' : 'No' }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <select formControlName="verified">
+            <option [value]="true">Sí</option>
+            <option [value]="false">No</option>
+          </select>
+        </td>
+        <td *ngIf="editingUserId !== user.id">{{ user.status === 'active' ? 'Activo' : 'Inactivo' }}</td>
+        <td *ngIf="editingUserId === user.id" [formGroup]="editForm">
+          <select formControlName="status">
+            <option value="active">Activo</option>
+            <option value="inactive">Inactivo</option>
+          </select>
+        </td>
+        <td>
+          <button *ngIf="editingUserId !== user.id" (click)="startEditing(user)">Editar</button>
+          <button *ngIf="editingUserId === user.id" (click)="saveUser()">Guardar</button>
+          <button *ngIf="editingUserId === user.id" (click)="cancelEditing()">Cancelar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Paginación -->
+<div class="pagination" *ngIf="users.length > itemsPerPage">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+  <button *ngFor="let page of [].constructor(Math.ceil(users.length / itemsPerPage)); let i = index"
+    (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+  <button (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === Math.ceil(users.length / itemsPerPage)">Siguiente</button>
+</div>
