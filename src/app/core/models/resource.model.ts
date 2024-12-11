@@ -3,7 +3,7 @@ export interface Resource {
   id_author: number;
   resource_category: 'guias' | 'talleres' | 'convocatorias';
   title: string;
-  description?: string;
+  description: string;
   link?: string;
   pdf?: {
     type: string;

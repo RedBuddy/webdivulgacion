@@ -57,6 +57,25 @@ export class ResourceService {
     );
   }
 
+  createResource(resourceData: FormData): Observable<Resource> {
+    return this.http.post<Resource>(this.apiUrl, resourceData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateResource(resourceId: number, resourceData: FormData): Observable<Resource> {
+    return this.http.put<Resource>(`${this.apiUrl}/${resourceId}`, resourceData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteResource(resourceId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${resourceId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Algo salió mal, intenta de nuevo.';
     if (error.error instanceof ErrorEvent) {

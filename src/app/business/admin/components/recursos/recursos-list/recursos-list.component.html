@@ -1,1 +1,68 @@
-<p>recursos-list works!</p>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+<div class="filters">
+  <select id="category" [formControl]="categoryControl">
+    <option value="">Todos</option>
+    <option value="guias">Guías</option>
+    <option value="talleres">Talleres</option>
+    <option value="convocatorias">Convocatorias</option>
+  </select>
+  <input id="search" type="text" [formControl]="searchControl" placeholder="Buscar recursos...">
+  <button (click)="navigateToPublish()"><i class="bi bi-file-earmark-plus"></i> Nuevo</button>
+</div>
+
+<div class="cards-container">
+  <div *ngFor="let resource of paginatedResources" class="resource-card">
+    <div class="contenedor-izq">
+      <div class="card-header">
+        <div class="author-info" *ngIf="authors[resource.id]">
+          <div class="author-img-container">
+            <ng-container *ngIf="authors[resource.id].profile_img_url; else noAuthorImage">
+              <img [src]="authors[resource.id].profile_img_url" alt="Author Image">
+            </ng-container>
+            <ng-template #noAuthorImage>
+              <img src="assets/icons/usuario.png" alt="User">
+            </ng-template>
+          </div>
+          <div>
+            <p>{{ resource.resource_category }} por</p>
+            <p class="autor-name">{{ authors[resource.id].first_name }} {{ authors[resource.id].last_name }}</p>
+          </div>
+        </div>
+      </div>
+      <h2 class="titulo">{{ resource.title }}</h2>
+      <p class="descripcion">{{ resource.description }}</p>
+      <p class="fecha">Publicado el: {{ resource.publication_date | date }}</p>
+    </div>
+    <div class="contenedor-der">
+      <div class="resource-version">
+        <p class="fecha">{{ resource.publication_date | date }}</p>
+      </div>
+      <div class="botones">
+        <button class="btn" (click)="confirmDelete(resource)">Eliminar</button>
+        <button class="btn" (click)="editResource(resource.id)">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div class="modal" *ngIf="resourceToDelete">
+  <div class="modal-content">
+    <h2><i class="bi bi-exclamation-triangle"></i> Confirmar Eliminación</h2>
+    <p>¿Estás seguro de que deseas eliminar este recurso?</p>
+    <div class="modal-buttons">
+      <button (click)="deleteResource()">Sí, eliminar</button>
+      <button (click)="cancelDelete()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Paginación -->
+<div class="pagination" *ngIf="filteredResources.length > itemsPerPage">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Anterior</button>
+  <button *ngFor="let page of [].constructor(Math.ceil(filteredResources.length / itemsPerPage)); let i = index"
+    (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+  <button (click)="changePage(currentPage + 1)"
+    [disabled]="currentPage === Math.ceil(filteredResources.length / itemsPerPage)">Siguiente</button>
+</div>

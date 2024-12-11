@@ -20,7 +20,7 @@ const routes: Routes = [
       // Recursos
       { path: 'recursos', component: RecursosListComponent },
       { path: 'recurso-subir', component: RecursosSubirComponent },
-      { path: 'recurso-editar', component: RecursosEditarComponent },
+      { path: 'recurso-editar/:id', component: RecursosEditarComponent },
       // Usuarios
       { path: 'usuarios', component: UsuariosListComponent },
       // Categorias

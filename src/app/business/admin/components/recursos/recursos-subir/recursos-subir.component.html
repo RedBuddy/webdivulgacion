@@ -1,1 +1,64 @@
-<p>recursos-subir works!</p>
+<header>
+  <i (click)="regresarRouter()" class="bi bi-arrow-left"></i>
+  <nav>
+    <a>Subir Recurso</a>
+  </nav>
+</header>
+
+<div class="container">
+  <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
+    <div class="campo">
+      <label for="title">Título:</label>
+      <textarea id="title" formControlName="title" type="text"></textarea>
+      <div
+        *ngIf="resourceForm.get('title')?.invalid && (resourceForm.get('title')?.dirty || resourceForm.get('title')?.touched)"
+        class="error-message">
+        <div *ngIf="resourceForm.get('title')?.errors?.['required']">El título es requerido.</div>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="description">Descripción:</label>
+      <textarea id="description" formControlName="description" rows="5"
+        placeholder="Ingrese la descripción del recurso"></textarea>
+      <div *ngIf="resourceForm.get('description')?.invalid && resourceForm.get('description')?.touched"
+        class="error-message">
+        La descripción es requerida.
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="resource_category">Categoría del Recurso:</label>
+      <select id="resource_category" formControlName="resource_category">
+        <option value="">Seleccione una categoría</option>
+        <option value="guias">Guías</option>
+        <option value="talleres">Talleres</option>
+        <option value="convocatorias">Convocatorias</option>
+      </select>
+      <div *ngIf="resourceForm.get('resource_category')?.invalid && resourceForm.get('resource_category')?.touched"
+        class="error-message">
+        La categoría del recurso es requerida.
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="link">Enlace:</label>
+      <input id="link" formControlName="link" type="text" placeholder="Ingrese el enlace del recurso">
+    </div>
+
+    <label for="pdf">PDF:</label>
+    <div class="campo subir">
+      <i class="bi bi-file-earmark-arrow-up"></i>
+      <div class="btn-subir">
+        <label for="pdf">{{ selectedPdfName ? selectedPdfName : 'Archivo PDF' }}</label>
+        <input id="pdf" type="file" accept="application/pdf" (change)="onFileChange($event)">
+      </div>
+    </div>
+
+
+    <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+    <button type="submit" [disabled]="resourceForm.invalid">Subir Recurso</button>
+  </form>
+</div>
