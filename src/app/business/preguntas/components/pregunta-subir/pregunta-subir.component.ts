@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ICategory } from '../../../../core/models/category.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { GeminiService } from '../../../../core/services/gemini.service';
 
 @Component({
   selector: 'app-pregunta-subir',
@@ -32,6 +33,7 @@ export class PreguntaSubirComponent implements OnInit {
     private questionService: QuestionService,
     private questionCategoryService: QuestionCategoryService,
     private categoryService: CategoryService,
+    private geminiService: GeminiService,
     private authService: AuthService
   ) {
     this.questionForm = this.fb.group({
@@ -110,11 +112,26 @@ export class PreguntaSubirComponent implements OnInit {
     }, 200); // Retraso para permitir el clic en la lista
   }
 
+  VerifyQuestion(): boolean {
+
+    this.geminiService.verifyQuestion(questionData.title, questionData.body).then((response: any) => {
+      console.log('Respuesta de gemini' + response);
+      if (response === 'false') {
+        this.errorMessage = 'El título o el cuerpo de la pregunta no son válidos.';
+        return;
+      } else {
+        this.successMessage = 'Pregunta creada exitosamente';
+      }
+    });
+
+    return true;
+  }
 
 
   onSubmit(): void {
     if (this.questionForm.valid) {
       const questionData = this.questionForm.value;
+
       questionData.id_user = this.authService.getUserIdFromToken();
       this.questionService.createQuestion(questionData).subscribe({
         next: (response) => {

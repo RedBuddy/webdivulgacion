@@ -88,7 +88,6 @@ export class PreguntasListComponent implements OnInit {
         this.errorMessage = null;
       },
       error: (err) => {
-        console.error('Error loading questions', err);
         this.errorMessage = 'Error al cargar la lista de preguntas.';
       }
     });
