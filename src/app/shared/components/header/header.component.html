@@ -1,12 +1,12 @@
 <header class="navbar" [class.modal-open]="isModalOpen">
   <div class="izquierda">
-    <div routerLink="Inicio" class="logo">
+    <div routerLink="inicio" class="logo">
       <img src="logo.png" alt="Logo">
       <span class="logo-nombre">IngeCiencia</span>
     </div>
 
     <nav class="nav-links">
-      <a routerLink="Inicio" routerLinkActive="active-link">Inicio</a>
+      <a routerLink="inicio" routerLinkActive="active-link">Inicio</a>
       <a *ngIf="isAuthenticated" routerLink="preguntas" routerLinkActive="active-link">Preguntas</a>
       <a routerLink="recursos" routerLinkActive="active-link">Recursos</a>
       <a routerLink="investigadores" routerLinkActive="active-link">Investigadores</a>

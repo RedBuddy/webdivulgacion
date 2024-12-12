@@ -14,8 +14,8 @@ export const routes: Routes = [
       },
       {
         path: 'preguntas',
-        loadChildren: () => import('./business/preguntas/preguntas.module').then(m => m.PreguntasModule)
-        //canActivate: [authGuard]
+        loadChildren: () => import('./business/preguntas/preguntas.module').then(m => m.PreguntasModule),
+        canActivate: [authGuard]
       },
       {
         path: 'recursos',
@@ -30,15 +30,17 @@ export const routes: Routes = [
       {
         path: 'contacto',
         loadChildren: () => import('./business/contacto/contacto.module').then(m => m.ContactoModule),
-        // canActivate: [authGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'config',
-        loadChildren: () => import('./business/config/config.module').then(m => m.ConfigModule)
+        loadChildren: () => import('./business/config/config.module').then(m => m.ConfigModule),
+        canActivate: [authGuard]
       },
       {
         path: 'mis-publicaciones',
-        loadChildren: () => import('./business/publicaciones/publi.module').then(m => m.PubliModule)
+        loadChildren: () => import('./business/publicaciones/publi.module').then(m => m.PubliModule),
+        canActivate: [authGuard]
       },
       {
         path: 'articulo',
@@ -50,30 +52,17 @@ export const routes: Routes = [
       },
       {
         path: 'verificar-email',
-        loadComponent: () => import('./business/authentication/verificar-email/verificar-email.component'),
+        loadComponent: () => import('./business/authentication/verificar-email/verificar-email.component')
       },
       {
         path: 'admin',
         loadChildren: () => import('./business/admin/admin.module').then(m => m.AdminModule),
+        canActivate: [authGuard]
       },
-      // {
-      //   path: 'config',
-      //   loadComponent: () => import('./business/config/components/config-sidebar/config-sidebar.component'),
-      //   children: [
-      //     {
-      //       path: 'cuenta',
-      //       loadComponent: () => import('./business/config/components/config-cuenta/config-cuenta.component')
-      //     },
-      //     {
-      //       path: 'perfil',
-      //       loadComponent: () => import('./business/config/components/config-perfil/config-perfil.component')
-      //     },
-      //     {
-      //       path: 'tema',
-      //       loadComponent: () => import('./business/config/components/config-tema/config-tema.component')
-      //     }
-      //   ]
-      // },
+      {
+        path: 'not-found',
+        loadComponent: () => import('./shared/components/notfound/notfound.component')
+      },
       {
         path: '',
         redirectTo: 'inicio',
@@ -81,13 +70,8 @@ export const routes: Routes = [
       }
     ]
   },
-  // {
-  //   path: 'login',
-  //   loadComponent: () => import('./business/authentication/login/login.component'),
-  //   canActivate: [authenticatedGuard]
-  // },
   {
     path: '**',
-    redirectTo: 'inicio'
+    redirectTo: 'not-found'
   }
 ];
