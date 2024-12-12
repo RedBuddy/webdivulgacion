@@ -54,7 +54,7 @@ export class PreguntaSubirComponent implements OnInit {
 
   //Regresar al router mis publicaciones
   regresarRouter(): void {
-    this.router.navigate(['preguntas']);
+    this.router.navigate(['preguntas/mis-preguntas']);
   }
 
   loadCategories(): void {
@@ -112,19 +112,11 @@ export class PreguntaSubirComponent implements OnInit {
     }, 200); // Retraso para permitir el clic en la lista
   }
 
-  VerifyQuestion(): boolean {
-
-    this.geminiService.verifyQuestion(questionData.title, questionData.body).then((response: any) => {
-      console.log('Respuesta de gemini' + response);
-      if (response === 'false') {
-        this.errorMessage = 'El título o el cuerpo de la pregunta no son válidos.';
-        return;
-      } else {
-        this.successMessage = 'Pregunta creada exitosamente';
-      }
+  VerifyQuestion(): Promise<boolean> {
+    const questionData = this.questionForm.value;
+    return this.geminiService.verifyQuestion(questionData.title, questionData.body).then((response: boolean) => {
+      return response;
     });
-
-    return true;
   }
 
 
@@ -132,28 +124,41 @@ export class PreguntaSubirComponent implements OnInit {
     if (this.questionForm.valid) {
       const questionData = this.questionForm.value;
 
-      questionData.id_user = this.authService.getUserIdFromToken();
-      this.questionService.createQuestion(questionData).subscribe({
-        next: (response) => {
-          const questionId = response.id;
-          this.questionCategoryService.updateQuestionCategories(questionId, this.addedCategories.map(c => c.id)).subscribe({
-            next: () => {
-              this.successMessage = 'Pregunta creada exitosamente';
-              this.errorMessage = null;
-              this.questionForm.reset();
-              this.addedCategories = [];
-              this.filteredCategories = this.categories;
-            },
-            error: (err) => {
-              console.error('Error updating question categories', err);
-              this.errorMessage = 'Error al actualizar las categorías de la pregunta.';
-            }
-          });
-        },
-        error: (err) => {
-          console.error('Error creating question', err);
-          this.errorMessage = 'Error al crear la pregunta.';
+      // Verificar la pregunta con Gemini
+      this.VerifyQuestion().then((isValid) => {
+        if (!isValid) {
+          this.errorMessage = 'El título o el cuerpo de la pregunta no son adecuados.';
+          setTimeout(() => {
+            this.errorMessage = null;
+          }, 3000);
+          return;
         }
+
+        questionData.id_user = this.authService.getUserIdFromToken();
+        this.questionService.createQuestion(questionData).subscribe({
+          next: (response) => {
+            const questionId = response.id;
+            this.questionCategoryService.updateQuestionCategories(questionId, this.addedCategories.map(c => c.id)).subscribe({
+              next: () => {
+                this.successMessage = 'Pregunta creada exitosamente';
+                this.errorMessage = null;
+                this.questionForm.reset();
+                this.addedCategories = [];
+                setTimeout(() => {
+                  this.router.navigate(['preguntas/mis-preguntas']);
+                }, 3000);
+              },
+              error: (err) => {
+                this.errorMessage = 'Error al actualizar las categorías de la pregunta.';
+                console.error('Error al actualizar las categorías de la pregunta:', err);
+              }
+            });
+          },
+          error: (err) => {
+            this.errorMessage = 'Error al crear la pregunta.';
+            console.error('Error al crear la pregunta:', err);
+          }
+        });
       });
     }
   }

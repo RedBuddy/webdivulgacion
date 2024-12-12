@@ -12,12 +12,6 @@ import { Observable, throwError } from 'rxjs';
 })
 export class GeminiService {
   generationConfig = {
-    safetySettings: [
-      {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-    ],
     temperature: 0.9,
     top_p: 1,
     top_k: 32,
@@ -31,15 +25,31 @@ export class GeminiService {
     ...this.generationConfig,
   });
 
-  async verifyQuestion(title: string, body: string): Promise<string> {
-    console.log(title, body);
-    let prompt = `La pregunta con titulo ${title} y cuerpo ${body} es adecuada para una plataforma de divulgación científica? devuelve true o false`;
+  async verifyQuestion(title: string, body: string): Promise<boolean> {
+    let prompt = `La pregunta o discusión con titulo ${title} y cuerpo ${body} es adecuada para una plataforma de divulgación científica? devuelve true o false`;
     try {
       const { response } = await this.#model.generateContent(prompt);
-      return response.text();
+      if (response.text().includes('true')) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
-      console.error('El error es:' + error);
-      return 'An error has occurred. Please try again.';
+      return false;
+    }
+  }
+
+  async verifyAnswer(body: string): Promise<boolean> {
+    let prompt = `La respuesta con cuerpo ${body} es adecuada contiene malas palabras, incitación al odio, o es inadecuada? devuelve true o false`;
+    try {
+      const { response } = await this.#model.generateContent(prompt);
+      if (response.text().includes('true')) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
     }
   }
 

@@ -1,10 +1,8 @@
-<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
 <div *ngIf="question" class="pregunta-detail-container">
   <div class="pregunta-header">
     <div class="author-info" *ngIf="author">
       <div class="author-img-container">
-        <ng-container *ngIf="author.profile_img_url; else noAuthorImage">
+        <ng-container *ngIf="author?.profile_img_url; else noAuthorImage">
           <img [src]="author.profile_img_url" alt="Author Image">
         </ng-container>
         <ng-template #noAuthorImage>
@@ -29,7 +27,7 @@
     <div *ngFor="let respuesta of respuestas" class="respuesta-card">
       <div class="res-author">
         <div class="author-img-container">
-          <ng-container *ngIf="respuesta.user.profile_img_url; else noAuthorImage">
+          <ng-container *ngIf="respuesta.user?.profile_img_url; else noAuthorImage">
             <img [src]="respuesta.user.profile_img_url" alt="Author Image">
           </ng-container>
           <ng-template #noAuthorImage>
@@ -56,6 +54,7 @@
           La respuesta es requerida.
         </div>
       </div>
+      <div *ngIf="errorMessage" class="error-message-2">{{ errorMessage }}</div>
       <button type="submit" [disabled]="respuestaForm.invalid">Enviar Respuesta</button>
     </form>
   </div>

@@ -8,6 +8,7 @@ import { Answer } from '../../../../core/models/answer.model';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Author } from '../../../../core/models/author.model';
+import { GeminiService } from '../../../../core/services/gemini.service';
 
 @Component({
   selector: 'app-pregunta-detail',
@@ -30,6 +31,7 @@ export class PreguntaDetailComponent implements OnInit {
     private fb: FormBuilder,
     private questionService: QuestionService,
     private answerService: AnswerService,
+    private geminiService: GeminiService,
     private authService: AuthService
   ) {
     this.respuestaForm = this.fb.group({
@@ -82,6 +84,14 @@ export class PreguntaDetailComponent implements OnInit {
     });
   }
 
+  VerifyAnswer(): Promise<boolean> {
+    const answerData = this.respuestaForm.value;
+    return this.geminiService.verifyAnswer(answerData.body).then((response: boolean) => {
+      console.log(response);
+      return response;
+    });
+  }
+
   onSubmit(): void {
     if (this.respuestaForm.valid) {
       const body = this.respuestaForm.value.body;
@@ -90,18 +100,30 @@ export class PreguntaDetailComponent implements OnInit {
         this.errorMessage = 'Error al obtener el ID del usuario.';
         return;
       }
-      this.answerService.createAnswer(this.question!.id, userId, body).subscribe({
-        next: (response) => {
-          this.respuestas.push(response);
-          this.respuestaForm.reset();
-          if (this.preguntaId) {
-            this.loadAnswers(parseInt(this.preguntaId, 10));
-          }
-        },
-        error: (err) => {
-          console.error('Error creating answer', err);
-          this.errorMessage = 'Error al enviar la respuesta.';
+
+      // Verificar la respuesta con Gemini
+      this.VerifyAnswer().then((isValid) => {
+        if (!isValid) {
+          this.errorMessage = 'El cuerpo de la respuesta no es adecuado.';
+          setTimeout(() => {
+            this.errorMessage = null;
+          }, 3000);
+          return;
         }
+
+        this.answerService.createAnswer(this.question!.id, userId, body).subscribe({
+          next: (response) => {
+            this.respuestas.push(response);
+            this.respuestaForm.reset();
+            if (this.preguntaId) {
+              this.loadAnswers(parseInt(this.preguntaId, 10));
+            }
+          },
+          error: (err) => {
+            console.error('Error creating answer', err);
+            this.errorMessage = 'Error al enviar la respuesta.';
+          }
+        });
       });
     }
   }
