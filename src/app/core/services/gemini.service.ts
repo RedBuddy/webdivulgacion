@@ -26,10 +26,10 @@ export class GeminiService {
   });
 
   async verifyQuestion(title: string, body: string): Promise<boolean> {
-    let prompt = `La pregunta o discusión con titulo ${title} y cuerpo ${body} es adecuada para una plataforma de divulgación científica? devuelve true o false`;
+    let prompt = `La pregunta o discusión con titulo ${title} y cuerpo ${body} es adecuada para una plataforma de divulgación científica? devuelve true si lo es o false si no lo es.`;
     try {
       const { response } = await this.#model.generateContent(prompt);
-      if (response.text().includes('true')) {
+      if (response.text().toLocaleLowerCase().includes('true')) {
         return true;
       } else {
         return false;
@@ -40,13 +40,28 @@ export class GeminiService {
   }
 
   async verifyAnswer(body: string): Promise<boolean> {
-    let prompt = `La respuesta con cuerpo ${body} es adecuada contiene malas palabras, incitación al odio, o es inadecuada? devuelve true o false`;
+    let prompt = `La respuesta con cuerpo ${body} es apropiada? devuelve true si lo es o false si no lo es.`;
     try {
       const { response } = await this.#model.generateContent(prompt);
-      if (response.text().includes('true')) {
+      console.log(response.text().toLocaleLowerCase());
+      if (response.text().toLocaleLowerCase().includes('true')) {
         return true;
       } else {
         return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async verifyEmail(subject: string, body: string): Promise<boolean> {
+    let prompt = `El email con asunto ${subject} y cuerpo ${body} contiene malas palabras o incitación al odio? devuelve true si lo es o false si no lo es.`;
+    try {
+      const { response } = await this.#model.generateContent(prompt);
+      if (response.text().toLocaleLowerCase().includes('true')) {
+        return false;
+      } else {
+        return true;
       }
     } catch (error) {
       return false;

@@ -66,7 +66,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchFilter(): void {
     const searchValue = this.searchControl.value;
     if (searchValue) {
-      this.router.navigate(['home/filtrar', searchValue]);
+      this.router.navigate(['inicio/filtrar', searchValue]);
     }
   }
 

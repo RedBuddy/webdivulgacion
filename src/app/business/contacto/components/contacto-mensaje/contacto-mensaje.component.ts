@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactEmailService } from '../../../../core/services/contact-email.service';
 import { AuthService } from '../../../../core/services/auth.service';
+import { GeminiService } from '../../../../core/services/gemini.service';
 
 @Component({
   selector: 'app-contacto-mensaje',
@@ -24,6 +25,7 @@ export class ContactoMensajeComponent implements OnInit {
     private fb: FormBuilder,
     private contactEmailService: ContactEmailService,
     private authService: AuthService,
+    private geminiService: GeminiService,
     private router: Router
   ) {
     this.contactForm = this.fb.group({
@@ -38,8 +40,16 @@ export class ContactoMensajeComponent implements OnInit {
     });
 
     if (!this.recipientEmail) {
-      this.router.navigate(['home']);
+      this.router.navigate(['inicio']);
     }
+  }
+
+  VerifyEmail(): Promise<boolean> {
+    const contactData = this.contactForm.value;
+    return this.geminiService.verifyEmail(contactData.subject, contactData.message).then((response: boolean) => {
+      console.log('Respuesta: ' + response);
+      return response;
+    });
   }
 
   onSubmit(): void {
@@ -50,19 +60,31 @@ export class ContactoMensajeComponent implements OnInit {
         this.errorMessage = 'Error al obtener el ID del usuario.';
         return;
       }
-      if (this.recipientEmail) {
-        this.contactEmailService.sendContactMessage(userId, this.recipientEmail, subject, message).subscribe({
-          next: (response) => {
-            this.successMessage = 'Mensaje de contacto enviado exitosamente.';
+
+      this.VerifyEmail().then((isValid) => {
+        if (!isValid) {
+          this.errorMessage = 'El mensaje de contacto contiene contenido inadecuado.';
+          setTimeout(() => {
             this.errorMessage = null;
-          },
-          error: (err) => {
-            // console.error('Error sending contact message', err);
-            this.errorMessage = err.message || 'Error al enviar el mensaje de contacto.';
-            this.successMessage = null;
-          }
-        });
-      }
+          }, 3000);
+          return;
+        }
+
+
+        if (this.recipientEmail) {
+          this.contactEmailService.sendContactMessage(userId, this.recipientEmail, subject, message).subscribe({
+            next: (response) => {
+              this.successMessage = 'Mensaje de contacto enviado exitosamente.';
+              this.errorMessage = null;
+            },
+            error: (err) => {
+              // console.error('Error sending contact message', err);
+              this.errorMessage = err.message || 'Error al enviar el mensaje de contacto.';
+              this.successMessage = null;
+            }
+          });
+        }
+      });
     }
   }
 }

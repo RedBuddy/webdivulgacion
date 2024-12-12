@@ -8,7 +8,7 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/components/layout/layout.component'),
     children: [
       {
-        path: 'home',
+        path: 'inicio',
         loadChildren: () => import('./business/landing-page/landing.module').then(m => m.LandingModule)
         //canActivate: [authGuard]
       },
@@ -76,7 +76,7 @@ export const routes: Routes = [
       // },
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'inicio',
         pathMatch: 'full'
       }
     ]
@@ -88,6 +88,6 @@ export const routes: Routes = [
   // },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'inicio'
   }
 ];

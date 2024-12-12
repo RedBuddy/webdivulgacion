@@ -41,7 +41,7 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
           this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
-          this.router.navigate(['home']);
+          this.router.navigate(['inicio']);
         }
       }),
       catchError(this.handleError)
@@ -58,7 +58,7 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
           this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
-          this.router.navigate(['home']);
+          this.router.navigate(['inicio']);
         }
       }),
       catchError(this.handleError)
@@ -76,7 +76,7 @@ export class AuthService {
           this.isAuthenticatedSubject.next(true);
           this.userRoleSubject.next(this.getUserRole());
           this.fetchUserProfileImage(this.getUserIdFromToken()); // Obtener la imagen del usuario
-          this.router.navigate(['home']);
+          this.router.navigate(['inicio']);
         }
       }),
       catchError(this.handleError)
