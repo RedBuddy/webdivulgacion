@@ -23,7 +23,7 @@
       </button>
     </div>
 
-    <button *ngIf="userRole === 'editor' || userRole === 'admin'" class="btn-publicaciones"
+    <button *ngIf="userRole === 'autor' || userRole === 'editor' || userRole === 'admin'" class="btn-publicaciones"
       routerLink="mis-publicaciones">Mis Publicaciones</button>
 
     <div *ngIf="isAuthenticated" class="user-dropdown">

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { authenticatedGuard } from './core/guards/authenticated.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -40,7 +41,8 @@ export const routes: Routes = [
       {
         path: 'mis-publicaciones',
         loadChildren: () => import('./business/publicaciones/publi.module').then(m => m.PubliModule),
-        canActivate: [authGuard]
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['autor', 'editor', 'admin'] }
       },
       {
         path: 'articulo',
@@ -57,11 +59,16 @@ export const routes: Routes = [
       {
         path: 'admin',
         loadChildren: () => import('./business/admin/admin.module').then(m => m.AdminModule),
-        canActivate: [authGuard]
+        canActivate: [roleGuard],
+        data: { expectedRoles: ['admin'] }
       },
       {
         path: 'not-found',
-        loadComponent: () => import('./shared/components/notfound/notfound.component')
+        loadComponent: () => import('./shared/components/not-found/not-found.component')
+      },
+      {
+        path: 'access-denied',
+        loadComponent: () => import('./shared/components/access-denied/access-denied.component')
       },
       {
         path: '',
