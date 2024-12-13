@@ -4,6 +4,17 @@
     <option value="recent">Más recientes</option>
     <option value="oldest">Más antiguos</option>
   </select>
+
+  <div class="select-categoria">
+    <!-- <label for="categorySearch">Buscar Categoría:</label> -->
+    <input id="categorySearch" [formControl]="categorySearchControl" placeholder="Filtrar por catregoria..."
+      (focus)="onCategorySearchFocus()" (blur)="onCategorySearchBlur()">
+    <ul *ngIf="isCategorySearchFocused && filteredCategories.length > 0" class="filtered-categories-list">
+      <li *ngFor="let category of filteredCategories" (click)="categorySearchControl.setValue(category.category_name)">
+        {{ category.category_name }}
+      </li>
+    </ul>
+  </div>
 </div>
 
 <div class="cards-container">

@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent {
   isVisible = signal(false);
   @Output() closeModal = new EventEmitter<void>();
@@ -31,7 +32,12 @@ export class LoginComponent {
       next: (response) => {
         const token = response.token;
         const payload = JSON.parse(atob(token.split('.')[1]));
-        const role = payload.role;
+        // const role = payload.role;
+
+        this.identifier = '';
+        this.password = '';
+
+        this.errorMessage = ''; // Limpiar el mensaje de error
 
         this.closeModal.emit();
       },

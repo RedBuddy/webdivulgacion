@@ -248,6 +248,7 @@ $texto: #333;
   align-items: center;
   justify-content: left;
   margin: 3rem 8rem 0rem 8rem;
+  gap: 1rem;
 
   label {
     margin-right: 0.5rem;
@@ -265,6 +266,40 @@ $texto: #333;
     &:focus {
       outline: none;
       border-color: $btn-hover;
+    }
+  }
+
+  .select-categoria {
+    position: relative;
+
+    input {
+      width: 25rem;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid $border;
+      border-radius: 0.25rem;
+      font-size: 1rem;
+    }
+
+    .filtered-categories-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      border: 1px solid $border;
+      max-height: 10rem;
+      width: 25rem;
+      overflow-y: auto;
+      position: absolute;
+      background-color: white;
+      z-index: 1000;
+    }
+
+    .filtered-categories-list li {
+      padding: 0.3rem;
+      cursor: pointer;
+    }
+
+    .filtered-categories-list li:hover {
+      background-color: #f0f0f0;
     }
   }
 }

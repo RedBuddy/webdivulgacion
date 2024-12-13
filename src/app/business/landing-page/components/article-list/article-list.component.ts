@@ -22,12 +22,16 @@ import { Router } from '@angular/router';
 export class ArticleListComponent implements OnInit {
   articles: Article[] = [];
   filteredArticles: Article[] = [];
+  selectedCategory: string = 'all';
   coauthors: { [key: number]: ICoauthor[] } = {}; // Mapa de coautores por artículo
   categories: { [key: number]: ICategory[] } = {}; // Mapa de categorías por artículo
   categoryMap: { [key: number]: ICategory } = {}; // Mapa de categorías por ID
   authors: { [key: number]: Author } = {}; // Mapa de autores por artículo
   searchControl: FormControl = new FormControl('');
   sortControl: FormControl = new FormControl('recent'); // Control para el select de ordenamiento
+  categorySearchControl: FormControl = new FormControl(''); // Control para el cuadro de búsqueda de categoría
+  filteredCategories: ICategory[] = [];
+  isCategorySearchFocused: boolean = false; // Variable para rastrear el enfoque del cuadro de búsqueda de categorías
   //Paginación
   currentPage: number = 1;
   itemsPerPage: number = 5;
@@ -45,10 +49,14 @@ export class ArticleListComponent implements OnInit {
     this.loadAllCategories();
     this.loadAllArticles();
     this.searchControl.valueChanges.subscribe(value => {
-      this.filterArticles(value);
+      this.filterArticles();
     });
     this.sortControl.valueChanges.subscribe(value => {
       this.sortArticles(value);
+    });
+    this.categorySearchControl.valueChanges.subscribe(value => {
+      this.filterCategories(value);
+      this.filterArticles();
     });
   }
 
@@ -59,6 +67,7 @@ export class ArticleListComponent implements OnInit {
           map[category.id] = category;
           return map;
         }, {} as { [key: number]: ICategory });
+        this.filteredCategories = Object.values(this.categoryMap); // Inicialmente, todas las categorías están filtradas
       },
       error: (err) => {
         console.error('Error loading categories', err);
@@ -117,15 +126,27 @@ export class ArticleListComponent implements OnInit {
     });
   }
 
-  filterArticles(searchText: string): void {
+  filterArticles(): void {
+    let searchText = this.searchControl.value.toLowerCase();
+    let selectedCategory = this.categorySearchControl.value.toLowerCase();
+
+    this.filteredArticles = this.articles.filter(article => {
+      const matchesSearchText = article.title.toLowerCase().includes(searchText);
+      const matchesCategory = !selectedCategory || this.categories[article.id]?.some(category => category.category_name.toLowerCase().includes(selectedCategory));
+      return matchesSearchText && matchesCategory;
+    });
+
+    this.sortArticles(this.sortControl.value); // Ordenar artículos después de filtrar
+  }
+
+  filterCategories(searchText: string): void {
     if (!searchText) {
-      this.filteredArticles = this.articles;
+      this.filteredCategories = Object.values(this.categoryMap);
     } else {
-      this.filteredArticles = this.articles.filter(article =>
-        article.title.toLowerCase().includes(searchText.toLowerCase())
+      this.filteredCategories = Object.values(this.categoryMap).filter(category =>
+        category.category_name.toLowerCase().includes(searchText.toLowerCase())
       );
     }
-    this.sortArticles(this.sortControl.value); // Ordenar artículos después de filtrar
   }
 
   sortArticles(sortOption: string): void {
@@ -148,5 +169,15 @@ export class ArticleListComponent implements OnInit {
 
   viewArticle(articleId: string): void {
     this.router.navigate(['/articulo', articleId]);
+  }
+
+  onCategorySearchFocus(): void {
+    this.isCategorySearchFocused = true;
+  }
+
+  onCategorySearchBlur(): void {
+    setTimeout(() => {
+      this.isCategorySearchFocused = false;
+    }, 200); // Retraso para permitir el clic en la lista
   }
 }

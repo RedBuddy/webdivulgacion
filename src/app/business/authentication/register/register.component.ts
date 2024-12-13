@@ -87,8 +87,8 @@ export class RegisterComponent implements OnInit {
 
       this.authService.register(formData).subscribe({
         next: (response) => {
-          console.log('Registro exitoso', response);
           this.createProfile();
+          this.registerForm.reset();
         },
         error: (err) => {
           this.errorMessage = err.message;

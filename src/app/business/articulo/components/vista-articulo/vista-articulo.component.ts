@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -19,7 +19,7 @@ import { Author } from '../../../../core/models/author.model';
 @Component({
   selector: 'app-vista-articulo',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './vista-articulo.component.html',
   styleUrl: './vista-articulo.component.scss'
 })
