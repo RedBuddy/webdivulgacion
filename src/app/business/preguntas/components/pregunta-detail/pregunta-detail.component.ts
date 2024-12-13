@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuestionService } from '../../../../core/services/question.service';
 import { Question } from '../../../../core/models/question.model';
@@ -32,6 +32,7 @@ export class PreguntaDetailComponent implements OnInit {
     private questionService: QuestionService,
     private answerService: AnswerService,
     private geminiService: GeminiService,
+    private router: Router,
     private authService: AuthService
   ) {
     this.respuestaForm = this.fb.group({
@@ -90,6 +91,10 @@ export class PreguntaDetailComponent implements OnInit {
       console.log(response);
       return response;
     });
+  }
+
+  viewProfile(userId: string): void {
+    this.router.navigate(['/perfil', userId]);
   }
 
   onSubmit(): void {

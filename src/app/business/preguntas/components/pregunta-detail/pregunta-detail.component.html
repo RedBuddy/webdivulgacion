@@ -1,6 +1,6 @@
 <div *ngIf="question" class="pregunta-detail-container">
   <div class="pregunta-header">
-    <div class="author-info" *ngIf="author">
+    <div class="author-info" *ngIf="author" (click)="viewProfile(author.id.toString())">
       <div class="author-img-container">
         <ng-container *ngIf="author?.profile_img_url; else noAuthorImage">
           <img [src]="author.profile_img_url" alt="Author Image">
@@ -25,7 +25,7 @@
   <div class="respuestas-list">
     <h2>Respuestas</h2>
     <div *ngFor="let respuesta of respuestas" class="respuesta-card">
-      <div class="res-author">
+      <div class="res-author" (click)="viewProfile(respuesta.user.id.toString())">
         <div class="author-img-container">
           <ng-container *ngIf="respuesta.user?.profile_img_url; else noAuthorImage">
             <img [src]="respuesta.user.profile_img_url" alt="Author Image">
