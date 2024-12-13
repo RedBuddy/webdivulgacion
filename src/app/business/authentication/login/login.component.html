@@ -18,6 +18,10 @@
         </div>
       </div>
 
+      <div class="campo">
+        <a (click)="isVisible.set(false)" routerLink="request-password-reset">¿Olvidaste tu contraseña?</a>
+      </div>
+
       <!-- Mostrar el mensaje de error si existe -->
       <div *ngIf="errorMessage" class="error-message"><i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
       </div>

@@ -112,6 +112,7 @@ export class UsuariosListComponent implements OnInit {
           this.errorMessage = null;
           this.editingUserId = null;
           this.editForm.reset();
+          this.loadUsers();
           setTimeout(() => {
             this.successMessage = null;
           }, 2000);

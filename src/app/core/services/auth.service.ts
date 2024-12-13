@@ -15,6 +15,8 @@ export class AuthService {
   private profile_img_url: string = 'http://localhost:3000/users/profile_img';
   private verifyEmailUrl: string = 'http://localhost:3000/verify-email';
   private resentEmailUrl: string = 'http://localhost:3000/resend-verification-email';
+  private requestPasswordResetUrl: string = 'http://localhost:3000/request-password-reset';
+  private resetPasswordUrl: string = 'http://localhost:3000/reset-password';
   private tokenKey = 'auth_token';
   private refresh_url: string = 'http://localhost:3000/refresh-token';
   private RefreshTokenKey = 'refresh_token';
@@ -93,6 +95,18 @@ export class AuthService {
 
   resendVerificationEmail(email: string): Observable<any> {
     return this.HttpClient.post<any>(this.resentEmailUrl, { email }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  requestPasswordReset(email: string): Observable<any> {
+    return this.HttpClient.post(this.requestPasswordResetUrl, { email }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  resetPassword(token: string, new_password: string): Observable<any> {
+    return this.HttpClient.post(this.resetPasswordUrl, { token, new_password }).pipe(
       catchError(this.handleError)
     );
   }

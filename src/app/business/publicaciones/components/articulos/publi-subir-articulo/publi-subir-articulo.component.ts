@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ICategory } from '../../../../../core/models/category.model';
 import { ICoauthor } from '../../../../../core/models/coauthor.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-publi-subir-articulo',
@@ -44,6 +45,7 @@ export class PubliSubirArticuloComponent implements OnInit {
     private categoryService: CategoryService,
     private articleCategoryService: ArticleCategoryService,
     private articleCoauthorService: ArticleCoauthorService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.articleForm = this.fb.group({
@@ -89,10 +91,17 @@ export class PubliSubirArticuloComponent implements OnInit {
   }
 
   loadCoauthors(): void {
+    const userId = this.authService.getUserIdFromToken();
+    if (!userId) {
+      console.error('User ID not found in token');
+      this.errorMessage = 'Error al cargar los coautores.';
+      return;
+    }
+
     this.articleCoauthorService.getCoauthors().subscribe({
       next: (coauthors: ICoauthor[]) => {
-        this.coauthors = coauthors;
-        this.filteredCoauthors = coauthors; // Inicialmente, todos los coautores están filtrados
+        this.coauthors = coauthors.filter(coautor => coautor.id !== userId); // Excluir al usuario actual de la lista de coautores
+        this.filteredCoauthors = this.coauthors; // Inicialmente, todos los coautores están filtrados
       },
       error: (err) => {
         console.error('Error loading coauthors', err);

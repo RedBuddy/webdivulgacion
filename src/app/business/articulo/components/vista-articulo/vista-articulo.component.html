@@ -70,7 +70,8 @@
 
     <div class="botones">
       <!-- <button>Estadisticas</button> -->
-      <button (click)="openPdf()">Ver artículo</button>
+      <a class="btn" *ngIf="article.link" [href]="article.link" target="_blank">Link externo</a>
+      <button class="btn" *ngIf="article.pdf" (click)="openPdf()">Ver documento</button>
     </div>
   </div>
 </div>

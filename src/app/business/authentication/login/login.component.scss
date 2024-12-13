@@ -1,5 +1,13 @@
+$color-logo: #02182b;
+$hover: #635252;
 $btn: #003b5c;
 $btn-hover: #004974;
+$link: #333;
+$link-activo: #5c5b6e;
+$border: #d1d1ccd1;
+$texto: #333;
+$texto-claro: #555;
+$gris: #808080;
 
 .modal {
   display: flex;
@@ -43,12 +51,6 @@ $btn-hover: #004974;
     }
   }
 
-  // .titulo {
-  //   font-size: 1.5rem;
-  //   font-weight: bold;
-  //   text-align: center;
-  // }
-
   .formulario {
     display: flex;
     flex-direction: column;
@@ -68,6 +70,10 @@ $btn-hover: #004974;
       padding: 0.2rem;
       border: 1px solid #ccc;
       border-radius: 0.2rem;
+    }
+
+    a {
+      color: $link;
     }
   }
 

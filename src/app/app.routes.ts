@@ -57,6 +57,14 @@ export const routes: Routes = [
         loadComponent: () => import('./business/authentication/verificar-email/verificar-email.component')
       },
       {
+        path: 'request-password-reset',
+        loadComponent: () => import('./business/authentication/request-pass-reset/request-pass-reset.component')
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () => import('./business/authentication/reset-password/reset-password.component')
+      },
+      {
         path: 'admin',
         loadChildren: () => import('./business/admin/admin.module').then(m => m.AdminModule),
         canActivate: [roleGuard],

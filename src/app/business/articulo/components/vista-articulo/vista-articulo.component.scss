@@ -150,11 +150,11 @@ $link-hover: #0000ff;
     // align-self: flex-end;
     display: flex;
     justify-content: end;
-    // gap: 1rem;
+    gap: 1rem;
     width: 100%;
 
-    button {
-      width: 50%;
+    .btn {
+      // width: 50%;
       // padding: 0.1rem 0.5rem;
       background-color: $btn;
       color: white;
