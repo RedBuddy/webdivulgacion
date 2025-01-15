@@ -10,7 +10,7 @@ import { Author } from '../models/author.model';
 })
 export class ResourceService {
 
-  private apiUrl = 'http://localhost:3000/resources'; // URL base de la API
+  private apiUrl = 'https://api-ingeciencia.onrender.com/resources'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

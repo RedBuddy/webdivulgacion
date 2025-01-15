@@ -10,7 +10,7 @@ import { ICategory } from '../../../core/models/category.model';
 
 export class CategoriasService {
 
-  private apiUrl = 'http://localhost:3000/categories'; // URL base de la API
+  private apiUrl = 'https://api-ingeciencia.onrender.com/categories'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

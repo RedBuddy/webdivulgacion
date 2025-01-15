@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class ContactEmailService {
 
-  private apiUrl = 'http://localhost:3000/contact'; // URL base de la API
+  private apiUrl = 'https://api-ingeciencia.onrender.com/contact'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

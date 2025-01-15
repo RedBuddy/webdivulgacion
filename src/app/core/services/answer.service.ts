@@ -10,7 +10,7 @@ import { Answer } from '../models/answer.model';
 
 export class AnswerService {
 
-  private apiUrl = 'http://localhost:3000/answers';
+  private apiUrl = 'https://api-ingeciencia.onrender.com/answers';
 
   constructor(private http: HttpClient) { }
 

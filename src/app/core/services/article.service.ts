@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class ArticleService {
 
-  private apiUrl = 'http://localhost:3000/articles';
+  private apiUrl = 'https://api-ingeciencia.onrender.com/articles';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

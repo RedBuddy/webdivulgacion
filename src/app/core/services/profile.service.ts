@@ -12,11 +12,11 @@ import { User_filter } from '../models/user_filter.model';
   providedIn: 'root'
 })
 export class ProfileService {
-  private profileUrl = 'http://localhost:3000/profile';
-  private profileCardUrl = 'http://localhost:3000/profile_card';
-  private userAboutUrl = 'http://localhost:3000/profile_about';
-  private authorListUrl = 'http://localhost:3000/authors_profile';
-  private adminListUrl = 'http://localhost:3000/admins_profile';
+  private profileUrl = 'https://api-ingeciencia.onrender.com/profile';
+  private profileCardUrl = 'https://api-ingeciencia.onrender.com/profile_card';
+  private userAboutUrl = 'https://api-ingeciencia.onrender.com/profile_about';
+  private authorListUrl = 'https://api-ingeciencia.onrender.com/authors_profile';
+  private adminListUrl = 'https://api-ingeciencia.onrender.com/admins_profile';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

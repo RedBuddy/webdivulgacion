@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class QuestionCategoryService {
-  private questionCategoryUrl = 'http://localhost:3000/question_categories'; // Base URL del endpoint para las categorías de las preguntas
+  private questionCategoryUrl = 'https://api-ingeciencia.onrender.com/question_categories'; // Base URL del endpoint para las categorías de las preguntas
 
   constructor(private http: HttpClient) { }
 

@@ -9,7 +9,7 @@ import { UserCard } from '../models/profile_card.model';
 })
 export class UserService {
 
-  private apiUrl = 'http://localhost:3000/profile_card';
+  private apiUrl = 'https://api-ingeciencia.onrender.com/profile_card';
 
   constructor(private http: HttpClient) { }
 

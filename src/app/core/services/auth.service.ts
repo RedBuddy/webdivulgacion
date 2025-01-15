@@ -9,16 +9,16 @@ import { tap, catchError, switchMap } from 'rxjs/operators';
 })
 
 export class AuthService {
-  private login_url: string = 'http://localhost:3000/login';
-  private first_login_url: string = 'http://localhost:3000/login-bypass';
-  private register_url: string = 'http://localhost:3000/register';
-  private profile_img_url: string = 'http://localhost:3000/users/profile_img';
-  private verifyEmailUrl: string = 'http://localhost:3000/verify-email';
-  private resentEmailUrl: string = 'http://localhost:3000/resend-verification-email';
-  private requestPasswordResetUrl: string = 'http://localhost:3000/request-password-reset';
-  private resetPasswordUrl: string = 'http://localhost:3000/reset-password';
+  private login_url: string = 'https://api-ingeciencia.onrender.com/login';
+  private first_login_url: string = 'https://api-ingeciencia.onrender.com/login-bypass';
+  private register_url: string = 'https://api-ingeciencia.onrender.com/register';
+  private profile_img_url: string = 'https://api-ingeciencia.onrender.com/users/profile_img';
+  private verifyEmailUrl: string = 'https://api-ingeciencia.onrender.com/verify-email';
+  private resentEmailUrl: string = 'https://api-ingeciencia.onrender.com/resend-verification-email';
+  private requestPasswordResetUrl: string = 'https://api-ingeciencia.onrender.com/request-password-reset';
+  private resetPasswordUrl: string = 'https://api-ingeciencia.onrender.com/reset-password';
   private tokenKey = 'auth_token';
-  private refresh_url: string = 'http://localhost:3000/refresh-token';
+  private refresh_url: string = 'https://api-ingeciencia.onrender.com/refresh-token';
   private RefreshTokenKey = 'refresh_token';
   private userImageKey = 'user_image';
 

@@ -9,7 +9,7 @@ import { User } from '../../../core/models/user.model';
 })
 export class AdminService {
 
-  private apiUrl = 'http://localhost:3000/users'; // URL base de la API
+  private apiUrl = 'https://api-ingeciencia.onrender.com/users'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

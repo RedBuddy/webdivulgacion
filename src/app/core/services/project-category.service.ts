@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProjectCategoryService {
-  private projectCategoryUrl = 'http://localhost:3000/project_categories'; // Base URL del endpoint para las categorías de los proyectos
+  private projectCategoryUrl = 'https://api-ingeciencia.onrender.com/project_categories'; // Base URL del endpoint para las categorías de los proyectos
 
   constructor(private http: HttpClient) { }
 

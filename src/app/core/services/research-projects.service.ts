@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class ResearchProjectsService {
 
-  private apiUrl = 'http://localhost:3000/research_projects';
+  private apiUrl = 'https://api-ingeciencia.onrender.com/research_projects';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

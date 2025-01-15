@@ -9,7 +9,7 @@ import { IUserDiscipline } from '../models/user_discipline.model'; // Asegúrate
 })
 
 export class UserDisciplineService {
-  private userDisciplineUrl = 'http://localhost:3000/user_disciplines'; // Base URL del endpoint para las disciplinas del usuario
+  private userDisciplineUrl = 'https://api-ingeciencia.onrender.com/user_disciplines'; // Base URL del endpoint para las disciplinas del usuario
 
   constructor(private http: HttpClient) { }
 

@@ -11,7 +11,7 @@ import { Author } from '../models/author.model'; // Add this line to import Auth
 
 export class QuestionService {
 
-  private apiUrl = 'http://localhost:3000/questions'; // URL base de la API
+  private apiUrl = 'https://api-ingeciencia.onrender.com/questions'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

@@ -9,8 +9,8 @@ import { IUser, IUser_data } from '../../../core/models/user.model';
   providedIn: 'root'
 })
 export class ConfigService {
-  private userUrl = 'http://localhost:3000/user_data';
-  private userUpdateUrl = 'http://localhost:3000/user_update';
+  private userUrl = 'https://api-ingeciencia.onrender.com/user_data';
+  private userUpdateUrl = 'https://api-ingeciencia.onrender.com/user_update';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

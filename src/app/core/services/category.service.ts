@@ -9,7 +9,7 @@ import { ICategory } from '../models/category.model'; // Asegúrate de que la ru
 })
 
 export class CategoryService {
-  private categoryUrl = 'http://localhost:3000/categories'; // Base URL del endpoint para las categorías
+  private categoryUrl = 'https://api-ingeciencia.onrender.com/categories'; // Base URL del endpoint para las categorías
 
   constructor(private http: HttpClient) { }
 

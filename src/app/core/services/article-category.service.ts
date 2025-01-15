@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ArticleCategoryService {
-  private articleCategoryUrl = 'http://localhost:3000/article_categories'; // Base URL del endpoint para las categorías de los artículos
+  private articleCategoryUrl = 'https://api-ingeciencia.onrender.com/article_categories'; // Base URL del endpoint para las categorías de los artículos
 
   constructor(private http: HttpClient) { }
 

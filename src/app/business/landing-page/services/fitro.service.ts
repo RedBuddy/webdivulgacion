@@ -11,8 +11,8 @@ import { Article } from '../../../core/models/article.model';
 
 export class FitroService {
 
-  private apiUrl = 'http://localhost:3000/user_filter'; // URL del endpoint
-  private articleUrl = 'http://localhost:3000/article_filter';
+  private apiUrl = 'https://api-ingeciencia.onrender.com/user_filter'; // URL del endpoint
+  private articleUrl = 'https://api-ingeciencia.onrender.com/article_filter';
 
   constructor(private http: HttpClient) { }
 
