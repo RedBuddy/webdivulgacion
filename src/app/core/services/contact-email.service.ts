@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactEmailService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/contact'; // URL base de la API
+  private apiUrl = environment.apiUrl + '/contact'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

@@ -3,22 +3,23 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, catchError, switchMap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private login_url: string = 'https://api-ingeciencia.onrender.com/login';
-  private first_login_url: string = 'https://api-ingeciencia.onrender.com/login-bypass';
-  private register_url: string = 'https://api-ingeciencia.onrender.com/register';
-  private profile_img_url: string = 'https://api-ingeciencia.onrender.com/users/profile_img';
-  private verifyEmailUrl: string = 'https://api-ingeciencia.onrender.com/verify-email';
-  private resentEmailUrl: string = 'https://api-ingeciencia.onrender.com/resend-verification-email';
-  private requestPasswordResetUrl: string = 'https://api-ingeciencia.onrender.com/request-password-reset';
-  private resetPasswordUrl: string = 'https://api-ingeciencia.onrender.com/reset-password';
+  private login_url: string = environment.apiUrl + '/login';
+  private first_login_url: string = environment.apiUrl + '/login-bypass';
+  private register_url: string = environment.apiUrl + '/register';
+  private profile_img_url: string = environment.apiUrl + '/users/profile_img';
+  private verifyEmailUrl: string = environment.apiUrl + '/verify-email';
+  private resentEmailUrl: string = environment.apiUrl + '/resend-verification-email';
+  private requestPasswordResetUrl: string = environment.apiUrl + '/request-password-reset';
+  private resetPasswordUrl: string = environment.apiUrl + '/reset-password';
   private tokenKey = 'auth_token';
-  private refresh_url: string = 'https://api-ingeciencia.onrender.com/refresh-token';
+  private refresh_url: string = environment.apiUrl + '/refresh-token';
   private RefreshTokenKey = 'refresh_token';
   private userImageKey = 'user_image';
 

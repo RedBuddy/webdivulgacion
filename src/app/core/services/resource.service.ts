@@ -4,13 +4,14 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Resource } from '../models/resource.model';
 import { Author } from '../models/author.model';
+import { environment } from '../../../environments/environment'; // Import the environment configuration
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResourceService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/resources'; // URL base de la API
+  private apiUrl = environment.apiUrl + '/resources'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

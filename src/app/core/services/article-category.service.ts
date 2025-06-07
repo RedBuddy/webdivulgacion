@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleCategoryService {
-  private articleCategoryUrl = 'https://api-ingeciencia.onrender.com/article_categories'; // Base URL del endpoint para las categorías de los artículos
+  private articleCategoryUrl = environment.apiUrl + '/article_categories'; // Base URL del endpoint para las categorías de los artículos
 
   constructor(private http: HttpClient) { }
 

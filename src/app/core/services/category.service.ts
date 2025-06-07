@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ICategory } from '../models/category.model'; // Asegúrate de que la ruta sea correcta
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CategoryService {
-  private categoryUrl = 'https://api-ingeciencia.onrender.com/categories'; // Base URL del endpoint para las categorías
+  private categoryUrl = environment.apiUrl + '/categories'; // Base URL del endpoint para las categorías
 
   constructor(private http: HttpClient) { }
 

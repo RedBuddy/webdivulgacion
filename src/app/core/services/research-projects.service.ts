@@ -4,13 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { ResearchProject } from '../models/research-project.model';
 import { AuthService } from '../services/auth.service';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ResearchProjectsService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/research_projects';
+  private apiUrl = environment.apiUrl + '/research_projects';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Answer } from '../models/answer.model';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,8 @@ import { Answer } from '../models/answer.model';
 
 export class AnswerService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/answers';
+  // Usa la URL de la API desde environment
+  private apiUrl = environment.apiUrl + '/answers';
 
   constructor(private http: HttpClient) { }
 

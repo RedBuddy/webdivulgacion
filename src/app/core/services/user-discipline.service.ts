@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { IUserDiscipline } from '../models/user_discipline.model'; // Asegúrate de que la ruta sea correcta
+import { environment } from '../../../environments/environment'; // Importa el entorno para la URL de la API
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UserDisciplineService {
-  private userDisciplineUrl = 'https://api-ingeciencia.onrender.com/user_disciplines'; // Base URL del endpoint para las disciplinas del usuario
+  private userDisciplineUrl = environment.apiUrl + '/user_disciplines'; // Base URL del endpoint para las disciplinas del usuario
 
   constructor(private http: HttpClient) { }
 

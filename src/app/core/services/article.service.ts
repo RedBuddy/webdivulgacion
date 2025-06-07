@@ -5,13 +5,14 @@ import { catchError, tap, map } from 'rxjs/operators';
 import { Article } from '../models/article.model';
 import { Author } from '../models/author.model';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/articles';
+  private apiUrl = environment.apiUrl + '/articles';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

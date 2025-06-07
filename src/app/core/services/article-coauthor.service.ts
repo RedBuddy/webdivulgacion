@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { ICoauthor } from '../models/coauthor.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleCoauthorService {
-  private articleCoauthorUrl = 'https://api-ingeciencia.onrender.com/article_coauthors'; // Base URL del endpoint para los coautores de los artículos
-  private coauthorsUrl = 'https://api-ingeciencia.onrender.com/authors'; // Base URL del endpoint para obtener los coautores
+  private articleCoauthorUrl = environment.apiUrl + '/article_coauthors'; // Base URL del endpoint para los coautores de los artículos
+  private coauthorsUrl = environment.apiUrl + '/authors'; // Base URL del endpoint para obtener los coautores
 
   constructor(private http: HttpClient) { }
 

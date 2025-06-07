@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UserCard } from '../models/profile_card.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/profile_card';
+  private apiUrl = environment.apiUrl + '/profile_card';
 
   constructor(private http: HttpClient) { }
 

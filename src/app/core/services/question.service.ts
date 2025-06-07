@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Question } from '../models/question.model';
 import { Author } from '../models/author.model'; // Add this line to import Author
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { Author } from '../models/author.model'; // Add this line to import Auth
 
 export class QuestionService {
 
-  private apiUrl = 'https://api-ingeciencia.onrender.com/questions'; // URL base de la API
+  private apiUrl = environment.apiUrl + '/questions'; // URL base de la API
 
   constructor(private http: HttpClient) { }
 

@@ -7,16 +7,17 @@ import { AuthService } from '../services/auth.service';
 import { UserCard } from '../models/profile_card.model';
 import { UserAbout } from '../models/user_about.model';
 import { User_filter } from '../models/user_filter.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-  private profileUrl = 'https://api-ingeciencia.onrender.com/profile';
-  private profileCardUrl = 'https://api-ingeciencia.onrender.com/profile_card';
-  private userAboutUrl = 'https://api-ingeciencia.onrender.com/profile_about';
-  private authorListUrl = 'https://api-ingeciencia.onrender.com/authors_profile';
-  private adminListUrl = 'https://api-ingeciencia.onrender.com/admins_profile';
+  private profileUrl = environment.apiUrl + '/profile';
+  private profileCardUrl = environment.apiUrl + '/profile_card';
+  private userAboutUrl = environment.apiUrl + '/profile_about';
+  private authorListUrl = environment.apiUrl + '/authors_profile';
+  private adminListUrl = environment.apiUrl + '/admins_profile';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
