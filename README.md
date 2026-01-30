@@ -182,6 +182,10 @@ Para deployment en producción:
 - **Coverage**: Configurado en karma.conf.js
 - **Jasmine**: Framework de testing utilizado
 
+## Autor
+
+**Orlando Armando Apodaca Concha**
+
 ## Licencia
 
 Proyecto interno. Derechos reservados.
