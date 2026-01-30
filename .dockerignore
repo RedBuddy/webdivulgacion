@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+pnpm-debug.log
+.yarn
+.yarnrc.yml
+.pnpm-store
+.angular
+.dist
+/dist
+.git
+.gitignore
+Dockerfile
+README.md
